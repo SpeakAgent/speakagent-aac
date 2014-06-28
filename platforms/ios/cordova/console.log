@@ -1,0 +1,19 @@
+2014-06-27 21:00:38.293 HelloCordova[43578:70b] Multi-tasking -> Device: YES, App: YES
+2014-06-27 21:00:38.337 HelloCordova[43578:70b] Unlimited access to network resources
+2014-06-27 21:00:38.533 HelloCordova[43578:70b] [CDVTimer][keyboard] 0.055969ms
+2014-06-27 21:00:38.533 HelloCordova[43578:70b] CDVPlugin class CDVStatusBar (pluginName: statusbar) does not exist.
+2014-06-27 21:00:38.534 HelloCordova[43578:70b] [CDVTimer][statusbar] 0.347972ms
+2014-06-27 21:00:38.534 HelloCordova[43578:70b] [CDVTimer][TotalPluginStartup] 1.154006ms
+2014-06-27 21:00:38.666 HelloCordova[43578:70b] Resetting plugins due to page load.
+2014-06-27 21:00:38.851 HelloCordova[43578:70b] Finished load of: file:///Users/shawnr/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/580A8935-601E-4293-B564-49B99F2CBD3D/HelloCordova.app/www/index.html#/app/playlists
+2014-06-27 21:01:22.495 HelloCordova[43578:70b] Received memory warning.
+2014-06-27 22:07:25.599 SpeakAgent AAC[45507:70b] Multi-tasking -> Device: YES, App: YES
+2014-06-27 22:07:25.607 SpeakAgent AAC[45507:70b] Unlimited access to network resources
+2014-06-27 22:07:25.612 SpeakAgent AAC[45507:70b] Fix applied for database locations?: YES
+2014-06-27 22:07:25.779 SpeakAgent AAC[45507:70b] [CDVTimer][keyboard] 0.082016ms
+2014-06-27 22:07:25.779 SpeakAgent AAC[45507:70b] CDVPlugin class CDVStatusBar (pluginName: statusbar) does not exist.
+2014-06-27 22:07:25.780 SpeakAgent AAC[45507:70b] [CDVTimer][statusbar] 0.275016ms
+2014-06-27 22:07:25.780 SpeakAgent AAC[45507:70b] [CDVTimer][TotalPluginStartup] 1.085043ms
+2014-06-27 22:07:25.884 SpeakAgent AAC[45507:70b] Resetting plugins due to page load.
+2014-06-27 22:07:26.060 SpeakAgent AAC[45507:70b] Finished load of: file:///Users/shawnr/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/6798ECA1-AE39-472E-BFD3-1B4AF3E519BE/SpeakAgent%20AAC.app/www/index.html#/app/wordlists
+Terminating in response to SpringBoard's termination.
