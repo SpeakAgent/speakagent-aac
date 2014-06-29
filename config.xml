@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.ionicframework.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>SpeakAgent AAC</name>
+    <name>SpeakAgentAAC</name>
     <description>
         An assistive audio controller (AAC)
     </description>
@@ -13,6 +13,7 @@
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
+    <preference name="Orientation" value="default" />
 
     <!-- Don't store local date in an iCloud backup. Turn this to "cloud" to enable storage
          to be sent to iCloud. Note: enabling this could result in Apple rejecting your app.
@@ -22,4 +23,12 @@
     <feature name="StatusBar">
       <param name="ios-package" value="CDVStatusBar" onload="true" />
     </feature>
+
+    <platform name="ios">
+        <preference name="MediaPlaybackRequiresUserAction" value="true"/>
+        <preference name="AllowInlineMediaPlayback" value="true"/>
+        <preference name="TopActivityIndicator" value="white"/>
+        <preference name="SuppressesIncrementalRendering" value="true"/>
+     </platform>
+
 </widget>
