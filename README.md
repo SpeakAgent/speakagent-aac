@@ -1,8 +1,6 @@
 Speakagent AAC
 =====================
 
-Mal Test!
-
 An assistive audio control application for mobile devices.
 
 ## Pre-requisites
