@@ -1,4 +1,132 @@
-angular.module('speakagentAAC.controllers', [])
+angular.module('speakagentAAC.controllers', ['ionic'])
+
+.controller('LocationCtrl', function($scope, $ionicPopup, $timeout) {
+
+  $scope.locationData = { saveButtonDisabled: true, };
+  $scope.geocoder = new google.maps.Geocoder();
+
+  // Called when the user taps the location button in the interface
+
+  $scope.getLocation = function() {
+    navigator.geolocation.getCurrentPosition($scope.locationRetrieved,
+      $scope.locationFailed, { enableHighAccuracy: true });
+  };
+
+  // Called when the browser is granted permissions for the location
+  //
+  $scope.locationRetrieved = function(position) {
+    // console.log("position came back ", position);
+    $scope.locationData.position = position;
+
+    var lat = parseFloat(position.coords.latitude);
+    var lng = parseFloat(position.coords.longitude);
+
+    var latlng = new google.maps.LatLng(lat, lng);
+
+    // console.log("kicking off geocode via google maps: ", latlng);
+    $scope.geocoder.geocode({'latLng': latlng}, function(results, status) {
+      $scope.geocodeComplete(results, status);
+    });
+  };
+
+  // Called when the geocoder finishes
+  //
+  $scope.geocodeComplete = function(results, status) {
+
+    // Pessimistically assume no place was found
+    //
+    var address = null;
+    var saveButtonDisabled = true;
+
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        angular.forEach(results, function (location,i ) {
+          angular.forEach(location.types, function (locationType, j) {
+            if (locationType == "street_address") {
+              // Set the address from the address
+              address = location.formatted_address;
+              // Enable the save button
+              saveButtonDisabled = false;
+              // console.log("Found location data " + $scope.locationData.address);
+              return false;
+            }
+          });
+        });
+      } else {
+        $scope.locationUnavailable("Could not determine an address for this location.");
+      }
+    } else {
+        $scope.locationUnavailable("Could not determine an address for this location.");
+    }
+
+    // Make sure the interface updates correctly.
+    //
+    $scope.$apply(function(s) {
+      // Set the address from the address
+      s.locationData.address = address;
+      // Enable the save button
+      s.locationData.saveButtonDisabled = saveButtonDisabled;
+    });
+
+  };
+
+  // Figure out what blew up, if possible, and let the user know.
+  $scope.locationFailed = function(error) {
+    $scope.locationData.saveButtonDisabled = true;
+    $scope.locationData.address = null;
+
+    if (error == PositionError.PERMISSION_DENIED) {
+      $scope.locationUnavailable("Access to location data was denied by user.");
+    } else if (error == PositionError.POSITION_UNAVAILABLE) {
+      $scope.locationUnavailable("Location temporarily unavailable.");
+    } else {
+      $scope.locationUnavailable("Could not determine location.");
+    }
+  };
+
+  // Display pop-up
+  $scope.locationUnavailable = function(message) {
+    var alertPopup = $ionicPopup.alert({
+      title: "Location Unavailable",
+      template: message
+    });
+    alertPopup.then(function(res) {
+      $scope.locationData.saveButtonDisabled = true;
+      $scope.locationData.address = null;
+    });
+  };
+
+  // Save the location when the user taps the save button
+  $scope.doSaveLocation = function() {
+    console.log('Doing save location ', $scope.locationData);
+
+    var savePopup = $ionicPopup.show({
+      template: '<input type="text" ng-model="locationData.name">',
+      title: 'Save Location',
+      subTitle: 'Enter a name for this address',
+      scope: $scope,
+      buttons: [
+        { text: 'Cancel' },
+        {
+          text: '<b>Save</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (!$scope.locationData.name) {
+              e.preventDefault();
+            } else {
+              return $scope.locationData.name;
+            }
+          }
+        },
+      ]
+    });
+    savePopup.then(function(res) {
+      console.log("Would save " + $scope.locationData.name + " as " +
+        $scope.locationData.address);
+    });
+  };
+})
+
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal

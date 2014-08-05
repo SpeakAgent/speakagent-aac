@@ -1,0 +1,30 @@
+<ion-view title="Location">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header">
+    <h1>Location</h1>
+
+    <form ng-submit="doSaveLocation()">
+      <div class="list list-inset">
+        <div class="item-input-inset">
+        <label class="item-input-wrapper">
+          <input on-tap="getLocation()" type="text" placeholder="Tap to Retrieve Current Location" ng-model="locationData.address">
+          <i on-tap="getLocation()" class="icon ion-pinpoint placeholder-icon"></i>
+        </label>
+        <button class="button button-small button-disabled" id="saveButtonDisabled" ng-disabled="locationData.saveButtonDisabled" type="submit">Save</button>
+
+        </div>
+
+        <div ng-show="locationData.name" class="card">
+          <div class="item item-wrap-text text-center">
+            Based on your stored locations<br>
+            SpeakAgent thinks you are at<br>
+            <span class="positive h3">{{locationData.name}}</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ion-content>
+</div>

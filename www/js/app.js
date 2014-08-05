@@ -47,6 +47,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         }
       }
     })
+
     .state('app.wordlists', {
       url: "/wordlists",
       views: {
@@ -63,6 +64,16 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         'menuContent' :{
           templateUrl: "templates/wordlist.html",
           controller: 'WordlistCtrl'
+        }
+      }
+    })
+
+    .state('app.location', {
+      url: "/location",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/location.html",
+          controller: 'LocationCtrl'
         }
       }
     });
