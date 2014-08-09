@@ -2,7 +2,9 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
 .controller('LocationCtrl', function($scope, $ionicPopup, $timeout) {
 
-  $scope.locationData = { saveButtonDisabled: true, };
+  $scope.locationData = { saveButtonDisabled: true,
+                          proximityThreshold: 16.0/1000,
+                          debug: true };
   $scope.geocoder = new google.maps.Geocoder();
 
   // Called when the user taps the location button in the interface
@@ -23,10 +25,14 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     var latlng = new google.maps.LatLng(lat, lng);
 
+    $scope.updateDistanceToFavorites(lat, lng);
+
     // console.log("kicking off geocode via google maps: ", latlng);
     $scope.geocoder.geocode({'latLng': latlng}, function(results, status) {
       $scope.geocodeComplete(results, status);
     });
+
+
   };
 
   // Called when the geocoder finishes
@@ -46,7 +52,9 @@ angular.module('speakagentAAC.controllers', ['ionic'])
               // Set the address from the address
               address = location.formatted_address;
               // Enable the save button
-              saveButtonDisabled = false;
+              if ($scope.locationData.favorites) {
+                saveButtonDisabled = false;
+              }
               // console.log("Found location data " + $scope.locationData.address);
               return false;
             }
@@ -98,7 +106,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
   // Save the location when the user taps the save button
   $scope.doSaveLocation = function() {
-    console.log('Doing save location ', $scope.locationData);
+    // console.log('Doing save location ', $scope.locationData);
 
     var savePopup = $ionicPopup.show({
       template: '<input type="text" ng-model="locationData.name">',
@@ -121,10 +129,95 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       ]
     });
     savePopup.then(function(res) {
-      console.log("Would save " + $scope.locationData.name + " as " +
-        $scope.locationData.address);
+      $scope.addLocationToFavorites();
     });
   };
+
+  // Create a favorite entry and store it for later.
+  $scope.addLocationToFavorites = function() {
+
+    // If we have no favorites, then bail.
+    if (!$scope.locationData.favorites) {
+      return false;
+    }
+
+    var fave = { name : $scope.locationData.name,
+                 lat : $scope.locationData.position.coords.latitude,
+                 lng : $scope.locationData.position.coords.longitude,
+                 accuracy : $scope.locationData.position.coords.accuracy,
+                 address: $scope.locationData.address,
+                 distance: 0 };
+
+    $scope.locationData.favorites.push(fave);
+    $scope.storeFavoriteLocations();
+    // console.log('Saving location to local storage ', $scope.locationData);
+    return true;
+  };
+
+  $scope.storeFavoriteLocations = function() {
+    var saved = [];
+    if ($scope.locationData.favorites) {
+      angular.forEach($scope.locationData.favorites, function(fave, i) {
+        var saveFave = angular.copy(fave);
+        delete(saveFave.distance);
+        delete(saveFave.distanceStr);
+        saved.push(saveFave);
+      });
+
+      localStorage.setItem("location.favorites", angular.toJson(saved));
+    }
+  };
+
+  // Retrieve our favorite locations from local storage, if possible.
+  $scope.fetchFavoriteLocations = function() {
+
+    // If there is debugging on AND we don't have any saved faves, then
+    // add a few to play with.
+    //
+    if ($scope.locationData.debug && !localStorage.getItem("location.favorites")) {
+      localStorage.setItem("location.favorites", '[{"name":"Grandmas House","lat":33.9052104,"lng":-83.3989904,"accuracy":53,"address":"1140 Ivywood Drive, Athens, GA 30606, USA"},{"name":"House of Barack","lat":38.897677,"lng":-77.0365298,"accuracy":17,"address":"1600 Pennsylvania Avenue Northwest, Washington, DC, USA"},{"name":"Sears Tower","lat":41.878876,"lng":-87.635915,"accuracy":89,"address":"233 S Wacker Dr, Chicago, IL 60606, USA"},{"name":"Seattle Central Library","lat":47.606701,"lng":-122.33250,"accuracy":55,"address":"1000 4th Ave, Seattle, WA 98104, USA"}]');
+    }
+
+    var faves = angular.fromJson(localStorage.getItem("location.favorites")) || [];
+
+    return faves;
+  };
+
+  // Updates the favorites array with distance from current location.
+  $scope.updateDistanceToFavorites = function(lat, lng) {
+
+    var closest = null;
+
+    angular.forEach($scope.locationData.favorites, function(fave, i) {
+      var distance = Util.distanceLatLng(lat, lng, fave.lat, fave.lng);
+      fave.distance = distance;
+      if ((!closest) || (distance < closest.distance)) {
+        closest = fave;
+      }
+
+      fave.distanceStr = (distance < 1.5) ?
+        Math.floor(distance*1000) + 'm' :
+        (Math.floor(distance*10)/10) + 'km';
+    });
+
+    if (closest && closest.distance <= $scope.locationData.proximityThreshold) {
+      $scope.locationData.myLocation = closest;
+    } else {
+      $scope.locationData.myLocation = null;
+    }
+  };
+
+
+  // If we have local storage support, fetch the favorites, otherwise
+  // make sure save is disabled and our storage is null.
+  if(typeof(Storage) !== "undefined") {
+    $scope.locationData.favorites = $scope.fetchFavoriteLocations();
+  } else {
+    $scope.locationData.saveButtonDisabled = true;
+    $scope.locationData.favorites = null;
+  }
+
+
 })
 
 
