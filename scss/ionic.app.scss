@@ -21,3 +21,24 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+
+/***
+    Custom app styles go below
+*/
+
+// Include Source Sans Pro from Google
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic,700italic);
+
+body {
+    font-family: 'Source Sans Pro';
+}
+.item {
+    width: 80%;
+}
+.tile {
+    background-color: green;
+}
+
+
+
+
