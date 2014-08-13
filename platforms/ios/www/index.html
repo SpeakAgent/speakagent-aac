@@ -19,6 +19,35 @@
   </head>
 
   <body ng-app="speakagentAAC" class="platform-ios platform-cordova platform-webview">
-    <ion-nav-view></ion-nav-view>
+    <ion-header-bar align-title="left" class="bar-positive">
+      <div class="buttons">
+        <a class="button icon-left ion-home" href="/">Home</a>
+        <button class="button icon-left ion-settings" ng-click="doSomething()">Settings</button>
+      </div>
+      <div class="buttons">
+        <button class="button icon-left ion-search">Search</button>
+      </div>
+    </ion-header-bar>
+    <div class="menu-comment col col-20 persistant">
+    <ul>
+      <li>Yes</li>
+      <li>No</li>
+      <li>One Moment Please</li>
+      <li>Help!</li>
+      <li>Bell</li>
+    </ul>
+    </div>
+    <div class="row menu-speech-bar persistant">
+      <button class="button aac-user">User Picture</button>
+      <button class="button icon-left ion-delete">Delete</button>
+      <button class="button">Speak</button>
+    </div>
+    <div class="row">
+      <ion-nav-view>
+      </ion-nav-view>
+    </div>
+    <div class="menu-start-over persistant">
+      <a class="button" href="/">Start Over</a>
+    </div>
   </body>
 </html>

@@ -16,3 +16,12 @@
 2014-08-07 13:42:35.857 SpeakAgentAAC[12137:70b] Resetting plugins due to page load.
 2014-08-07 13:42:36.293 SpeakAgentAAC[12137:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/CFAA43A6-F761-4741-87FB-6266EB3B00AC/SpeakAgentAAC.app/www/index.html#/app/wordlists
 2014-08-07 13:43:26.270 SpeakAgentAAC[12137:70b] Received memory warning.
+2014-08-13 08:12:22.059 SpeakAgentAAC[27877:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-13 08:12:22.083 SpeakAgentAAC[27877:70b] Unlimited access to network resources
+2014-08-13 08:12:22.275 SpeakAgentAAC[27877:70b] [CDVTimer][keyboard] 0.083983ms
+2014-08-13 08:12:22.276 SpeakAgentAAC[27877:70b] CDVPlugin class CDVStatusBar (pluginName: statusbar) does not exist.
+2014-08-13 08:12:22.276 SpeakAgentAAC[27877:70b] [CDVTimer][statusbar] 0.395000ms
+2014-08-13 08:12:22.277 SpeakAgentAAC[27877:70b] [CDVTimer][TotalPluginStartup] 1.366019ms
+2014-08-13 08:12:22.408 SpeakAgentAAC[27877:70b] Resetting plugins due to page load.
+2014-08-13 08:12:22.811 SpeakAgentAAC[27877:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/CFAA43A6-F761-4741-87FB-6266EB3B00AC/SpeakAgentAAC.app/www/index.html#/app/wordlists
+2014-08-13 08:12:29.893 SpeakAgentAAC[27877:70b] Received memory warning.

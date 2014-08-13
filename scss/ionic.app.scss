@@ -32,13 +32,58 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 body {
     font-family: 'Source Sans Pro';
 }
+
+
+input, button, select, textarea {
+    font-family: 'Source Sans Pro';
+}
+.pane, .view {
+        background-color: #6FC9CB;
+}
+    top: 20px;
+}
 .item {
     width: 80%;
 }
 .tile {
     background-color: green;
 }
+.placeholder {
+    background-color: yellow;
+}
+.placeholder-2 {
+    background-color: blue;
+}
 
 
+/* Persistant Class for permenant shell items */
+.persistant {
+    position: absolute;
+    z-index: 999;
+}
 
+
+/* Permenant Speech Bar */
+
+.menu-speech-bar {
+    top: 44px;
+    left: 0;
+    right: 0;
+}
+
+/* Permenant Right Sidebar */
+
+.menu-comment {
+    background-color: rgba(0,0,0,0.2);
+    top: 44px;
+    right: 0;
+    bottom: 0;
+}
+
+/* Permenant Start Over Button */
+
+.menu-start-over {
+    left: 0;
+    bottom: 0;
+}
 

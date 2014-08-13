@@ -1,5 +1,4 @@
 <ion-view title="Wordlists" hide-nav-bar="true">
-
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.id}}">
@@ -7,4 +6,9 @@
       </ion-item>
     </ion-list>
   </ion-content>
+  <ion-nav-bar>
+  <ion-nav-back-button class="button-clear">
+    <i class="ion-arrow-left-c"></i> Back
+  </ion-nav-back-button>
+</ion-nav-bar>
 </ion-view>

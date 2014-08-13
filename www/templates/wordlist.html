@@ -1,8 +1,9 @@
-<ion-view title="Wordlist">
+<ion-view title="Wordlist" hide-nav-bar="true">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header">
+  <ion-content>
+    <div class="col col-80">
     <ion-list>
       <ion-item ng-repeat="(title,sublist) in activeWordlist">
         <div class="item item-divider">
@@ -15,5 +16,6 @@
         </div>
       </ion-item>
     </ion-list>
+    </div>
   </ion-content>
 </ion-view>
