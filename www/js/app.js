@@ -17,6 +17,9 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+
+
   });
 })
 

@@ -7084,9 +7084,11 @@ input, button, select, textarea {
 
 /* Permenant Speech Bar */
 .menu-speech-bar {
+  background-color: white;
   top: 44px;
   left: 0;
-  right: 0; }
+  right: 0;
+  height: 100px; }
 
 /* Permenant Right Sidebar */
 .menu-comment {

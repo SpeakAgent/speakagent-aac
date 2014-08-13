@@ -1,7 +1,7 @@
 <ion-view title="Wordlists" hide-nav-bar="true">
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.id}}">
+      <ion-item class="tile" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.id}}">
         <i class="icon {{wordlist.icon}}"></i> {{wordlist.title}}
       </ion-item>
     </ion-list>

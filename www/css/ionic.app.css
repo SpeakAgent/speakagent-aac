@@ -7062,8 +7062,7 @@ input, button, select, textarea {
   font-family: 'Source Sans Pro'; }
 
 .pane, .view {
-  background-color: #6FC9CB;
-  top: 20px; }
+  background-color: #6FC9CB; }
 
 .item {
   width: 80%; }
@@ -7084,14 +7083,16 @@ input, button, select, textarea {
 
 /* Permenant Speech Bar */
 .menu-speech-bar {
+  background-color: white;
   top: 44px;
   left: 0;
-  right: 0; }
+  right: 0;
+  height: 100px; }
 
 /* Permenant Right Sidebar */
 .menu-comment {
   background-color: rgba(0, 0, 0, 0.2);
-  top: 44px;
+  top: 144px;
   right: 0;
   bottom: 0; }
 
