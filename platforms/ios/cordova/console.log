@@ -54,3 +54,19 @@
 2014-08-13 09:11:35.492 SpeakAgentAAC[28859:70b] Resetting plugins due to page load.
 2014-08-13 09:11:36.312 SpeakAgentAAC[28859:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/CFAA43A6-F761-4741-87FB-6266EB3B00AC/SpeakAgentAAC.app/www/index.html#/app/wordlists
 2014-08-13 09:11:59.025 SpeakAgentAAC[28859:70b] Received memory warning.
+2014-08-13 20:32:13.894 SpeakAgentAAC[32934:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-13 20:32:13.925 SpeakAgentAAC[32934:70b] Unlimited access to network resources
+2014-08-13 20:32:14.139 SpeakAgentAAC[32934:70b] [CDVTimer][keyboard] 0.082970ms
+2014-08-13 20:32:14.233 SpeakAgentAAC[32934:70b] [CDVTimer][statusbar] 93.390048ms
+2014-08-13 20:32:14.233 SpeakAgentAAC[32934:70b] [CDVTimer][TotalPluginStartup] 94.560027ms
+2014-08-13 20:32:14.320 SpeakAgentAAC[32934:70b] Resetting plugins due to page load.
+2014-08-13 20:32:14.866 SpeakAgentAAC[32934:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/CFAA43A6-F761-4741-87FB-6266EB3B00AC/SpeakAgentAAC.app/www/index.html#/app/wordlists
+2014-08-13 20:32:20.413 SpeakAgentAAC[32934:70b] Received memory warning.
+2014-08-13 20:54:06.339 SpeakAgentAAC[33297:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-13 20:54:06.349 SpeakAgentAAC[33297:70b] Unlimited access to network resources
+2014-08-13 20:54:06.372 SpeakAgentAAC[33297:70b] [CDVTimer][keyboard] 0.100017ms
+2014-08-13 20:54:06.386 SpeakAgentAAC[33297:70b] [CDVTimer][statusbar] 12.809992ms
+2014-08-13 20:54:06.386 SpeakAgentAAC[33297:70b] [CDVTimer][TotalPluginStartup] 14.028013ms
+2014-08-13 20:54:06.520 SpeakAgentAAC[33297:70b] Resetting plugins due to page load.
+2014-08-13 20:54:06.905 SpeakAgentAAC[33297:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/F72108B9-871C-4559-B0C7-70AE1E2077DA/SpeakAgentAAC.app/www/index.html#/app/wordlists
+2014-08-13 20:54:13.276 SpeakAgentAAC[33297:70b] Received memory warning.

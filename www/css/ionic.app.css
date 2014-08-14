@@ -7062,13 +7062,8 @@ input, button, select, textarea {
   font-family: 'Source Sans Pro'; }
 
 .pane, .view {
+  top: 55px;
   background-color: #6FC9CB; }
-
-.item {
-  width: 80%; }
-
-.tile {
-  background-color: green; }
 
 .placeholder {
   background-color: yellow; }
@@ -7100,3 +7095,22 @@ input, button, select, textarea {
 .menu-start-over {
   left: 0;
   bottom: 0; }
+
+/* Boards */
+.board .list {
+  display: flex;
+  flex-wrap: wrap; }
+
+.item {
+  background-color: transparent;
+  border: none;
+  padding: 0; }
+
+.tile {
+  background-color: #fff;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  margin-right: 10px;
+  margin-bottom: 10px; }

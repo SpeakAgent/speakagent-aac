@@ -18,6 +18,8 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       StatusBar.styleDefault();
     }
 
+
+
   });
 })
 
