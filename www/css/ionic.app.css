@@ -7099,7 +7099,9 @@ input, button, select, textarea {
 /* Boards */
 .board .list {
   display: flex;
-  flex-wrap: wrap; }
+  display: -webkit-flex;
+  flex-wrap: wrap;
+  -webkit-flex-flow: row wrap; }
 
 .item {
   background-color: transparent;

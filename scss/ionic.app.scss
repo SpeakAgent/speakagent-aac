@@ -88,7 +88,9 @@ input, button, select, textarea {
 
 .board .list {
     display: flex;
+    display: -webkit-flex;
     flex-wrap: wrap;
+    -webkit-flex-flow: row wrap;
 }
 
 
