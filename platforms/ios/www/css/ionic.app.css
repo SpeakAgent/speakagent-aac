@@ -7160,15 +7160,6 @@ input, button, select, textarea {
   bottom: 0; }
 
 /* Boards */
-.board {
-  margin-left: 130px;
-  padding-top: 170px; }
-  .board .list {
-    display: flex;
-    display: -webkit-flex;
-    flex-wrap: wrap;
-    -webkit-flex-flow: row wrap; }
-
 .item {
   background-color: transparent;
   border: none;
@@ -7177,14 +7168,32 @@ input, button, select, textarea {
 .tile {
   background-color: #fff;
   border-radius: 10px;
-  width: 100px;
-  height: 100px;
   text-align: center;
   margin-right: 10px;
-  margin-bottom: 10px; }
-  .tile a {
+  margin-bottom: 10px;
+  width: 100px;
+  height: 100px; }
+  .tile a.item-content {
+    width: 100px;
+    height: 100px;
     display: table-cell;
     text-align: center;
     vertical-align: bottom;
-    height: 100px;
-    width: 100px; }
+    overflow: visible;
+    white-space: normal; }
+
+.tile.folder {
+  color: blue; }
+
+.board {
+  margin-left: 130px;
+  padding-top: 170px;
+  width: 794px; }
+  .board .list {
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -webkit-flex-flow: row wrap; }
+  .board .tile, .board a.item-content {
+    height: 76px;
+    width: 76px; }

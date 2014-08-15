@@ -2,8 +2,9 @@
   <ion-content>
     <div class="col col-80 board">
       <ion-list>
-        <ion-item class="tile col col-10" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.id}}">
-          <i class="icon {{wordlist.icon}}"></i> {{wordlist.title}}
+        <ion-item class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.id}}">
+          <span><i class="icon {{wordlist.icon}}"></i></span>
+          <span>{{wordlist.title}}</span>
         </ion-item>
       </ion-list>
     </div>

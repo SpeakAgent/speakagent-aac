@@ -344,3 +344,45 @@ Terminating in response to SpringBoard's termination.
 2014-08-14 19:08:34.121 SpeakAgentAAC[44624:70b] Resetting plugins due to page load.
 2014-08-14 19:08:34.489 SpeakAgentAAC[44624:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/F72108B9-871C-4559-B0C7-70AE1E2077DA/SpeakAgentAAC.app/www/index.html#/app/wordlists
 2014-08-14 19:08:40.421 SpeakAgentAAC[44624:70b] Received memory warning.
+2014-08-15 10:52:10.714 SpeakAgentAAC[46534:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-15 10:52:10.745 SpeakAgentAAC[46534:70b] Unlimited access to network resources
+2014-08-15 11:47:49.919 SpeakAgentAAC[47126:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-15 11:47:49.932 SpeakAgentAAC[47126:70b] Unlimited access to network resources
+2014-08-15 11:47:49.956 SpeakAgentAAC[47126:70b] [CDVTimer][keyboard] 0.075996ms
+2014-08-15 11:47:49.967 SpeakAgentAAC[47126:70b] [CDVTimer][statusbar] 10.230005ms
+2014-08-15 11:47:49.968 SpeakAgentAAC[47126:70b] [CDVTimer][TotalPluginStartup] 11.538982ms
+2014-08-15 11:47:50.079 SpeakAgentAAC[47126:70b] Resetting plugins due to page load.
+2014-08-15 11:47:50.639 SpeakAgentAAC[47126:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/F72108B9-871C-4559-B0C7-70AE1E2077DA/SpeakAgentAAC.app/www/index.html#/app/wordlists
+2014-08-15 11:48:04.146 SpeakAgentAAC[47126:70b] Received memory warning.
+2014-08-15 11:54:54.073 SpeakAgentAAC[47505:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-15 11:54:54.087 SpeakAgentAAC[47505:70b] Unlimited access to network resources
+2014-08-15 11:54:54.108 SpeakAgentAAC[47505:70b] [CDVTimer][keyboard] 0.078022ms
+2014-08-15 11:54:54.118 SpeakAgentAAC[47505:70b] [CDVTimer][statusbar] 9.340048ms
+2014-08-15 11:54:54.119 SpeakAgentAAC[47505:70b] [CDVTimer][TotalPluginStartup] 10.435998ms
+2014-08-15 11:54:54.236 SpeakAgentAAC[47505:70b] Resetting plugins due to page load.
+2014-08-15 11:54:54.773 SpeakAgentAAC[47505:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/F72108B9-871C-4559-B0C7-70AE1E2077DA/SpeakAgentAAC.app/www/index.html#/app/wordlists
+2014-08-15 11:55:00.571 SpeakAgentAAC[47505:70b] Received memory warning.
+2014-08-15 11:56:11.080 SpeakAgentAAC[47802:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-15 11:56:11.090 SpeakAgentAAC[47802:70b] Unlimited access to network resources
+2014-08-15 11:56:11.110 SpeakAgentAAC[47802:70b] [CDVTimer][keyboard] 0.079989ms
+2014-08-15 11:56:11.122 SpeakAgentAAC[47802:70b] [CDVTimer][statusbar] 10.991037ms
+2014-08-15 11:56:11.122 SpeakAgentAAC[47802:70b] [CDVTimer][TotalPluginStartup] 12.696981ms
+2014-08-15 11:56:11.236 SpeakAgentAAC[47802:70b] Resetting plugins due to page load.
+2014-08-15 11:56:11.765 SpeakAgentAAC[47802:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/F72108B9-871C-4559-B0C7-70AE1E2077DA/SpeakAgentAAC.app/www/index.html#/app/wordlists
+2014-08-15 11:56:14.313 SpeakAgentAAC[47802:70b] Received memory warning.
+2014-08-15 12:00:33.378 SpeakAgentAAC[48111:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-15 12:00:33.388 SpeakAgentAAC[48111:70b] Unlimited access to network resources
+2014-08-15 12:00:33.411 SpeakAgentAAC[48111:70b] [CDVTimer][keyboard] 0.074983ms
+2014-08-15 12:00:33.422 SpeakAgentAAC[48111:70b] [CDVTimer][statusbar] 10.589004ms
+2014-08-15 12:00:33.423 SpeakAgentAAC[48111:70b] [CDVTimer][TotalPluginStartup] 11.658013ms
+2014-08-15 12:00:33.597 SpeakAgentAAC[48111:70b] Resetting plugins due to page load.
+2014-08-15 12:00:34.098 SpeakAgentAAC[48111:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/F72108B9-871C-4559-B0C7-70AE1E2077DA/SpeakAgentAAC.app/www/index.html#/app/wordlists
+2014-08-15 12:00:37.448 SpeakAgentAAC[48111:70b] Received memory warning.
+2014-08-15 12:04:05.698 SpeakAgentAAC[48411:70b] Multi-tasking -> Device: YES, App: YES
+2014-08-15 12:04:05.707 SpeakAgentAAC[48411:70b] Unlimited access to network resources
+2014-08-15 12:04:05.729 SpeakAgentAAC[48411:70b] [CDVTimer][keyboard] 0.078022ms
+2014-08-15 12:04:05.741 SpeakAgentAAC[48411:70b] [CDVTimer][statusbar] 11.503994ms
+2014-08-15 12:04:05.741 SpeakAgentAAC[48411:70b] [CDVTimer][TotalPluginStartup] 12.711048ms
+2014-08-15 12:04:05.911 SpeakAgentAAC[48411:70b] Resetting plugins due to page load.
+2014-08-15 12:04:06.395 SpeakAgentAAC[48411:70b] Finished load of: file:///Users/malcolm/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/F72108B9-871C-4559-B0C7-70AE1E2077DA/SpeakAgentAAC.app/www/index.html#/app/wordlists
+2014-08-15 12:04:10.607 SpeakAgentAAC[48411:70b] Received memory warning.
