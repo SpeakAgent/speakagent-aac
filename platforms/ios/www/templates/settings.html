@@ -1,0 +1,27 @@
+<div class="modal">
+  <ion-header-bar class="bar-stable">
+    <h1 class="title">Settings</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <ion-content class="has-header">
+      <ion-list>
+        <ion-item nav-clear menu-close ng-click="login()">
+          Login
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/search">
+          Search
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/browse">
+          Browse
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/wordlists">
+          Wordlists
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-content>
+</div>
+

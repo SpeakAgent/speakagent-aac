@@ -1,14 +1,11 @@
-<ion-view title="Wordlists" hide-nav-bar="true">
+<ion-view title="Wordlists" hide-nav-bar="true" class="board-container">
   <ion-content>
-    <ion-list>
-      <ion-item class="tile" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.id}}">
-        <i class="icon {{wordlist.icon}}"></i> {{wordlist.title}}
-      </ion-item>
-    </ion-list>
+    <div class="col col-80 board">
+      <ion-list>
+        <ion-item class="tile col col-10" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.id}}">
+          <i class="icon {{wordlist.icon}}"></i> {{wordlist.title}}
+        </ion-item>
+      </ion-list>
+    </div>
   </ion-content>
-  <ion-nav-bar>
-  <ion-nav-back-button class="button-clear">
-    <i class="ion-arrow-left-c"></i> Back
-  </ion-nav-back-button>
-</ion-nav-bar>
 </ion-view>
