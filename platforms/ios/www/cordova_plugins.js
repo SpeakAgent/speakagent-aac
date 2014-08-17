@@ -97,6 +97,13 @@ module.exports = [
         "clobbers": [
             "applicationPreferences"
         ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.statusbar/www/statusbar.js",
+        "id": "org.apache.cordova.statusbar.statusbar",
+        "clobbers": [
+            "window.StatusBar"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -108,7 +115,8 @@ module.exports.metadata =
     "org.apache.cordova.device-orientation": "0.3.7",
     "org.apache.cordova.device-motion": "0.2.8",
     "org.apache.cordova.geolocation": "0.3.8",
-    "com.simonmacdonald.prefs": "1.0.0"
+    "com.simonmacdonald.prefs": "1.0.0",
+    "org.apache.cordova.statusbar": "0.1.7"
 }
 // BOTTOM OF METADATA
 });

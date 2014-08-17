@@ -15,14 +15,14 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     }
     if(window.StatusBar) {
       // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
+      ionic.Platform.fullScreen();
+      StatusBar.hide();
     }
   });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-
     .state('app', {
       url: "/app",
       abstract: true,
