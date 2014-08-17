@@ -1,0 +1,74 @@
+<ion-view title="Location">
+  <ion-content>
+    <div class="col col-80 col-offset-10 board">
+      <h1>Location</h1>
+
+      <form ng-submit="doSaveLocation()">
+        <div class="list list-inset">
+          <div class="item-input-inset">
+          <label class="item-input-wrapper">
+            <input on-tap="getLocation()" type="text" placeholder="Tap to Retrieve Current Location" ng-model="locationData.address">
+            <i on-tap="getLocation()" class="icon ion-pinpoint placeholder-icon"></i>
+          </label>
+          <button class="button button-small button-disabled" id="saveButtonDisabled" ng-disabled="locationData.saveButtonDisabled" type="submit">Save</button>
+
+          </div>
+
+          <div ng-show="locationData.myLocation" class="card">
+            <div class="item item-wrap-text text-center">
+              Based on your stored locations<br>
+              SpeakAgent thinks you are at<br>
+              <span class="positive h3">{{locationData.myLocation.name}}</span>
+            </div>
+          </div>
+
+          <ion-list class="list-inset list" show-delete="false">
+            <ion-item class="card" ng-repeat="fave in locationData.favorites | orderBy:'distance'">
+              {{fave.name}}<span ng-if="fave.distance > 0"> ({{fave.distanceStr}})</span>
+              <ion-delete-button class="ion-minus-circled"
+                   ng-click="locationData.favorites.splice($index, 1); storeFavoriteLocations();">
+              </ion-delete-button>
+            </ion-item>
+          </ion-list>
+        </div>
+      </form>
+
+
+      <div ng-show="locationData.debug" class="list-inset list">
+
+        <h4>Debugging Info</h4>
+
+        <div class="item item-divider">saveButtonDisabled</div>
+        <div class="item item-wrap-text">
+          <pre>{{locationData.saveButtonDisabled}}</pre>
+        </div>
+
+        <div ng-show="locationData.proximityThreshold"
+             class="item item-divider">proximityThreshold (in km)</div>
+        <div class="item item-wrap-text">
+          <pre>{{locationData.proximityThreshold}}</pre>
+        </div>
+
+        <div ng-show="locationData.position"
+             class="item item-divider">Position</div>
+        <div class="item item-wrap-text">
+          <pre>{{locationData.position | json}}</pre>
+        </div>
+
+        <div ng-show="locationData.address"
+             class="item item-divider">Address</div>
+        <div class="item item-wrap-text">
+          <pre>{{locationData.address}}</pre>
+        </div>
+
+        <div ng-show="locationData.favorites"
+             class="item item-divider">Favorites</div>
+        <div class="item item-wrap-text">
+          <pre>{{locationData.favorites | json}}</pre>
+        </div>
+
+
+      </div>
+    </div>
+  </ion-content>
+</div>

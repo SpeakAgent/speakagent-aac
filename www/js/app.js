@@ -15,14 +15,14 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     }
     if(window.StatusBar) {
       // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
+      ionic.Platform.fullScreen();
+      StatusBar.hide();
     }
   });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-
     .state('app', {
       url: "/app",
       abstract: true,
@@ -47,6 +47,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         }
       }
     })
+
     .state('app.wordlists', {
       url: "/wordlists",
       views: {
@@ -63,6 +64,16 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         'menuContent' :{
           templateUrl: "templates/wordlist.html",
           controller: 'WordlistCtrl'
+        }
+      }
+    })
+
+    .state('app.location', {
+      url: "/location",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/location.html",
+          controller: 'LocationCtrl'
         }
       }
     });
