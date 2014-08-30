@@ -49,7 +49,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     })
 
     .state('app.wordlists', {
-      url: "/wordlists",
+      url: "/wordlists/{board}",
       views: {
         'menuContent' :{
           templateUrl: "templates/wordlists.html",
