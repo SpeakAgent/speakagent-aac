@@ -2,24 +2,21 @@
   <ion-header-bar>
     <h1 class="title">Settings</h1>
     <div class="buttons">
-      <button class="button button-clear" ng-click="closeModal()">Close</button>
+      <button class="button button-clear" ng-click="closeSettings()">Close</button>
     </div>
   </ion-header-bar>
     <ion-content class="has-header">
       <ion-list>
-        <ion-item nav-clear menu-close ng-click="login()">
+        <ion-item nav-clear href="#/app/login" ng-click="closeSettings()">
           Login
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/search">
+        <ion-item nav-clear href="#/app/search" ng-click="closeSettings()">
           Search
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/browse">
-          Browse
+        <ion-item nav-clear href="#/app/wordlists" ng-click="closeSettings()">
+          Board
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/wordlists">
-          Wordlists
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/location">
+        <ion-item nav-clear href="#/app/location" ng-click="closeSettings()">
           Location
         </ion-item>
       </ion-list>

@@ -6,7 +6,17 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $location, $http) {
+  // Make sure we're always logged in
+  if (!$rootScope.authToken) {
+    if(localStorage.getItem('authToken') != null) {
+      $rootScope.authToken = localStorage.getItem('authToken');
+      $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
+    } else {
+      console.log('no auth token stored');
+      window.location = '.#/app/login';
+    }
+  }
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -39,11 +49,12 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       }
     })
 
-    .state('app.browse', {
-      url: "/browse",
+    .state('app.login', {
+      url: "/login",
       views: {
         'menuContent' :{
-          templateUrl: "templates/browse.html"
+          templateUrl: "templates/login.html",
+          controller: 'LoginCtrl'
         }
       }
     })
@@ -59,7 +70,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     })
 
     .state('app.single', {
-      url: "/wordlists/:wordlistId",
+      url: "/wordlist/:wordlistId",
       views: {
         'menuContent' :{
           templateUrl: "templates/wordlist.html",
@@ -78,6 +89,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/wordlists');
+  $urlRouterProvider.otherwise('/app/wordlists/1');
 });
 
