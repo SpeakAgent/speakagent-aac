@@ -262,7 +262,8 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
-    var responsePromise = $http.post('http://localhost:8000/api-token-auth/',
+    var tokenAuthURL = $rootScope.apiBaseHREF+'api-token-auth/';
+    var responsePromise = $http.post(tokenAuthURL,
       {
         'username': $scope.loginData.username,
         'password': $scope.loginData.password
@@ -292,7 +293,8 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   var board = $stateParams.board ? $stateParams.board : '1';
 
   $scope.wordlists = [];
-  var responsePromise = $http.get('http://localhost:8000/v1/boards/' + board + '/?page_size=100');
+  var boardsListURL = $rootScope.apiBaseHREF+'boards/';
+  var responsePromise = $http.get(boardsListURL + board + '/?page_size=100');
 
   responsePromise.success(function(data, status, headers, config) {
       console.log(data);

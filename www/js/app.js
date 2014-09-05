@@ -16,6 +16,13 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       console.log('no auth token stored');
       window.location = '.#/app/login';
     }
+    if(localStorage.getItem('apiBaseHREF') != null) {
+      $rootScope.apiBaseHREF = localStorage.getItem('apiBaseHREF');
+    } else {
+      console.log('no apiBaseHREF stored');
+      $rootScope.apiBaseHREF = 'http://active-listener.herokuapp.com/v1/';
+      localStorage.setItem('apiBaseHREF', $rootScope.apiBaseHREF);
+    }
   }
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
