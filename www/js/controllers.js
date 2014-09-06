@@ -274,6 +274,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
         $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
+        window.location = '#/app/wordlists/1/';
     });
 
     responsePromise.error(function(data, status, headers, config) {

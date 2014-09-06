@@ -14,10 +14,11 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
     } else {
       console.log('no auth token stored');
-      window.location = '.#/app/login';
+      window.location = '#/app/login';
     }
-    if(localStorage.getItem('apiBaseHREF') != null) {
+    if((localStorage.getItem('apiBaseHREF') != null) && (localStorage.getItem('apiBaseAuthHREF') != null)) {
       $rootScope.apiBaseHREF = localStorage.getItem('apiBaseHREF');
+      $rootScope.apiBaseAuthHREF = localStorage.getItem('apiBaseAuthHREF');
     } else {
       $rootScope.apiBaseHREF = 'http://active-listener.herokuapp.com/v1/';
       $rootScope.apiBaseAuthHREF = 'http://active-listener.herokuapp.com/';

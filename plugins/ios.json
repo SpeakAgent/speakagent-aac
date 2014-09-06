@@ -21,11 +21,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Compass\"><param name=\"ios-package\" value=\"CDVCompass\" /></feature>",
+                            "xml": "<feature name=\"Accelerometer\"><param name=\"ios-package\" value=\"CDVAccelerometer\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Accelerometer\"><param name=\"ios-package\" value=\"CDVAccelerometer\" /></feature>",
+                            "xml": "<feature name=\"Compass\"><param name=\"ios-package\" value=\"CDVCompass\" /></feature>",
                             "count": 1
                         },
                         {
@@ -64,6 +64,12 @@
                             "xml": "false",
                             "count": 1
                         }
+                    ],
+                    "CoreLocation.framework": [
+                        {
+                            "xml": "false",
+                            "count": 2
+                        }
                     ]
                 }
             }
@@ -73,22 +79,22 @@
         "com.ionic.keyboard": {
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
+        "com.simonmacdonald.prefs": {
+            "PACKAGE_NAME": "com.ionicframework.starter"
+        },
         "org.apache.cordova.console": {
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
         "org.apache.cordova.device": {
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
-        "org.apache.cordova.device-orientation": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
-        },
         "org.apache.cordova.device-motion": {
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
-        "org.apache.cordova.geolocation": {
+        "org.apache.cordova.device-orientation": {
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
-        "com.simonmacdonald.prefs": {
+        "org.apache.cordova.geolocation": {
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
         "org.apache.cordova.statusbar": {
