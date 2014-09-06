@@ -262,7 +262,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
-    var tokenAuthURL = $rootScope.apiBaseHREF+'api-token-auth/';
+    var tokenAuthURL = $rootScope.apiBaseAuthHREF+'api-token-auth/';
     var responsePromise = $http.post(tokenAuthURL,
       {
         'username': $scope.loginData.username,
@@ -287,7 +287,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
 })
 
-.controller('WordlistsCtrl', function($stateParams, $scope, $http) {
+.controller('WordlistsCtrl', function($stateParams, $scope, $http, $rootScope) {
   console.log('State params ', $stateParams);
 
   var board = $stateParams.board ? $stateParams.board : '1';
@@ -307,7 +307,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
 })
 
-.controller('WordlistCtrl', function($scope, $stateParams) {
+.controller('WordlistCtrl', function($scope, $stateParams, $rootScope) {
   $scope.activeWordlist = {
     homeBoard: [
       'be',

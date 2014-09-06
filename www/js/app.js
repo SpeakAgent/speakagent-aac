@@ -19,9 +19,11 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     if(localStorage.getItem('apiBaseHREF') != null) {
       $rootScope.apiBaseHREF = localStorage.getItem('apiBaseHREF');
     } else {
-      console.log('no apiBaseHREF stored');
       $rootScope.apiBaseHREF = 'http://active-listener.herokuapp.com/v1/';
+      $rootScope.apiBaseAuthHREF = 'http://active-listener.herokuapp.com/';
       localStorage.setItem('apiBaseHREF', $rootScope.apiBaseHREF);
+      localStorage.setItem('apiBaseAuthHREF', $rootScope.apiBaseAuthHREF);
+      console.log('set apiBaseHREF and apiBaseAuthHREF');
     }
   }
   $ionicPlatform.ready(function() {
