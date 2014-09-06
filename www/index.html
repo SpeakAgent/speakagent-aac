@@ -27,47 +27,15 @@
     <ion-header-bar align-title="left" class="bar-default">
       <div class="buttons" ng-controller="SettingsCtrl">
         <a ng-href="#/app/" href="#/app/" class="button icon-left ion-home">Home</a>
-        <a class="button icon-left ion-settings" ng-click="settings()">Settings</a>
+        <a class="button icon-left ion-settings" ng-click="showSettings()">Settings</a>
       </div>
       <div class="buttons secondary">
         <a class="button icon-left ion-search">Search</a>
       </div>
     </ion-header-bar>
-    <div class="row menu-speech-bar persistant">
-      <div class="profile-button">
-        <a class="button aac-user circle">User Picture</a>
-      </div>
-      <div class="speech-balloon">
-      </div>
-      <div class="speech-controls">
-        <button class="button icon-left ion-delete circle">Delete</button>
-        <button class="button circle">Speak</button>
-      </div>
-    </div>
-    <div class="menu-wow persistant">
-    <ul>
-      <li class="tile">Wow One</li>
-      <li class="tile">Wow Two</li>
-      <li class="tile">Wow Three</li>
-      <li class="tile">Wow Four</li>
-    </ul>
-    </div>
-    <div class="menu-start-over persistant">
-      <a class="button icon-left ion-home" ng-href="#/app/" href="#/app/">Home</a>
-    </div>
-    <div class="row main-container">
+
       <ion-nav-view>
       </ion-nav-view>
-    </div>
-    <div class="menu-comment persistant">
-    <ul>
-      <li class="tile">Yes</li>
-      <li class="tile">No</li>
-      <li class="tile">One Moment Please</li>
-      <li class="tile">Help!</li>
-      <li class="tile">Bell</li>
-    </ul>
-    </div>
 
   </body>
 </html>

@@ -1,6 +1,27 @@
 <ion-view title="Wordlists" hide-nav-bar="true" class="board-container">
   <ion-content>
-    <div class="col col-80 board">
+    <div class="row menu-speech-bar persistant">
+      <div class="profile-button">
+        <a class="button aac-user circle">User Picture</a>
+      </div>
+      <div class="speech-balloon">
+      </div>
+      <div class="speech-controls">
+        <button class="button icon-left ion-delete circle">Delete</button>
+        <button class="button circle">Speak</button>
+      </div>
+    </div>
+    <div class="menu-wow persistant">
+    <ul>
+      <li class="tile">Wow One</li>
+      <li class="tile">Wow Two</li>
+      <li class="tile">Wow Three</li>
+      <li class="tile">Wow Four</li>
+    </ul>
+    </div>
+
+    <div class="row main-container">
+      <div class="col col-80 board">
       <ion-list>
         <ion-item class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.target}}" ng-if="wordlist.target">
           <span><i class="icon {{wordlist.icon}}"></i></span>
@@ -14,5 +35,19 @@
 
       </ion-list>
     </div>
+    </div>
+    <div class="menu-comment persistant">
+    <ul>
+      <li class="tile">Yes</li>
+      <li class="tile">No</li>
+      <li class="tile">One Moment Please</li>
+      <li class="tile">Help!</li>
+      <li class="tile">Bell</li>
+    </ul>
+    </div>
   </ion-content>
 </ion-view>
+
+
+
+
