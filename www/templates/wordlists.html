@@ -1,17 +1,22 @@
 <ion-view title="Wordlists" hide-nav-bar="true" class="board-container">
   <ion-content>
-    <div class="row menu-speech-bar persistant">
+    <div class="row menu-speech-bar persistent">
       <div class="profile-button">
         <a class="button aac-user circle">User Picture</a>
       </div>
       <div class="speech-balloon">
+        <ul class="speech-tiles">
+          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in speechBalloon">
+            <span><i class="icon {{word.icon}}"></i></span>
+            <span>{{word.name}}</span>
+        </ul>
       </div>
       <div class="speech-controls">
-        <button class="button icon-left ion-delete circle">Delete</button>
+        <button class="button icon-left ion-delete circle" ng-click="deleteButtonClicked();">Delete</button>
         <button class="button circle">Speak</button>
       </div>
     </div>
-    <div class="menu-wow persistant">
+    <div class="menu-wow persistent">
     <ul>
       <li class="tile">Wow One</li>
       <li class="tile">Wow Two</li>
@@ -22,21 +27,22 @@
 
     <div class="row main-container">
       <div class="col col-80 board">
-      <ion-list>
-        <ion-item class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.target}}" ng-if="wordlist.target">
+
+      <div class="list">
+        <a class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.target}}" ng-if="wordlist.target">
           <span><i class="icon {{wordlist.icon}}"></i></span>
           <span>{{wordlist.name}}</span>
-        </ion-item>
+        </a>
 
-        <ion-item class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" ng-if="!wordlist.target">
-          <span><i class="icon {{wordlist.icon}}"></i></span>
-          <span>{{wordlist.name}}</span>
-        </ion-item>
+        <div ng-click="wordTileClicked({{wordlist}});" class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" ng-if="!wordlist.target">
+            <span><i class="icon {{wordlist.icon}}"></i></span>
+            <span>{{wordlist.name}}</span>
+        </div>
 
-      </ion-list>
+      </div>
     </div>
     </div>
-    <div class="menu-comment persistant">
+    <div class="menu-comment persistent">
     <ul>
       <li class="tile">Yes</li>
       <li class="tile">No</li>

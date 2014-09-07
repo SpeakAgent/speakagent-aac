@@ -7078,7 +7078,7 @@ input, button, select, textarea {
   background-color: transparent; }
 
 /* Persistant Class for permenant shell items */
-.persistant {
+.persistent {
   position: absolute;
   z-index: 9; }
 
@@ -7124,7 +7124,19 @@ input, button, select, textarea {
     border-radius: 9px;
     margin-top: 8px;
     margin-right: 30px;
-    width: 100%; }
+    width: 100%;
+    padding: 4.5px;
+    overflow: hidden;
+    text-overflow: clip ellipsis; }
+  .menu-speech-bar .tile {
+    height: 60px;
+    width: 60px;
+    display: inline-block;
+    border: 1px solid #666;
+    background: #eee;
+    overflow: hidden;
+    font-size: 0.93em;
+    float: left; }
   .menu-speech-bar .speech-controls {
     height: 78px;
     position: absolute;
@@ -7196,4 +7208,5 @@ input, button, select, textarea {
     -webkit-flex-flow: row wrap; }
   .board .tile, .board a.item-content {
     height: 76px;
-    width: 76px; }
+    width: 76px;
+    text-decoration: none; }

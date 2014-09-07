@@ -7,16 +7,18 @@
 angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $location, $http) {
+
   // Make sure we're always logged in
   if (!$rootScope.authToken) {
-    if(localStorage.getItem('authToken') != null) {
+    if(localStorage.getItem('authToken') !== null) {
       $rootScope.authToken = localStorage.getItem('authToken');
       $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
     } else {
       console.log('no auth token stored');
       window.location = '#/app/login';
     }
-    if((localStorage.getItem('apiBaseHREF') != null) && (localStorage.getItem('apiBaseAuthHREF') != null)) {
+    if ((localStorage.getItem('apiBaseHREF') !== null) &&
+        (localStorage.getItem('apiBaseAuthHREF') !== null)) {
       $rootScope.apiBaseHREF = localStorage.getItem('apiBaseHREF');
       $rootScope.apiBaseAuthHREF = localStorage.getItem('apiBaseAuthHREF');
     } else {
@@ -26,7 +28,11 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       localStorage.setItem('apiBaseAuthHREF', $rootScope.apiBaseAuthHREF);
       console.log('set apiBaseHREF and apiBaseAuthHREF');
     }
+
+  $rootScope.speechBalloon = [];
+
   }
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)

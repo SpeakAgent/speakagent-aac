@@ -292,6 +292,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   console.log('State params ', $stateParams);
 
   var board = $stateParams.board ? $stateParams.board : '1';
+  $scope.speechBalloon = $rootScope.speechBalloon;
 
   $scope.wordlists = [];
   var boardsListURL = $rootScope.apiBaseHREF+'boards/';
@@ -305,6 +306,27 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   responsePromise.error(function(data, status, headers, config) {
       console.log("Unable to fetch symbols for board. " + status);
   });
+
+  $scope.wordTileClicked = function(obj) {
+    console.log('word tile clicked: ' + obj);
+    console.log('speech balloon: ', $scope.speechBalloon);
+
+    $scope.speechBalloon.push(obj);
+    $rootScope.speechBalloon = $scope.speechBalloon;
+  };
+
+  $scope.speechTileClicked = function(index, obj) {
+    console.log('speech tile clicked: ' + obj);
+
+    $scope.speechBalloon.splice(index, 1);
+    $rootScope.speechBalloon = $scope.speechBalloon;
+  }
+
+  $scope.deleteButtonClicked = function() {
+    console.log('delete button clicked.');
+    $scope.speechBalloon = [];
+    $rootScope.speechBalloon = $scope.speechBalloon;
+  }
 
 })
 
