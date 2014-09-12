@@ -22,6 +22,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+
 // Layout Variables
 $top-margin: 44px;
 
@@ -232,6 +233,10 @@ input, button, select, textarea {
     &.menu-comment {
         right: 0;
     }
+    .tile {
+        @include box-shadow(rgba(black,0.7) 0 2px 0);
+        height: 110px;
+    }
 }
 
 /* Misc Application Controls */
@@ -251,6 +256,7 @@ input, button, select, textarea {
         font-size: 62px;
         vertical-align: middle;
         color: $light;
+        text-shadow: 0 2px 0 rgba(0,0,0,0.9);
     }
     &.menu-start-over {
         left: 10px;
@@ -262,6 +268,10 @@ input, button, select, textarea {
         right: 10px;
         bottom: 10px;
         position: absolute;
+        .icon:before {
+            -webkit-transform: rotate(20deg);
+            transform: rotate(20deg);
+        }
     }
 }
 
@@ -283,6 +293,7 @@ input, button, select, textarea {
         margin-bottom: 10px;
         width: 100px;
         height: 100px;
+        @include box-shadow(rgba(black,0.2) 0 2px 0);
         a.item-content {
             width: 100px;
             height: 100px;

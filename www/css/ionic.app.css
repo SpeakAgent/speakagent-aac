@@ -7206,6 +7206,11 @@ input, button, select, textarea {
   width: 120px; }
   .sidebar.menu-comment {
     right: 0; }
+  .sidebar .tile {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
+    -moz-box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
+    box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
+    height: 110px; }
 
 /* Misc Application Controls */
 .misc-control {
@@ -7224,7 +7229,8 @@ input, button, select, textarea {
   .misc-control .icon:before {
     font-size: 62px;
     vertical-align: middle;
-    color: #fff; }
+    color: #fff;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.9); }
   .misc-control.menu-start-over {
     left: 10px;
     bottom: 10px;
@@ -7234,6 +7240,9 @@ input, button, select, textarea {
     right: 10px;
     bottom: 10px;
     position: absolute; }
+    .misc-control.menu-alert .icon:before {
+      -webkit-transform: rotate(20deg);
+      transform: rotate(20deg); }
 
 /* Boards */
 .item {
@@ -7248,7 +7257,10 @@ input, button, select, textarea {
   margin-right: 10px;
   margin-bottom: 10px;
   width: 100px;
-  height: 100px; }
+  height: 100px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
+  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0; }
   .tile a.item-content {
     width: 100px;
     height: 100px;
