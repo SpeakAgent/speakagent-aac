@@ -29,7 +29,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       console.log('set apiBaseHREF and apiBaseAuthHREF');
     }
 
-  $rootScope.speechBalloon = [];
+  $rootScope.assemblyBarPhrase = [];
 
   }
 

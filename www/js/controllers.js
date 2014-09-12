@@ -292,7 +292,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   console.log('State params ', $stateParams);
 
   var board = $stateParams.board ? $stateParams.board : '1';
-  $scope.speechBalloon = $rootScope.speechBalloon;
+  $scope.assemblyBarPhrase = $rootScope.assemblyBarPhrase;
 
   $scope.wordlists = [];
   var boardsListURL = $rootScope.apiBaseHREF+'boards/';
@@ -308,24 +308,34 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   });
 
   $scope.wordTileClicked = function(obj) {
-    console.log('word tile clicked: ' + obj);
-    console.log('speech balloon: ', $scope.speechBalloon);
+    console.log('word tile clicked: ', obj);
 
-    $scope.speechBalloon.push(obj);
-    $rootScope.speechBalloon = $scope.speechBalloon;
+    if (obj.phrase) {
+      console.log('phrase to add: ' + obj.phrase);
+      $scope.assemblyBarPhrase.push(obj);
+      $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+    }
+    console.log('assembly bar phrase: ', $scope.assemblyBarPhrase);
   };
 
   $scope.speechTileClicked = function(index, obj) {
-    console.log('speech tile clicked: ' + obj);
+    console.log('speech tile clicked: ',  obj);
+    console.log('phrase to add: ' + obj.phrase);
 
-    $scope.speechBalloon.splice(index, 1);
-    $rootScope.speechBalloon = $scope.speechBalloon;
+    $scope.assemblyBarPhrase.splice(index, 1);
+    $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
   }
 
   $scope.deleteButtonClicked = function() {
     console.log('delete button clicked.');
-    $scope.speechBalloon = [];
-    $rootScope.speechBalloon = $scope.speechBalloon;
+    var removed = $scope.assemblyBarPhrase.pop();
+    if (removed) {
+      console.log('phrase removed: ' + removed.phrase);
+    } else {
+      $scope.assemblyBarPhrase = [];
+    }
+
+    $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
   }
 
 })

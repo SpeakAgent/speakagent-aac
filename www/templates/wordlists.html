@@ -4,16 +4,17 @@
       <div class="profile-button">
         <a class="button aac-user circle">User Picture</a>
       </div>
-      <div class="speech-balloon">
+      <div class="assembly-bar">
         <ul class="speech-tiles">
-          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in speechBalloon">
+          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in assemblyBarPhrase">
             <span><i class="icon {{word.icon}}"></i></span>
             <span>{{word.name}}</span>
         </ul>
       </div>
       <div class="speech-controls">
-        <button class="button icon-left ion-delete circle" ng-click="deleteButtonClicked();">Delete</button>
-        <button class="button circle">Speak</button>
+        <button class="button icon-left ion-delete circle" ng-disabled="assemblyBarPhrase.length == 0"
+                ng-click="deleteButtonClicked();">Delete</button>
+        <button class="button circle speak-button">Speak</button>
       </div>
     </div>
     <div class="menu-wow persistent">
@@ -29,7 +30,7 @@
       <div class="col col-80 board">
 
       <div class="list">
-        <a class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.target}}" ng-if="wordlist.target">
+        <a ng-click="wordTileClicked({{wordlist}});" class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.target}}" ng-if="wordlist.target">
           <span><i class="icon {{wordlist.icon}}"></i></span>
           <span>{{wordlist.name}}</span>
         </a>
