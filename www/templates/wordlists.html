@@ -2,22 +2,24 @@
   <ion-content>
     <div class="row menu-speech-bar persistant">
       <div class="profile-button">
-        <a class="button aac-user circle">User Picture</a>
+        <a class="aac-user circle"><img src="img/user-fpo.png" border="0"></a>
+        <span class="aac-user-name">Malcolm</span>
       </div>
       <div class="speech-balloon">
       </div>
       <div class="speech-controls">
-        <button class="button icon-left ion-delete circle">Delete</button>
-        <button class="button circle">Speak</button>
+        <button class="button button-delete"><i class="icon ion-close-round"></i></button>
+        <button class="button circle button-speak"><i class="icon ion-checkmark-round"></i></button>
       </div>
     </div>
-    <div class="menu-wow persistant">
-    <ul>
-      <li class="tile">Wow One</li>
-      <li class="tile">Wow Two</li>
-      <li class="tile">Wow Three</li>
-      <li class="tile">Wow Four</li>
-    </ul>
+    <div class="sidebar menu-wow persistant">
+      <ul>
+        <li class="tile">Wow One</li>
+        <li class="tile">Wow Two</li>
+        <li class="tile">Wow Three</li>
+        <li class="tile">Wow Four</li>
+      </ul>
+      <div class="button menu-start-over misc-control"><i class="icon ion-home"></i></div>
     </div>
 
     <div class="row main-container">
@@ -36,14 +38,14 @@
       </ion-list>
     </div>
     </div>
-    <div class="menu-comment persistant">
-    <ul>
-      <li class="tile">Yes</li>
-      <li class="tile">No</li>
-      <li class="tile">One Moment Please</li>
-      <li class="tile">Help!</li>
-      <li class="tile">Bell</li>
-    </ul>
+    <div class="sidebar menu-comment persistant">
+      <ul>
+        <li class="tile">Yes</li>
+        <li class="tile">No</li>
+        <li class="tile">One Moment Please</li>
+        <li class="tile">Help!</li>
+      </ul>
+      <div class="button menu-alert misc-control"><i class="icon ion-ios7-bell"></i></div>
     </div>
   </ion-content>
 </ion-view>
