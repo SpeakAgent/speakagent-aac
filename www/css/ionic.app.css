@@ -7118,46 +7118,56 @@ input, button, select, textarea {
   top: 44px;
   left: 0;
   right: 0;
-  height: 100px;
   z-index: 15;
   position: absolute;
-  padding: 0; }
+  padding: 8px 0 0 0; }
   .menu-speech-bar .profile-button {
     text-align: center;
-    margin: 0 auto;
-    width: 110px;
+    margin: 0;
+    height: auto;
     display: block;
-    box-sizing: content-box;
-    padding: 10px;
-    border-radius: 130px;
-    height: 120px; }
+    width: 120px; }
     .menu-speech-bar .profile-button .aac-user {
+      box-sizing: border-box;
       margin: 0 auto;
       width: 100%;
       height: 100%;
-      overflow: hidden; }
+      overflow: hidden;
+      display: block;
+      border: 1px solid #6FC9CB;
+      padding-top: 8px;
+      padding-left: 1px;
+      height: 110px;
+      width: 110px;
+      border-radius: 110px; }
       .menu-speech-bar .profile-button .aac-user img {
-        width: 100px;
-        height: 100px;
-        border-radius: 100px; }
-    .menu-speech-bar .profile-button .button {
-      background-color: #000;
-      color: #fff;
-      border: none;
-      padding: 0;
-      position: static; }
+        width: 90px;
+        height: 90px;
+        border-radius: 90px;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 3px 0;
+        -moz-box-shadow: rgba(0, 0, 0, 0.4) 0 3px 0;
+        box-shadow: rgba(0, 0, 0, 0.4) 0 3px 0;
+        position: relative; }
+      .menu-speech-bar .profile-button .aac-user.active img, .menu-speech-bar .profile-button .aac-user.activated img, .menu-speech-bar .profile-button .aac-user:focus img, .menu-speech-bar .profile-button .aac-user:active img {
+        box-shadow: none;
+        top: 2px; }
     .menu-speech-bar .profile-button .aac-user-name {
       text-align: center;
-      color: #fff; }
+      color: #fff;
+      display: block;
+      background-color: #4d8c8d;
+      margin: 0 auto;
+      margin-top: -10px; }
   .menu-speech-bar .speech-balloon {
     background-color: #fff;
     -webkit-border-radius: 9px;
     -moz-border-radius: 9px;
     border-radius: 9px;
-    margin-top: 8px;
+    margin-top: 12px;
     margin-right: 30px;
-    width: 100%;
-    position: relative; }
+    width: 85%;
+    position: relative;
+    height: 86px; }
     .menu-speech-bar .speech-balloon:after {
       right: 100%;
       top: 50%;
@@ -7169,8 +7179,8 @@ input, button, select, textarea {
       pointer-events: none;
       border-color: rgba(255, 255, 255, 0);
       border-right-color: #fff;
-      border-width: 10px;
-      margin-top: -10px; }
+      border-width: 8px;
+      margin-top: -8px; }
   .menu-speech-bar .speech-controls {
     height: 78px;
     position: absolute;
@@ -7180,28 +7190,59 @@ input, button, select, textarea {
       color: #fff;
       margin-left: 20px; }
       .menu-speech-bar .speech-controls .button i {
-        border: 3px solid #fff;
+        border: 1px solid #fff;
         border-radius: 100px;
         padding: 10px; }
     .menu-speech-bar .speech-controls .button-delete {
       background-color: #c81e21;
-      padding: 10px;
-      margin-top: 22px; }
+      padding: 10px 10px 10px 4px;
+      margin-top: 24px;
+      position: relative;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
+      -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
+      box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0; }
+      .menu-speech-bar .speech-controls .button-delete:after {
+        right: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(136, 183, 213, 0);
+        border-right-color: #c81e21;
+        border-width: 30px;
+        margin-top: -30px;
+        bottom: 0;
+        left: -60px; }
+      .menu-speech-bar .speech-controls .button-delete.active, .menu-speech-bar .speech-controls .button-delete.activated {
+        top: 2px;
+        box-shadow: none; }
     .menu-speech-bar .speech-controls .button-speak {
       background-color: #66cc66;
       height: 100px;
-      width: 100px; }
+      width: 100px;
+      margin-top: 2px;
+      position: relative;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 3px 0;
+      -moz-box-shadow: rgba(0, 0, 0, 0.3) 0 3px 0;
+      box-shadow: rgba(0, 0, 0, 0.3) 0 3px 0; }
+      .menu-speech-bar .speech-controls .button-speak i {
+        padding: 25px 18px; }
       .menu-speech-bar .speech-controls .button-speak i.icon:before {
         font-size: 42px; }
+      .menu-speech-bar .speech-controls .button-speak.active, .menu-speech-bar .speech-controls .button-speak.activated {
+        top: 3px;
+        box-shadow: none; }
 
 /***
     Sidebars
     */
 .sidebar {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: #4d8c8d;
   top: 44px;
-  padding-top: 128px;
-  padding-left: 10px;
+  padding-top: 132px;
   bottom: 0;
   width: 120px; }
   .sidebar.menu-comment {
@@ -7210,7 +7251,9 @@ input, button, select, textarea {
     -webkit-box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
     -moz-box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
     box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
-    height: 110px; }
+    height: 110px;
+    margin: 0 auto;
+    margin-bottom: 10px; }
 
 /* Misc Application Controls */
 .misc-control {
@@ -7230,7 +7273,8 @@ input, button, select, textarea {
     font-size: 62px;
     vertical-align: middle;
     color: #fff;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.9); }
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.9);
+    position: relative; }
   .misc-control.menu-start-over {
     left: 10px;
     bottom: 10px;
@@ -7243,6 +7287,13 @@ input, button, select, textarea {
     .misc-control.menu-alert .icon:before {
       -webkit-transform: rotate(20deg);
       transform: rotate(20deg); }
+  .misc-control.active, .misc-control.activated {
+    background-color: transparent;
+    border: 1px solid #6FC9CB;
+    box-shadow: none; }
+    .misc-control.active .icon:before, .misc-control.activated .icon:before {
+      text-shadow: none;
+      top: 2px; }
 
 /* Boards */
 .item {
@@ -7260,7 +7311,8 @@ input, button, select, textarea {
   height: 100px;
   -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
   -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0; }
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
+  position: relative; }
   .tile a.item-content {
     width: 100px;
     height: 100px;
@@ -7269,12 +7321,15 @@ input, button, select, textarea {
     vertical-align: bottom;
     overflow: visible;
     white-space: normal; }
+  .tile.active, .tile.activated, .tile:focus, .tile:active {
+    top: 1px;
+    box-shadow: none; }
 
 .tile.folder {
   color: blue; }
 
 .board {
-  margin-left: 124px;
+  margin-left: 120px;
   padding-top: 170px;
   width: 794px; }
   .board .list {
