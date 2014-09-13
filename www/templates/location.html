@@ -1,16 +1,16 @@
 <ion-view title="Location">
   <ion-content>
-    <div class="col col-80 col-offset-10 board">
+    <div class="col col-80 col-offset-10">
       <h1>Location</h1>
 
       <form ng-submit="doSaveLocation()">
         <div class="list list-inset">
           <div class="item-input-inset">
-          <label class="item-input-wrapper">
+          <label class="item-input-wrapper item-get-location">
             <input on-tap="getLocation()" type="text" placeholder="Tap to Retrieve Current Location" ng-model="locationData.address">
             <i on-tap="getLocation()" class="icon ion-pinpoint placeholder-icon"></i>
           </label>
-          <button class="button button-small button-disabled" id="saveButtonDisabled" ng-disabled="locationData.saveButtonDisabled" type="submit">Save</button>
+          <button class="button button-small button-disabled button-positive" id="saveButtonDisabled" ng-disabled="locationData.saveButtonDisabled" type="submit">Save</button>
 
           </div>
 

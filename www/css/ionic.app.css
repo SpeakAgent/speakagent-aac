@@ -7065,6 +7065,20 @@ a.button {
 body {
   font-family: 'Source Sans Pro', 'Lucida Grande', Tahoma, Arial, sans-serif; }
 
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Source Sans Pro', 'Lucida Grande', Tahoma, Arial, sans-serif;
+  font-weight: 300; }
+
+h4 {
+  border-bottom: 1px solid #6FC9CB;
+  padding-bottom: 20px;
+  margin-bottom: 20px; }
+
+.button.button-assertive {
+  background-color: #c81e21; }
+  .button.button-assertive.active, .button.button-assertive.activated {
+    background-color: #AC171A; }
+
 /* AAC App Resets
 */
 input, button, select, textarea {
@@ -7309,21 +7323,27 @@ input, button, select, textarea {
   margin-bottom: 10px;
   width: 100px;
   height: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
   -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
   -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
   box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
   position: relative; }
-  .tile a.item-content {
+  .tile .item-content {
     width: 100px;
     height: 100px;
     display: table-cell;
     text-align: center;
     vertical-align: bottom;
     overflow: visible;
-    white-space: normal; }
+    white-space: normal;
+    padding: 0 3px 2px 3px; }
   .tile.active, .tile.activated, .tile:focus, .tile:active {
     top: 1px;
     box-shadow: none; }
+  .tile span {
+    display: block; }
 
 .tile.folder {
   color: blue; }
@@ -7337,10 +7357,78 @@ input, button, select, textarea {
     display: -webkit-flex;
     flex-wrap: wrap;
     -webkit-flex-flow: row wrap; }
-  .board .tile, .board a.item-content {
+  .board .tile, .board .item-content {
     height: 76px;
     width: 76px; }
 
-/* Stupid Ionic Stuff */
+/* Ionic Stuff */
 .scroll {
   height: 100%; }
+
+.list-inset {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 20px; }
+  .list-inset > .list-inset {
+    padding: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0; }
+
+/***
+    Modal
+    */
+.modal {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px; }
+  .modal .bar-header {
+    -webkit-border-top-left-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-right-radius: 10px; }
+  .modal .bar .button.button-clear {
+    font-size: 14px; }
+  .modal .bar .button.button-clear.icon-right:before {
+    font-size: 14px;
+    margin-top: 1px;
+    margin-left: 4px; }
+  .modal .list .item-content {
+    padding: 10px;
+    color: #4d8c8d; }
+    .modal .list .item-content:hover, .modal .list .item-content:focus {
+      color: #6FC9CB; }
+
+/***
+    Login/Logout Screen
+    */
+.logout-container, .login-container {
+  background-color: #fff;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  margin: 40px auto 0 auto; }
+
+form .item.item-input {
+  margin-bottom: 10px; }
+form .input-label {
+  width: 15%; }
+form button[type="submit"] {
+  display: inline-block;
+  width: auto; }
+form input[type="text"], form input[type="password"] {
+  border: 1px solid #2c2c2c;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 5px; }
+form .item-get-location input {
+  border: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0; }

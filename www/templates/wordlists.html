@@ -14,10 +14,10 @@
     </div>
     <div class="sidebar menu-wow persistant">
       <ul>
-        <li class="tile">Wow One</li>
-        <li class="tile">Wow Two</li>
-        <li class="tile">Wow Three</li>
-        <li class="tile">Wow Four</li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow One</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Two</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Three</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Four</span></div></li>
       </ul>
       <div class="button menu-start-over misc-control"><i class="icon ion-home"></i></div>
     </div>
@@ -26,13 +26,15 @@
       <div class="col col-80 board">
       <ion-list>
         <ion-item class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.target}}" ng-if="wordlist.target">
-          <span><i class="icon {{wordlist.icon}}"></i></span>
-          <span>{{wordlist.name}}</span>
+          <span class="tile-image"><i class="icon {{wordlist.icon}}"></i></span>
+          <span class="tile-label">{{wordlist.name}}</span>
         </ion-item>
 
         <ion-item class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" ng-if="!wordlist.target">
-          <span><i class="icon {{wordlist.icon}}"></i></span>
-          <span>{{wordlist.name}}</span>
+          <div class="item-content">
+          <span class="tile-image"><i class="icon {{wordlist.icon}}"></i></span>
+          <span class="tile-name">{{wordlist.name}}</span>
+          </div>
         </ion-item>
 
       </ion-list>
@@ -40,10 +42,12 @@
     </div>
     <div class="sidebar menu-comment persistant">
       <ul>
-        <li class="tile">Yes</li>
-        <li class="tile">No</li>
-        <li class="tile">One Moment Please</li>
-        <li class="tile">Help!</li>
+        <li class="tile"><div class="item-content">
+          <span class="tile-image">Image</span>
+          <span class="tile-name">Yes</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">No</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">One Moment Please</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Help!</span></div></li>
       </ul>
       <div class="button menu-alert misc-control"><i class="icon ion-ios7-bell"></i></div>
     </div>

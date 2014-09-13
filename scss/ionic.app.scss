@@ -31,6 +31,9 @@ $light: #fff;
 $dark: #2c2c2c;
 $neutral: #b1b1b1;
 $primary-color: #6FC9CB;
+$secondary-color: #4d8c8d;
+$assertive: #c81e21;
+$positive: #4d8c8d;
 
 
 
@@ -56,6 +59,22 @@ $font-stack: 'Source Sans Pro', 'Lucida Grande', Tahoma, Arial, sans-serif;
 
 body {
     font-family: $font-stack;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: $font-stack;
+    font-weight: 300;
+    }
+    h4 {
+        border-bottom: 1px solid $primary-color;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+.button.button-assertive {
+    background-color: $assertive;
+    &.active, &.activated {
+        background-color: #AC171A;
+    }
 }
 
 /* AAC App Resets
@@ -260,7 +279,7 @@ input, button, select, textarea {
 
 .sidebar {
 
-    background-color: #4d8c8d;
+    background-color: $secondary-color;
     top: $top-margin;
     padding-top: 132px;
     bottom: 0;
@@ -345,9 +364,12 @@ input, button, select, textarea {
         margin-bottom: 10px;
         width: 100px;
         height: 100px;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1;
         @include box-shadow(rgba(black,0.2) 0 2px 0);
         position: relative;
-        a.item-content {
+        .item-content {
             width: 100px;
             height: 100px;
             display: table-cell;
@@ -355,10 +377,21 @@ input, button, select, textarea {
             vertical-align: bottom;
             overflow: visible;
             white-space: normal;
+            padding: 0 3px 2px 3px;
         }
         &.active, &.activated, &:focus, &:active {
             top: 1px;
             box-shadow: none;
+        }
+        span {
+            display: block;
+            $.tile-image {
+                width: 80%;
+                height: 80%;
+            }
+            $.tile-name {
+
+            }
         }
     }
     .tile.folder {
@@ -376,15 +409,85 @@ input, button, select, textarea {
         flex-wrap: wrap;
         -webkit-flex-flow: row wrap;
     }
-    .tile, a.item-content {
+    .tile, .item-content {
         height: 76px;
         width: 76px;
     }
 }
 
-/* Stupid Ionic Stuff */
+/* Ionic Stuff */
 
 .scroll {
     height: 100%;
 }
+.list-inset {
+    @include border-radius(10px);
+    padding: 20px;
+    & > .list-inset {
+        padding: 0;
+        @include border-radius(0);
+    }
+}
 
+
+/***
+    Modal
+    */
+.modal {
+    @include border-radius(10px);
+    .bar-header {
+        @include border-top-left-radius(10px);
+        @include border-top-right-radius(10px);
+    }
+    .bar .button.button-clear {
+        font-size: 14px;
+    }
+    .bar .button.button-clear.icon-right:before {
+        font-size: 14px;
+        margin-top: 1px;
+        margin-left: 4px;
+    }
+    .list {
+        .item-content {
+            padding: 10px;
+            color: $secondary-color;
+            &:hover, &:focus {
+                color: $primary-color;
+            }
+        }
+    }
+}
+
+/***
+    Login/Logout Screen
+    */
+
+.logout-container,
+.login-container {
+    background-color: $light;
+    @include border-radius(10px);
+    padding: 20px;
+    width: 80%;
+    margin: 40px auto 0 auto;
+}
+form {
+    .item.item-input {
+        margin-bottom: 10px;
+    }
+    .input-label {
+        width: 15%;
+    }
+    button[type="submit"] {
+        display: inline-block;
+        width: auto;
+    }
+    input[type="text"], input[type="password"] {
+        border: 1px solid $dark;
+        @include border-radius(5px);
+        padding: 5px;
+    }
+    .item-get-location input {
+        border: none;
+        @include border-radius(0);
+    }
+}
