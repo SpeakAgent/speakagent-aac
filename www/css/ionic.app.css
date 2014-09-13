@@ -7063,12 +7063,12 @@ a.button {
   background-color: blue; }
 
 body {
-  font-family: 'Source Sans Pro'; }
+  font-family: 'Source Sans Pro', 'Lucida Grande', Tahoma, Arial, sans-serif; }
 
 /* AAC App Resets
 */
 input, button, select, textarea {
-  font-family: 'Source Sans Pro'; }
+  font-family: 'Source Sans Pro', 'Lucida Grande', Tahoma, Arial, sans-serif; }
 
 .item-complex .item-content {
   background-color: transparent;
@@ -7090,14 +7090,22 @@ input, button, select, textarea {
 /**
     Global Header
     */
-.bar-header a.button {
-  margin-right: 5px; }
-
-.bar-header .secondary {
-  position: absolute;
-  top: 5px;
-  right: 0px;
-  bottom: 5px; }
+.bar-global {
+  background-color: #2c2c2c;
+  background-image: none;
+  border-bottom: 0; }
+  .bar-global a.button {
+    margin-right: 5px;
+    height: 35px;
+    background-color: #2c2c2c;
+    color: #b1b1b1; }
+    .bar-global a.button.icon-left:before {
+      color: #6FC9CB; }
+  .bar-global .secondary {
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    bottom: 5px; }
 
 /**
     Main Application Area
@@ -7110,13 +7118,37 @@ input, button, select, textarea {
   top: 44px;
   left: 0;
   right: 0;
-  height: 100px; }
+  height: 100px;
+  z-index: 15;
+  position: absolute;
+  padding: 0; }
   .menu-speech-bar .profile-button {
-    z-index: -1; }
+    text-align: center;
+    margin: 0 auto;
+    width: 110px;
+    display: block;
+    box-sizing: content-box;
+    padding: 10px;
+    border-radius: 130px;
+    height: 120px; }
+    .menu-speech-bar .profile-button .aac-user {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      overflow: hidden; }
+      .menu-speech-bar .profile-button .aac-user img {
+        width: 100px;
+        height: 100px;
+        border-radius: 100px; }
     .menu-speech-bar .profile-button .button {
       background-color: #000;
       color: #fff;
-      border: none; }
+      border: none;
+      padding: 0;
+      position: static; }
+    .menu-speech-bar .profile-button .aac-user-name {
+      text-align: center;
+      color: #fff; }
   .menu-speech-bar .assembly-bar {
     background-color: #fff;
     -webkit-border-radius: 9px;
@@ -7127,7 +7159,21 @@ input, button, select, textarea {
     width: 100%;
     padding: 4.5px;
     overflow: hidden;
-    text-overflow: clip ellipsis; }
+    text-overflow: clip ellipsis;
+    position: relative; }
+    .menu-speech-bar .assembly-bar:after {
+      right: 100%;
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-color: rgba(255, 255, 255, 0);
+      border-right-color: #fff;
+      border-width: 10px;
+      margin-top: -10px; }
   .menu-speech-bar .tile {
     height: 60px;
     width: 60px;
@@ -7142,34 +7188,64 @@ input, button, select, textarea {
     position: absolute;
     right: 10px; }
     .menu-speech-bar .speech-controls .button {
+      border: 0;
+      color: #fff;
       margin-left: 20px; }
-  .menu-speech-bar .button {
-    height: 100px;
-    width: 100px; }
+      .menu-speech-bar .speech-controls .button i {
+        border: 3px solid #fff;
+        border-radius: 100px;
+        padding: 10px; }
+    .menu-speech-bar .speech-controls .button-delete {
+      background-color: #c81e21;
+      padding: 10px;
+      margin-top: 22px; }
+    .menu-speech-bar .speech-controls .button-speak {
+      background-color: #66cc66;
+      height: 100px;
+      width: 100px; }
+      .menu-speech-bar .speech-controls .button-speak i.icon:before {
+        font-size: 42px; }
 
-/* Permenant WoW Bar */
-.menu-wow {
-  padding-top: 128px;
-  border-right: 1px solid #fff;
+/***
+    Sidebars
+    */
+.sidebar {
+  background-color: rgba(0, 0, 0, 0.3);
   top: 44px;
-  padding-top: 128px;
-  bottom: 0;
-  padding-left: 10px; }
-
-/* Permenant Right Sidebar */
-.menu-comment {
-  background-color: rgba(0, 0, 0, 0.2);
-  top: 44px;
-  right: 0;
-  bottom: 0;
   padding-top: 128px;
   padding-left: 10px;
-  z-index: 8; }
+  bottom: 0;
+  width: 120px; }
+  .sidebar.menu-comment {
+    right: 0; }
 
-/* Permenant Start Over Button */
-.menu-start-over {
-  left: 0;
-  bottom: 0; }
+/* Misc Application Controls */
+.misc-control {
+  background-color: transparent;
+  border: 1px solid #6FC9CB;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  color: #fff;
+  margin: 0;
+  height: 100px;
+  width: 100px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 88px; }
+  .misc-control .icon:before {
+    font-size: 62px;
+    vertical-align: middle;
+    color: #fff; }
+  .misc-control.menu-start-over {
+    left: 10px;
+    bottom: 10px;
+    z-index: 10;
+    position: absolute; }
+  .misc-control.menu-alert {
+    right: 10px;
+    bottom: 10px;
+    position: absolute; }
 
 /* Boards */
 .item {
@@ -7210,3 +7286,7 @@ input, button, select, textarea {
     height: 76px;
     width: 76px;
     text-decoration: none; }
+
+/* Stupid Ionic Stuff */
+.scroll {
+  height: 100%; }
