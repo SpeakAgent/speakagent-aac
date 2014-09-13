@@ -309,6 +309,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
   $scope.wordTileClicked = function(obj) {
     console.log('word tile clicked: ', obj);
+    $scope.TTSAvailable = $rootScope.TTSAvailable;
 
     if (obj.phrase) {
       console.log('phrase to add: ' + obj.phrase);
@@ -320,15 +321,17 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
   $scope.speechTileClicked = function(index, obj) {
     console.log('speech tile clicked: ',  obj);
-    console.log('phrase to add: ' + obj.phrase);
+    console.log('phrase to remove: ' + obj.phrase);
+    $scope.TTSAvailable = $rootScope.TTSAvailable;
 
     $scope.assemblyBarPhrase.splice(index, 1);
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-  }
+  };
 
   $scope.deleteButtonClicked = function() {
     console.log('delete button clicked.');
     var removed = $scope.assemblyBarPhrase.pop();
+    $scope.TTSAvailable = $rootScope.TTSAvailable;
     if (removed) {
       console.log('phrase removed: ' + removed.phrase);
     } else {
@@ -336,7 +339,23 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     }
 
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-  }
+  };
+
+  $scope.speakButtonClicked = function() {
+    console.log('speak button clicked.');
+
+    var $wordsToSpeak = "";
+
+    angular.forEach($scope.assemblyBarPhrase, function (tile,i) {
+      /* Of course, this will need to be glued better but for proof
+         of concept, concatenation works for now. */
+      $wordsToSpeak = $wordsToSpeak + tile.phrase + ' ';
+    });
+
+    if ($rootScope.TTSAvailable) {
+      ttsPlugin.speak($wordsToSpeak);
+    }
+  };
 
 })
 

@@ -47,6 +47,10 @@
                         {
                             "xml": "<preference name=\"StatusBarStyle\" value=\"lightcontent\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"TtsPlugin\"><param name=\"ios-package\" value=\"TtsPlugin\" /></feature>",
+                            "count": 1
                         }
                     ],
                     "plugins": [
@@ -69,6 +73,18 @@
                         {
                             "xml": "false",
                             "count": 2
+                        }
+                    ],
+                    "AVFoundation.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ],
+                    "Foundation.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
                         }
                     ]
                 }
@@ -98,6 +114,9 @@
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
         "org.apache.cordova.statusbar": {
+            "PACKAGE_NAME": "com.ionicframework.starter"
+        },
+        "com.lefortsoftware.ttsplugin": {
             "PACKAGE_NAME": "com.ionicframework.starter"
         }
     },

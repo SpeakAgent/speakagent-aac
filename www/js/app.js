@@ -29,6 +29,9 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       console.log('set apiBaseHREF and apiBaseAuthHREF');
     }
 
+  $rootScope.apiBaseHREF = 'http://10.15.20.36:8000/v1/';
+  $rootScope.apiBaseAuthHREF = 'http://10.15.20.36:8000/';
+
   $rootScope.assemblyBarPhrase = [];
 
   }
@@ -43,6 +46,13 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       // org.apache.cordova.statusbar required
       ionic.Platform.fullScreen();
       StatusBar.hide();
+    }
+
+    if(ttsPlugin) {
+      var ret = ttsPlugin.initTTS(function ttsInitialized() {
+        $rootScope.TTSAvailable = true;
+        console.log('TTS is now Available');
+      });
     }
   });
 })
