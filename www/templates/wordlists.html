@@ -9,17 +9,19 @@
         <ul class="speech-tiles">
           <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in assemblyBarPhrase">
             <span><i class="icon {{word.icon}}"></i></span>
-            <span>{{word.name}}</span>
+            <span>{{word.name}}</span></li>
         </ul>
       </div>
+
       <div class="speech-controls">
         <button class="button icon-left button-delete" ng-disabled="assemblyBarPhrase.length == 0"
                 ng-click="deleteButtonClicked();"><i class="icon ion-close-round"></i></button>
         <button class="button circle button-speak"><i class="icon ion-checkmark-round"></i></button>
       </div>
+
     </div>
 
-    <div class="menu-wow persistent">
+    <div class="sidebar menu-wow persistent">
       <ul>
         <li class="tile">Wow One</li>
         <li class="tile">Wow Two</li>
