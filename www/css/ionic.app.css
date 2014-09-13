@@ -7344,6 +7344,9 @@ input, button, select, textarea {
     box-shadow: none; }
   .tile span {
     display: block; }
+    .tile span.tile-image img {
+      width: 80px;
+      height: auto; }
 
 .tile.folder {
   color: blue; }
@@ -7360,6 +7363,9 @@ input, button, select, textarea {
   .board .tile, .board .item-content {
     height: 76px;
     width: 76px; }
+  .board .tile .tile-image img {
+    width: 60px;
+    height: auto; }
 
 /* Ionic Stuff */
 .scroll {

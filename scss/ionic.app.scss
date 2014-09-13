@@ -385,11 +385,13 @@ input, button, select, textarea {
         }
         span {
             display: block;
-            $.tile-image {
-                width: 80%;
-                height: 80%;
+            &.tile-image {
+                img {
+                    width: 80px;
+                    height: auto;
+                }
             }
-            $.tile-name {
+            &.tile-name {
 
             }
         }
@@ -412,6 +414,12 @@ input, button, select, textarea {
     .tile, .item-content {
         height: 76px;
         width: 76px;
+    }
+    .tile .tile-image {
+        img {
+            width: 60px;
+            height: auto;
+        }
     }
 }
 
