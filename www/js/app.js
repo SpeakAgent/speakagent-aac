@@ -29,6 +29,10 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       console.log('set apiBaseHREF and apiBaseAuthHREF');
     }
 
+  // until heroku is updated with latest version, i am using my box.
+  // $rootScope.apiBaseHREF = 'http://10.15.20.36:8000/v1/';
+  // $rootScope.apiBaseAuthHREF = 'http://10.15.20.36:8000/';
+
   $rootScope.assemblyBarPhrase = [];
 
   }

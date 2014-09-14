@@ -1,4 +1,4 @@
-angular.module('speakagentAAC.controllers', ['ionic'])
+angular.module('speakagentAAC.controllers', ['ionic', 'mb-dragToReorder'])
 
 .controller('LocationCtrl', function($scope, $ionicPopup, $timeout) {
 
@@ -324,7 +324,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     $scope.assemblyBarPhrase.splice(index, 1);
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-  }
+  };
 
   $scope.deleteButtonClicked = function() {
     console.log('delete button clicked.');
@@ -336,7 +336,12 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     }
 
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-  }
+  };
+
+  $scope.$on('dragToReorder.reordered', function(evt, reordered) {
+    console.log("Moved ", reordered.item, " from ", reordered.from, " to ", reordered.to);
+  });
+
 
 })
 

@@ -1,15 +1,20 @@
 <ion-view title="Wordlists" hide-nav-bar="true" class="board-container">
-  <ion-content>
+  <ion-content >
     <div class="row menu-speech-bar persistent">
       <div class="profile-button">
         <a class="aac-user circle"><img src="img/user-fpo.png" border="0"></a>
         <span class="aac-user-name">Malcolm</span>
       </div>
-      <div class="assembly-bar">
-        <ul class="speech-tiles">
-          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in assemblyBarPhrase">
+      <div class="assembly-bar" data-tap-disabled="true">
+        <ul class="speech-tiles" data-tap-disabled="true">
+          <li ng-click="speechTileClicked($index, {{word}});"
+                 class="tile {{word.type}}"
+                 drag-to-reorder="assemblyBarPhrase"
+                  data-tap-disabled="true"
+                 ng-repeat="word in assemblyBarPhrase">
             <span><i class="icon {{word.icon}}"></i></span>
-            <span>{{word.name}}</span></li>
+            <span>{{word.name}}</span>
+          </li>
         </ul>
       </div>
 
