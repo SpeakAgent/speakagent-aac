@@ -2,7 +2,7 @@
   <ion-content>
     <div class="row menu-speech-bar persistent">
       <div class="profile-button">
-        <a class="aac-user circle"><img src="img/user-fpo.png" border="0"></a>
+        <a class="aac-user"><img src="img/user-fpo.png" border="0"></a>
         <span class="aac-user-name">Malcolm</span>
       </div>
       <div class="assembly-bar">
@@ -23,10 +23,10 @@
 
     <div class="sidebar menu-wow persistent">
       <ul>
-        <li class="tile">Wow One</li>
-        <li class="tile">Wow Two</li>
-        <li class="tile">Wow Three</li>
-        <li class="tile">Wow Four</li>
+        <li class="tile"><div class="item-content"><span class="tile-image"><img src="img/symbols/what_time.png" /></span><span class="tile-name">What time is it?</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Two</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Three</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Four</span></div></li>
       </ul>
       <div class="button menu-start-over misc-control"><i class="icon ion-home"></i></div>
     </div>
@@ -36,13 +36,15 @@
 
       <div class="list">
         <a ng-click="wordTileClicked({{wordlist}});" class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" href="#/app/wordlists/{{wordlist.target}}" ng-if="wordlist.target">
-          <span><i class="icon {{wordlist.icon}}"></i></span>
-          <span>{{wordlist.name}}</span>
+          <span class="tile-image"><i class="icon {{wordlist.icon}}"></i></span>
+          <span class="tile-label">{{wordlist.name}}</span>
         </a>
 
         <div ng-click="wordTileClicked({{wordlist}});" class="tile {{wordlist.type}}" ng-repeat="wordlist in wordlists" ng-if="!wordlist.target">
-            <span><i class="icon {{wordlist.icon}}"></i></span>
-            <span>{{wordlist.name}}</span>
+          <div class="item-content">
+            <span class="tile-image"><i class="icon {{wordlist.icon}}"></i></span>
+            <span class="tile-name">{{wordlist.name}}</span>
+          </div>
         </div>
 
       </div>
@@ -50,10 +52,12 @@
     </div>
     <div class="sidebar menu-comment persistent">
       <ul>
-        <li class="tile">Yes</li>
-        <li class="tile">No</li>
-        <li class="tile">One Moment Please</li>
-        <li class="tile">Help!</li>
+        <li class="tile"><div class="item-content">
+          <span class="tile-image">Image</span>
+          <span class="tile-name">Yes</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">No</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">One Moment Please</span></div></li>
+        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Help!</span></div></li>
       </ul>
       <div class="button menu-alert misc-control"><i class="icon ion-ios7-bell"></i></div>
     </div>

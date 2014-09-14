@@ -22,6 +22,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+
 // Layout Variables
 $top-margin: 44px;
 
@@ -30,6 +31,9 @@ $light: #fff;
 $dark: #2c2c2c;
 $neutral: #b1b1b1;
 $primary-color: #6FC9CB;
+$secondary-color: #4d8c8d;
+$assertive: #c81e21;
+$positive: #4d8c8d;
 
 
 
@@ -55,6 +59,22 @@ $font-stack: 'Source Sans Pro', 'Lucida Grande', Tahoma, Arial, sans-serif;
 
 body {
     font-family: $font-stack;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: $font-stack;
+    font-weight: 300;
+    }
+    h4 {
+        border-bottom: 1px solid $primary-color;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+.button.button-assertive {
+    background-color: $assertive;
+    &.active, &.activated {
+        background-color: #AC171A;
+    }
 }
 
 /* AAC App Resets
@@ -124,52 +144,63 @@ input, button, select, textarea {
     top: $top-margin;
     left: 0;
     right: 0;
-    height: 100px;
     z-index: 15;
     position: absolute;
-    padding: 0;
+    padding: 8px 0 0 0;
     .profile-button {
         text-align: center;
-        margin: 0 auto;
-        width: 110px;
+        margin: 0;
+        height: auto;
         display: block;
-        box-sizing: content-box;
-        padding: 10px;
-        border-radius: 130px;
-        height: 120px;
+        width: 120px;
         .aac-user {
+            box-sizing: border-box;
             margin: 0 auto;
             width: 100%;
             height: 100%;
             overflow: hidden;
+            display: block;
+            border: 1px solid $primary-color;
+            padding-top: 8px;
+            padding-left: 1px;
+            height: 110px;
+            width: 110px;
+            border-radius: 110px;
             img {
-                width: 100px;
-                height: 100px;
-                border-radius: 100px;
+                width: 90px;
+                height: 90px;
+                border-radius: 90px;
+                @include box-shadow(rgba(black,0.4) 0 3px 0);
+                position: relative;
             }
-        }
-        .button {
-            background-color: #000;
-            color: $light;
-            border: none;
-            padding: 0;
-            position: static;
+            &.active, &.activated, &:focus, &:active {
+                img {
+                    box-shadow: none;
+                    top: 2px;
+                }
+            }
         }
         .aac-user-name {
             text-align: center;
             color: $light;
+            display: block;
+            background-color: #4d8c8d;
+            margin: 0 auto;
+            margin-top: -10px;
         }
     }
     .assembly-bar {
         background-color: $light;
         @include border-radius(9px);
-        margin-top: 8px;
+        margin-top: 12px;
         margin-right: 30px;
         width: 100%;
         padding: 4.5px;
         overflow: hidden;
         text-overflow: clip ellipsis;
+        width: 85%;
         position: relative;
+        height: 86px;
         &:after {
             right: 100%;
             top: 50%;
@@ -181,8 +212,8 @@ input, button, select, textarea {
             pointer-events: none;
             border-color: rgba(255, 255, 255, 0);
             border-right-color: #fff;
-            border-width: 10px;
-            margin-top: -10px;
+            border-width: 8px;
+            margin-top: -8px;
         }
     }
         .tile {
@@ -205,21 +236,52 @@ input, button, select, textarea {
             color: $light;
             margin-left: 20px;
             i {
-                border: 3px solid #fff;
+                border: 1px solid #fff;
                 border-radius: 100px;
                 padding: 10px;
             }
         }
         .button-delete {
             background-color: #c81e21;
-            padding: 10px;
-            margin-top: 22px;
+            padding: 10px 10px 10px 4px;
+            margin-top: 24px;
+            position: relative;
+            @include box-shadow(rgba(black,0.2) 0 2px 0);
+            &:after {
+                right: 100%;
+                top: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-color: rgba(136, 183, 213, 0);
+                border-right-color: #c81e21;
+                border-width: 30px;
+                margin-top: -30px;
+                bottom: 0;
+                left: -60px;
+            }
+            &.active, &.activated {
+                top: 2px;
+                box-shadow: none;
+            }
+
         }
         .button-speak {
             background-color: #66cc66;
             height: 100px;
             width: 100px;
+            margin-top: 2px;
+            position: relative;
+            @include box-shadow(rgba(black,0.3) 0 3px 0);
+            i {padding: 25px 18px};
             i.icon:before {font-size: 42px;}
+            &.active, &.activated {
+                top: 3px;
+                box-shadow: none;
+            }
         }
     }
 
@@ -232,10 +294,9 @@ input, button, select, textarea {
 
 .sidebar {
 
-    background-color: rgba(0,0,0,0.3);
+    background-color: $secondary-color;
     top: $top-margin;
-    padding-top: 128px;
-    padding-left: 10px;
+    padding-top: 132px;
     bottom: 0;
     width: 120px;
 
@@ -245,6 +306,12 @@ input, button, select, textarea {
 
     &.menu-comment {
         right: 0;
+    }
+    .tile {
+        @include box-shadow(rgba(black,0.7) 0 2px 0);
+        height: 110px;
+        margin: 0 auto;
+        margin-bottom: 10px;
     }
 }
 
@@ -265,6 +332,8 @@ input, button, select, textarea {
         font-size: 62px;
         vertical-align: middle;
         color: $light;
+        text-shadow: 0 2px 0 rgba(0,0,0,0.9);
+        position: relative;
     }
     &.menu-start-over {
         left: 10px;
@@ -276,6 +345,19 @@ input, button, select, textarea {
         right: 10px;
         bottom: 10px;
         position: absolute;
+        .icon:before {
+            -webkit-transform: rotate(20deg);
+            transform: rotate(20deg);
+        }
+    }
+    &.active, &.activated {
+        background-color: transparent;
+        border: 1px solid $primary-color;
+        box-shadow: none;
+        .icon:before {
+            text-shadow: none;
+            top: 2px;
+        }
     }
 }
 
@@ -297,7 +379,12 @@ input, button, select, textarea {
         margin-bottom: 10px;
         width: 100px;
         height: 100px;
-        a.item-content {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1;
+        @include box-shadow(rgba(black,0.2) 0 2px 0);
+        position: relative;
+        .item-content {
             width: 100px;
             height: 100px;
             display: table-cell;
@@ -305,6 +392,23 @@ input, button, select, textarea {
             vertical-align: bottom;
             overflow: visible;
             white-space: normal;
+            padding: 0 3px 2px 3px;
+        }
+        &.active, &.activated, &:focus, &:active {
+            top: 1px;
+            box-shadow: none;
+        }
+        span {
+            display: block;
+            &.tile-image {
+                img {
+                    width: 80px;
+                    height: auto;
+                }
+            }
+            &.tile-name {
+
+            }
         }
     }
     .tile.folder {
@@ -313,7 +417,7 @@ input, button, select, textarea {
 
 
 .board {
-    margin-left: 124px;
+    margin-left: 120px;
     padding-top: 170px;
     width: 794px;
     .list {
@@ -322,16 +426,92 @@ input, button, select, textarea {
         flex-wrap: wrap;
         -webkit-flex-flow: row wrap;
     }
-    .tile, a.item-content {
+    .tile, .item-content {
         height: 76px;
         width: 76px;
         text-decoration: none;
     }
+    .tile .tile-image {
+        img {
+            width: 60px;
+            height: auto;
+        }
+    }
 }
 
-/* Stupid Ionic Stuff */
+/* Ionic Stuff */
 
 .scroll {
     height: 100%;
 }
+.list-inset {
+    @include border-radius(10px);
+    padding: 20px;
+    & > .list-inset {
+        padding: 0;
+        @include border-radius(0);
+    }
+}
 
+
+/***
+    Modal
+    */
+.modal {
+    @include border-radius(10px);
+    .bar-header {
+        @include border-top-left-radius(10px);
+        @include border-top-right-radius(10px);
+    }
+    .bar .button.button-clear {
+        font-size: 14px;
+    }
+    .bar .button.button-clear.icon-right:before {
+        font-size: 14px;
+        margin-top: 1px;
+        margin-left: 4px;
+    }
+    .list {
+        .item-content {
+            padding: 10px;
+            color: $secondary-color;
+            &:hover, &:focus {
+                color: $primary-color;
+            }
+        }
+    }
+}
+
+/***
+    Login/Logout Screen
+    */
+
+.logout-container,
+.login-container {
+    background-color: $light;
+    @include border-radius(10px);
+    padding: 20px;
+    width: 80%;
+    margin: 40px auto 0 auto;
+}
+form {
+    .item.item-input {
+        margin-bottom: 10px;
+    }
+    .input-label {
+        width: 15%;
+    }
+    button[type="submit"] {
+        display: inline-block;
+        width: auto;
+    }
+    input[type="text"], input[type="password"] {
+        border: 1px solid $dark;
+        @include border-radius(5px);
+        padding: 5px;
+    }
+    .item-get-location input {
+        border: none;
+        @include border-radius(0);
+    }
+}
