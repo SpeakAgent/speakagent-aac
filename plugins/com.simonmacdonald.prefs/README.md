@@ -1,9 +1,9 @@
 # Application Preferences plugin for Phonegap #
-This version supports Cordova 3.x.
-
 Originally by Simon MacDonald (@macdonst), ported to plugman and some other cleanup by Dan Moore (@mooreds).  Dan Moore also pulled in the iOS code, written by Tue Topholm / Sugee
 
 Information on writing plugins for PhoneGap 2.0 was taken from [this blog](http://simonmacdonald.blogspot.com/2012/08/so-you-wanna-write-phonegap-200-android.html) by Simon MacDonald (@macdonst)
+
+This code only supports Phonegap/Cordova 2.9.  If you want to have support for 3.0 or greater, check out [this repository](https://github.com/chrisekelley/AppPreferences/).
 
 ## Install
 
