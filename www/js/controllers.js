@@ -307,6 +307,45 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       console.log("Unable to fetch symbols for board. " + status);
   });
 
+  ionic.onGesture('dragstart', function(e) {
+    $scope.draggedElement = angular.element(e.srcElement);
+
+    while (!$scope.draggedElement.hasClass('tile') && !$scope.draggedElement.hasClass('assembly-bar')) {
+      $scope.draggedElement = $scope.draggedElement.parent();
+    }
+
+    if ($scope.draggedElement.hasClass('tile')) {
+      $scope.draggedElement.addClass('dragging');
+      $scope.draggedElement.data('startx',  e.gesture.touches[0].pageX);
+      $scope.draggedElement.data('startz', $scope.draggedElement.css('z-index'));
+      console.log("dragstart: ", e);
+    } else {
+      $scope.draggedElement = null;
+    }
+  }, document.getElementById('assembly-bar'));
+
+  ionic.onGesture('drag', function(e) {
+    if ($scope.draggedElement !== null) {
+      var startx = $scope.draggedElement.data('startx');
+      var x = e.gesture.touches[0].pageX - startx;
+      console.log("dragging element to ", x);
+      $scope.draggedElement.css(ionic.CSS.TRANSFORM, 'translateX(' + x + 'px)');
+      $scope.draggedElement.css('z-index', '50');
+    }
+
+  }, document.getElementById('assembly-bar'));
+
+  ionic.onGesture('dragend', function(e) {
+    console.log("dragend: ", e);
+    if ($scope.draggedElement) {
+      var startz = $scope.draggedElement.data('startz');
+      $scope.draggedElement.css(ionic.CSS.TRANSFORM, '');
+      angular.element($scope.draggedElement).removeClass('dragging');
+      $scope.draggedElement.css('z-index', startz);
+    }
+    $scope.draggedElement = null;
+  }, document.getElementById('assembly-bar'));
+
   $scope.wordTileClicked = function(obj) {
     console.log('word tile clicked: ', obj);
 
@@ -338,8 +377,8 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
   };
 
-  $scope.speechTileTouched = function() {
-    console.log('speech tile touched.');
+  $scope.speechTileTouched = function(index, obj) {
+    console.log('speech tile touched. index ' + index, obj);
   };
 
 })

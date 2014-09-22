@@ -414,6 +414,10 @@ input, button, select, textarea {
     .tile.folder {
         color: blue;
     }
+    .dragging {
+        opacity: .5;
+        position: absolute;
+    }
 
 
 .board {
