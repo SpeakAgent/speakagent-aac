@@ -394,6 +394,19 @@ input, button, select, textarea {
             white-space: normal;
             padding: 0 3px 2px 3px;
         }
+
+        .dragging {
+            opacity: .8;
+            position: absolute;
+            z-index: 50;
+        }
+        .will-insert-before {
+            background-color: #cff;
+
+            padding-left: 5px;
+            margin-left: 5px;
+        }
+
         &.active, &.activated, &:focus, &:active {
             top: 1px;
             box-shadow: none;
@@ -413,10 +426,6 @@ input, button, select, textarea {
     }
     .tile.folder {
         color: blue;
-    }
-    .dragging {
-        opacity: .5;
-        position: absolute;
     }
 
 

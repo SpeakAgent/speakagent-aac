@@ -7352,6 +7352,14 @@ input, button, select, textarea {
     overflow: visible;
     white-space: normal;
     padding: 0 3px 2px 3px; }
+  .tile .dragging {
+    opacity: 0.8;
+    position: absolute;
+    z-index: 50; }
+  .tile .will-insert-before {
+    background-color: #cff;
+    padding-left: 5px;
+    margin-left: 5px; }
   .tile.active, .tile.activated, .tile:focus, .tile:active {
     top: 1px;
     box-shadow: none; }
@@ -7363,10 +7371,6 @@ input, button, select, textarea {
 
 .tile.folder {
   color: blue; }
-
-.dragging {
-  opacity: 0.5;
-  position: absolute; }
 
 .board {
   margin-left: 120px;

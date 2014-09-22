@@ -318,6 +318,11 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       $scope.draggedElement.addClass('dragging');
       $scope.draggedElement.data('startx',  e.gesture.touches[0].pageX);
       $scope.draggedElement.data('startz', $scope.draggedElement.css('z-index'));
+
+      var moveMeIndex = $scope.draggedElement.data('$scope').$index;
+      $scope.nowMoving = $scope.assemblyBarPhrase.splice(moveMeIndex, 1);
+      $scope.$apply();
+
       console.log("dragstart: ", e);
     } else {
       $scope.draggedElement = null;
@@ -325,12 +330,28 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   }, document.getElementById('assembly-bar'));
 
   ionic.onGesture('drag', function(e) {
+    console.log(e);
+
     if ($scope.draggedElement !== null) {
       var startx = $scope.draggedElement.data('startx');
       var x = e.gesture.touches[0].pageX - startx;
       console.log("dragging element to ", x);
-      $scope.draggedElement.css(ionic.CSS.TRANSFORM, 'translateX(' + x + 'px)');
-      $scope.draggedElement.css('z-index', '50');
+      debugger;
+      var tile = $scope.findTileXY(e.gesture.touches[0].pageX, 0);
+      if (tile) {
+        var insertBeforeIndex = tile.data('$scope').$index;
+                // if (moveMeIndex < insertBeforeIndex) {
+        //   insertBeforeIndex = insertBeforeIndex - 1;
+        // }
+        var leftSide = $scope.assemblyBarPhrase.splice(0, insertBeforeIndex, $scope.nowMoving[0]);
+        leftSide.forEach(function(element) {
+
+          $scope.assemblyBarPhrase.push(element);
+        });
+
+        $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+        $scope.$apply();
+        }
     }
 
   }, document.getElementById('assembly-bar'));
@@ -342,9 +363,52 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       $scope.draggedElement.css(ionic.CSS.TRANSFORM, '');
       angular.element($scope.draggedElement).removeClass('dragging');
       $scope.draggedElement.css('z-index', startz);
+
     }
     $scope.draggedElement = null;
   }, document.getElementById('assembly-bar'));
+
+  ionic.onGesture('dragenter', function(e) {
+
+    var beforeMe = angular.element(e.srcElement);
+
+    while (!beforeMe.hasClass('tile') && !beforeMe.hasClass('assembly-bar')) {
+      beforeMe = beforeMe.parent();
+    }
+
+    if (beforeMe.hasClass('tile')) {
+      $scope.reorderTileBefore = beforeMe;
+      $scope.reorderTileBefore.addClass('will-insert-before');
+      console.log('inserting before ', beforeMe);
+    }
+  }, document.getElementById('assembly-bar'));
+
+  ionic.onGesture('dragleave', function(e) {
+    if ($scope.reorderTileBefore !== null) {
+      $scope.reorderTileBefore.removeClass('will-insert-before');
+      $scope.reorderTileBefore = null;
+    }
+  }, document.getElementById('assembly-bar'));
+
+  $scope.findTileXY = function(x, y) {
+      /* this is old school; we can do it better i am sure */
+      console.log('in findtilexy');
+      var bar = angular.element(document.getElementById('assembly-bar'));
+      var kids = angular.element(bar.children()[0]).children();
+
+      for (var index = 0; index < kids.length; index++) {
+        var rect = kids[index].getBoundingClientRect();
+        if ((x > rect.left) && (x < rect.right)) {
+          var child = angular.element(kids[index]);
+          if (!child.hasClass('dragging')) {
+            return child;
+          }
+        }
+      }
+
+      return null;
+
+  };
 
   $scope.wordTileClicked = function(obj) {
     console.log('word tile clicked: ', obj);
