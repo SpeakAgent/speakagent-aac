@@ -7,7 +7,7 @@
       </div>
       <div class="assembly-bar">
         <ul class="speech-tiles">
-          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in assemblyBarPhrase">
+          <li on-touch="speechTileTouched($index, {{word}});" ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in assemblyBarPhrase">
             <span><i class="icon {{word.icon}}"></i></span>
             <span>{{word.name}}</span></li>
         </ul>

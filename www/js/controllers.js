@@ -324,7 +324,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     $scope.assemblyBarPhrase.splice(index, 1);
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-  }
+  };
 
   $scope.deleteButtonClicked = function() {
     console.log('delete button clicked.');
@@ -336,7 +336,11 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     }
 
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-  }
+  };
+
+  $scope.speechTileTouched = function() {
+    console.log('speech tile touched.');
+  };
 
 })
 
