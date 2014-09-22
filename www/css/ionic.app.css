@@ -7364,6 +7364,10 @@ input, button, select, textarea {
 .tile.folder {
   color: blue; }
 
+.dragging {
+  opacity: 0.5;
+  position: absolute; }
+
 .board {
   margin-left: 120px;
   padding-top: 170px;
