@@ -7165,13 +7165,6 @@ input, button, select, textarea {
       .menu-speech-bar .profile-button .aac-user.active img, .menu-speech-bar .profile-button .aac-user.activated img, .menu-speech-bar .profile-button .aac-user:focus img, .menu-speech-bar .profile-button .aac-user:active img {
         box-shadow: none;
         top: 2px; }
-    .menu-speech-bar .profile-button .aac-user-name {
-      text-align: center;
-      color: #fff;
-      display: block;
-      background-color: #4d8c8d;
-      margin: 0 auto;
-      margin-top: -10px; }
   .menu-speech-bar .assembly-bar {
     background-color: #fff;
     -webkit-border-radius: 9px;
@@ -7181,7 +7174,6 @@ input, button, select, textarea {
     margin-right: 30px;
     width: 100%;
     padding: 4.5px;
-    overflow: hidden;
     text-overflow: clip ellipsis;
     width: 85%;
     position: relative;
@@ -7267,7 +7259,7 @@ input, button, select, textarea {
     Sidebars
     */
 .sidebar {
-  background-color: #4d8c8d;
+  background-color: rgba(0, 0, 0, 0.5);
   top: 44px;
   padding-top: 132px;
   bottom: 0;
@@ -7331,6 +7323,7 @@ input, button, select, textarea {
 .tile {
   background-color: #fff;
   border-radius: 10px;
+  cursor: pointer;
   text-align: center;
   margin-right: 10px;
   margin-bottom: 10px;

@@ -180,14 +180,6 @@ input, button, select, textarea {
                 }
             }
         }
-        .aac-user-name {
-            text-align: center;
-            color: $light;
-            display: block;
-            background-color: #4d8c8d;
-            margin: 0 auto;
-            margin-top: -10px;
-        }
     }
     .assembly-bar {
         background-color: $light;
@@ -196,7 +188,6 @@ input, button, select, textarea {
         margin-right: 30px;
         width: 100%;
         padding: 4.5px;
-        overflow: hidden;
         text-overflow: clip ellipsis;
         width: 85%;
         position: relative;
@@ -293,8 +284,7 @@ input, button, select, textarea {
 
 
 .sidebar {
-
-    background-color: $secondary-color;
+    background-color: rgba(0,0,0,0.5);
     top: $top-margin;
     padding-top: 132px;
     bottom: 0;
@@ -374,6 +364,7 @@ input, button, select, textarea {
     .tile {
         background-color: #fff;
         border-radius: 10px;
+        cursor: pointer;
         text-align: center;
         margin-right: 10px;
         margin-bottom: 10px;
