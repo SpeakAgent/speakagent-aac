@@ -206,17 +206,22 @@ input, button, select, textarea {
             border-width: 8px;
             margin-top: -8px;
         }
-    }
-        .tile {
-        height: 60px;
-        width: 60px;
-        display: inline-block;
-        border: 1px solid #666;
-        background: #eee;
-        overflow: hidden;
-        font-size: 0.93em;
-        float: left;
+        .speech-tiles {
+            padding-top: 4px;
+            padding-left: 6px;
+            .tile {
+            height: 70px;
+            width: 70px;
+            display: inline-block;
+            border: 1px solid $primary-color;
+            overflow: hidden;
+            font-size: 85%;
+            float: left;
+            box-shadow: none;
+            }
         }
+    }
+
 
     .speech-controls {
         height: 78px;
