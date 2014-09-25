@@ -7352,11 +7352,15 @@ input, button, select, textarea {
     overflow: visible;
     white-space: normal;
     padding: 0 3px 2px 3px; }
-  .tile .dragging {
+  .tile.dragging {
     opacity: 0.8;
-    position: absolute;
-    z-index: 50; }
-  .tile .will-insert-before {
+    background-color: #caa;
+    z-index: 50;
+    margin-top: -5px;
+    margin-left: -5px;
+    width: 70px;
+    height: 70px; }
+  .tile.will-insert-before {
     background-color: #cff;
     padding-left: 5px;
     margin-left: 5px; }

@@ -395,12 +395,16 @@ input, button, select, textarea {
             padding: 0 3px 2px 3px;
         }
 
-        .dragging {
+        &.dragging {
             opacity: .8;
-            position: absolute;
+            background-color: #caa;
             z-index: 50;
+            margin-top: -5px;
+            margin-left: -5px;
+            width: 70px;
+            height: 70px;
         }
-        .will-insert-before {
+        &.will-insert-before {
             background-color: #cff;
 
             padding-left: 5px;
