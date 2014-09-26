@@ -7203,6 +7203,9 @@ input, button, select, textarea {
         font-size: 85%;
         float: left;
         box-shadow: none; }
+    .menu-speech-bar .assembly-bar .tile-image img {
+      width: 55px;
+      height: auto; }
   .menu-speech-bar .speech-controls {
     height: 78px;
     position: absolute;
