@@ -16,7 +16,8 @@
       <div class="speech-controls">
         <button class="button icon-left button-delete" ng-disabled="assemblyBarPhrase.length == 0"
                 ng-click="deleteButtonClicked();"><i class="icon ion-close-round"></i></button>
-        <button class="button circle button-speak"><i class="icon ion-checkmark-round"></i></button>
+        <button class="button circle button-speak" ng-disabled="(assemblyBarPhrase.length == 0) || (TTSAvailable == false)"
+                ng-click="speakButtonClicked();"><i class="icon ion-checkmark-round"></i></button>
       </div>
 
     </div>

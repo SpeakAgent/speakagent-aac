@@ -28,6 +28,11 @@
         <param name="ios-package" value="CDVLocation" />
     </feature>
 
+    <feature name="TtsPlugin">
+        <param name="ios-package" value="TtsPlugin" />
+    </feature>
+
+
     <platform name="ios">
         <preference name="MediaPlaybackRequiresUserAction" value="true"/>
         <preference name="AllowInlineMediaPlayback" value="true"/>
