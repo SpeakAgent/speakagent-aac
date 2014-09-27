@@ -18,15 +18,19 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       window.location = '#/app/login';
     }
     if ((localStorage.getItem('apiBaseHREF') !== null) &&
-        (localStorage.getItem('apiBaseAuthHREF') !== null)) {
+        (localStorage.getItem('apiBaseAuthHREF') !== null) &&
+        (localStorage.getItem('staticBaseHREF') !== null)) {
       $rootScope.apiBaseHREF = localStorage.getItem('apiBaseHREF');
       $rootScope.apiBaseAuthHREF = localStorage.getItem('apiBaseAuthHREF');
+      $rootScope.staticBaseHREF = localStorage.getItem('staticBaseHREF');
     } else {
       $rootScope.apiBaseHREF = 'http://active-listener.herokuapp.com/v1/';
       $rootScope.apiBaseAuthHREF = 'http://active-listener.herokuapp.com/';
+      $rootScope.staticBaseHREF = 'http://active-listener.herokuapp.com/static/';
       localStorage.setItem('apiBaseHREF', $rootScope.apiBaseHREF);
       localStorage.setItem('apiBaseAuthHREF', $rootScope.apiBaseAuthHREF);
-      console.log('set apiBaseHREF and apiBaseAuthHREF');
+      localStorage.setItem('staticBaseHREF', $rootScope.staticBaseHREF);
+      console.log('set apiBaseHREF and apiBaseAuthHREF and staticBaseHREF');
     }
 
   // until heroku is updated with latest version, i am using my box.

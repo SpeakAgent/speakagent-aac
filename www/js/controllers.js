@@ -300,7 +300,9 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
   responsePromise.success(function(data, status, headers, config) {
       console.log(data);
-      $scope.wordlists = data.tile_set;
+      $scope.wordlists = data.tile_set.sort(function(a, b) {
+        return a.ordinal - b.ordinal;
+      });
   });
 
   responsePromise.error(function(data, status, headers, config) {
