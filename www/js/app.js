@@ -53,11 +53,15 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       StatusBar.hide();
     }
 
-    if(ttsPlugin) {
-      var ret = ttsPlugin.initTTS(function ttsInitialized() {
-        $rootScope.TTSAvailable = true;
-        console.log('TTS is now Available');
-      });
+    try {
+      if(ttsPlugin) {
+        var ret = ttsPlugin.initTTS(function ttsInitialized() {
+          $rootScope.TTSAvailable = true;
+          console.log('TTS is now Available');
+        });
+      }
+    } catch (e) {
+      console.log('TTS is not available.');
     }
   });
 })
