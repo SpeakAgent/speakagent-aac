@@ -5,9 +5,9 @@
         <a class="aac-user"><img src="img/user-fpo.png" border="0"></a>
         <span class="aac-user-name">Malcolm</span>
       </div>
-      <div class="assembly-bar">
+      <div id="assembly-bar" class="assembly-bar">
         <ul class="speech-tiles">
-          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in assemblyBarPhrase">
+          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" data-index="$index" ng-repeat="word in assemblyBarPhrase">
             <span><i class="icon {{word.icon}}"></i></span>
             <span>{{word.name}}</span></li>
         </ul>

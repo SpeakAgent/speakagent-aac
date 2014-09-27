@@ -394,6 +394,23 @@ input, button, select, textarea {
             white-space: normal;
             padding: 0 3px 2px 3px;
         }
+
+        &.dragging {
+            opacity: .8;
+            background-color: #caa;
+            z-index: 50;
+            margin-top: -5px;
+            margin-left: -5px;
+            width: 70px;
+            height: 70px;
+        }
+        &.will-insert-before {
+            background-color: #cff;
+
+            padding-left: 5px;
+            margin-left: 5px;
+        }
+
         &.active, &.activated, &:focus, &:active {
             top: 1px;
             box-shadow: none;
