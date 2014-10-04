@@ -32,6 +32,10 @@
         <param name="ios-package" value="TtsPlugin" />
     </feature>
 
+    <feature name="UniversalAnalytics">
+      <param name="ios-package" value="UniversalAnalyticsPlugin" />
+    </feature>
+
 
     <platform name="ios">
         <preference name="MediaPlaybackRequiresUserAction" value="true"/>
