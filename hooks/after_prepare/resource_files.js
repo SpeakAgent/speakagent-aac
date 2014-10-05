@@ -98,10 +98,10 @@ var filestocopy = [{
     "platforms/ios/SpeakAgentAAC/Resources/splash/Default~iphone.png"
 },{
     "config/ios/Resources/splash/Default-Landscape~ipad.png":
-     "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Portrait~ipad.png"
+     "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Landscape~ipad.png"
 },{
     "config/ios/Resources/splash/Default-Landscape@2x~ipad.png":
-     "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Portrait~ipad.png"
+     "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Landscape@2x~ipad.png"
 }, {
     "config/ios/Resources/splash/Default-Portrait~ipad.png":
      "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Portrait~ipad.png"
