@@ -272,7 +272,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     responsePromise.success(function(data, status, headers, config) {
         console.log(data);
-        analytics.trackEvent('System', 'Login', 'Success', $scope.loginData.username);
+        analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
         $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
@@ -455,7 +455,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
     }
     console.log('assembly bar phrase: ', $scope.assemblyBarPhrase);
-    analytics.trackEvent('Boards', 'TileClick', 'Add', obj.phrase);
+    analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
   };
 
   $scope.speechTileClicked = function(index, obj) {
@@ -465,7 +465,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     $scope.assemblyBarPhrase.splice(index, 1);
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-    analytics.trackEvent('Boards', 'TileClick', 'Remove', obj.phrase);
+    analytics.trackEvent('Boards', 'TileRemove', obj.phrase);
   };
 
   $scope.deleteButtonClicked = function() {
@@ -479,7 +479,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     }
 
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-    analytics.trackEvent('Boards', 'DeleteClick', 'Remove', removed);
+    analytics.trackEvent('Boards', 'DeleteClick', removed);
   };
   $scope.speakButtonClicked = function() {
     console.log('speak button clicked.');
@@ -495,7 +495,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     if ($rootScope.TTSAvailable) {
       ttsPlugin.speak($wordsToSpeak);
     }
-    analytics.trackEvent('Boards', 'Speak', 'Phrase', $wordsToSpeak);
+    analytics.trackEvent('Boards', 'SpeakPhrase', $wordsToSpeak);
   };
 })
 
