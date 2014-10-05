@@ -273,6 +273,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     responsePromise.success(function(data, status, headers, config) {
         console.log(data);
         analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
+        analytics.setUserId($scope.loginData.username);
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
         $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
