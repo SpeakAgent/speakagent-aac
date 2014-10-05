@@ -52,7 +52,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       ionic.Platform.fullScreen();
       StatusBar.hide();
     }
-
+    analytics.startTrackerWithId('UA-54749327-1');
     try {
       if(ttsPlugin) {
         var ret = ttsPlugin.initTTS(function ttsInitialized() {

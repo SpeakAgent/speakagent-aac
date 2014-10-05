@@ -1,7 +1,7 @@
 angular.module('speakagentAAC.controllers', ['ionic'])
 
 .controller('LocationCtrl', function($scope, $ionicPopup, $timeout) {
-
+  analytics.trackView('Location');
   $scope.locationData = { saveButtonDisabled: true,
                           proximityThreshold: 16.0/1000,
                           debug: true };
@@ -236,6 +236,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   // Open the Settings modal
   $scope.showSettings = function() {
     $scope.settingsModal.show();
+    analytics.trackView('Settings');
   };
 
   $scope.switchToLogin = function() {
@@ -254,7 +255,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     $rootScope.authToken = null;
     $scope.authToken = null;
     localStorage.removeItem('authToken');
-    consle.log('Logout complete');
+    console.log('Logout complete');
   }
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
@@ -271,10 +272,12 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     responsePromise.success(function(data, status, headers, config) {
         console.log(data);
+        analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
+        analytics.setUserId($scope.loginData.username);
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
         $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
-        window.location = '#/app/wordlists/1/';
+        window.location = '#/app/wordlists/1/'; //TODO: Make better.
     });
 
     responsePromise.error(function(data, status, headers, config) {
@@ -292,6 +295,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   console.log('State params ', $stateParams);
 
   var board = $stateParams.board ? $stateParams.board : '1';
+  analytics.trackView('Board ID: '+board);
   $scope.assemblyBarPhrase = $rootScope.assemblyBarPhrase;
 
   $scope.wordlists = [];
@@ -452,6 +456,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
     }
     console.log('assembly bar phrase: ', $scope.assemblyBarPhrase);
+    analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
   };
 
   $scope.speechTileClicked = function(index, obj) {
@@ -461,6 +466,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     $scope.assemblyBarPhrase.splice(index, 1);
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+    analytics.trackEvent('Boards', 'TileRemove', obj.phrase);
   };
 
   $scope.deleteButtonClicked = function() {
@@ -474,6 +480,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     }
 
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+    analytics.trackEvent('Boards', 'DeleteClick', removed);
   };
   $scope.speakButtonClicked = function() {
     console.log('speak button clicked.');
@@ -489,10 +496,12 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     if ($rootScope.TTSAvailable) {
       ttsPlugin.speak($wordsToSpeak);
     }
+    analytics.trackEvent('Boards', 'SpeakPhrase', $wordsToSpeak);
   };
 })
 
 .controller('WordlistCtrl', function($scope, $stateParams, $rootScope) {
+  // TODO: This is vestigal. Factor out.
   $scope.activeWordlist = {
     homeBoard: [
       'be',
