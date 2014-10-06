@@ -56,37 +56,37 @@ var filestocopy = [{
     "platforms/ios/SpeakAgentAAC/Resources/icons/icon@2x.png"
 },{
     "config/ios/Resources/icons/icon-40.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-40.png"
 }, {
     "config/ios/Resources/icons/icon-40@2x.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon@2x.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-40@2x.png"
 },{
     "config/ios/Resources/icons/icon-50.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-50.png"
 }, {
     "config/ios/Resources/icons/icon-50@2x.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon@2x.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-50@2x.png"
 },{
     "config/ios/Resources/icons/icon-60.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-60.png"
 }, {
     "config/ios/Resources/icons/icon-60@2x.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon@2x.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-60@2x.png"
 }, {
     "config/ios/Resources/icons/icon-72@2x.png":
     "platforms/ios/SpeakAgentAAC/Resources/icons/icon-72@2x.png"
 },{
     "config/ios/Resources/icons/icon-76.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-76.png"
 }, {
     "config/ios/Resources/icons/icon-76@2x.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon@2x.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-76@2x.png"
 },{
     "config/ios/Resources/icons/icon-small.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-small.png"
 }, {
     "config/ios/Resources/icons/icon-small@2x.png":
-    "platforms/ios/SpeakAgentAAC/Resources/icons/icon@2x.png"
+    "platforms/ios/SpeakAgentAAC/Resources/icons/icon-small@2x.png"
 }, {
     "config/ios/Resources/splash/Default@2x~iphone.png":
     "platforms/ios/SpeakAgentAAC/Resources/splash/Default@2x~iphone.png"
@@ -98,10 +98,10 @@ var filestocopy = [{
     "platforms/ios/SpeakAgentAAC/Resources/splash/Default~iphone.png"
 },{
     "config/ios/Resources/splash/Default-Landscape~ipad.png":
-     "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Portrait~ipad.png"
+     "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Landscape~ipad.png"
 },{
     "config/ios/Resources/splash/Default-Landscape@2x~ipad.png":
-     "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Portrait~ipad.png"
+     "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Landscape@2x~ipad.png"
 }, {
     "config/ios/Resources/splash/Default-Portrait~ipad.png":
      "platforms/ios/SpeakAgentAAC/Resources/splash/Default-Portrait~ipad.png"
