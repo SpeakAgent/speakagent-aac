@@ -36,6 +36,10 @@
       <param name="ios-package" value="UniversalAnalyticsPlugin" />
     </feature>
 
+    <feature name="Estimote">
+        <param name="ios-package" value="CDVEstimote"/>
+    </feature>
+
 
     <platform name="ios">
         <preference name="MediaPlaybackRequiresUserAction" value="true"/>

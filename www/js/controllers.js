@@ -313,6 +313,16 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       console.log("Unable to fetch symbols for board. " + status);
   });
 
+  if ($rootScope.estimoteIsAvailable) {
+      console.log('Estimotes are available; starting up.');
+      Estimote.startRangingBeacons(function(res) {
+          console.log('Estimote response: ', res);
+      });
+      console.log('Waiting for replies.');
+  } else {
+    console.log('Estimotes are not available. ');
+  }
+
   ionic.onGesture('dragstart', function(e) {
 
     // find our element in the list, and make sure it's the tile and not
