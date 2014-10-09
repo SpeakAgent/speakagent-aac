@@ -138,6 +138,128 @@ input, button, select, textarea {
     background-color: $primary-color;
 }
 
+
+
+/* Boards */
+
+.item {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+    .tile {
+        background-color: #fff;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        width: 100px;
+        height: 100px;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1;
+        @include box-shadow(rgba(black,0.2) 0 2px 1px);
+        position: relative;
+        transition: rotate 0.2s;
+        .item-content {
+            width: 100px;
+            height: 100px;
+            display: table-cell;
+            text-align: center;
+            overflow: visible;
+            white-space: normal;
+            padding: 0;
+        }
+
+        &.dragging {
+            opacity: 1;
+            background-color: #fff;
+            -webkit-transform:rotate(-10deg);
+            transform:rotate(-10deg);
+            z-index: 50;
+            margin-top: -5px;
+            margin-left: 0;
+            width: 90px;
+            height: 90px;
+        }
+        &.will-insert-before {
+            background-color: red;
+            padding-left: 5px;
+            margin-left: 5px;
+        }
+
+        &.active, &.activated, &:focus, &:active {
+            top: 1px;
+            span {
+                opacity: 0.7;
+            }
+            box-shadow: none;
+        }
+        span {
+            display: block;
+            &.tile-image {
+                top: 3px;
+                img {
+                    width: 80px;
+                    height: auto;
+                }
+                z-index: 1;
+                position: relative;
+            }
+            &.tile-name {
+                z-index: 2;
+                position: absolute;
+                bottom: 4px;
+                margin: 0 auto;
+                text-align: center;
+                width: 100%;
+                padding: 0 4px;
+            }
+        }
+    }
+
+
+    .tile.folder {
+        color: blue;
+    }
+
+
+.board {
+    margin-left: 120px;
+    padding-top: 170px;
+    width: 794px;
+    .list {
+        display: flex;
+        display: -webkit-flex;
+        flex-wrap: wrap;
+        -webkit-flex-flow: row wrap;
+    }
+    .tile, .item-content {
+        height: 76px;
+        width: 76px;
+        line-height: 13px;
+        text-decoration: none;
+        overflow: visible;
+        word-wrap: normal;
+        white-space: normal;
+    }
+    .tile .tile-image {
+        img {
+            width: 52px;
+            height: auto;
+        }
+    }
+    div[ng-repeat="word in wordlists"] a.tile.item-content {
+        @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(white,0.6) -4px -4px 0);
+        &.active, &.activated, &:focus, &:active {
+            top: 1px;
+            @include box-shadow(rgba(white,0.5) -4px -5px 0, rgba(white,0.6) 0 0 10px);
+        }
+    }
+
+}
+
 /* Permenant Speech Bar */
 
 .menu-speech-bar {
@@ -184,14 +306,14 @@ input, button, select, textarea {
     .assembly-bar {
         background-color: $light;
         @include border-radius(9px);
-        margin-top: 12px;
+        margin-top: 10px;
         margin-right: 30px;
         width: 100%;
-        padding: 4.5px;
+        padding: 5px;
         text-overflow: clip ellipsis;
-        width: 85%;
+        width: 84%;
         position: relative;
-        height: 86px;
+        height: 90px;
         &:after {
             right: 100%;
             top: 50%;
@@ -207,22 +329,39 @@ input, button, select, textarea {
             margin-top: -8px;
         }
         .speech-tiles {
-            padding-top: 4px;
+            padding-top: 5px;
             padding-left: 6px;
-            .tile {
-            height: 70px;
-            width: 70px;
             display: inline-block;
-            border: 1px solid $primary-color;
-            overflow: hidden;
-            font-size: 85%;
-            float: left;
-            box-shadow: none;
+            .tile {
+                height: 70px;
+                width: 70px;
+                display: inline-block;
+                border: 1px solid #b1b1b1;
+                overflow: hidden;
+                font-size: 85%;
+                float: left;
+                box-shadow: none;
+                &.active, &.activated, &:focus, &:active,&.dragging {
+                    top: 0;
+                    border-color: $primary-color;
+                    @include box-shadow(rgba(black,0.2) 0 2px 1px);
+                    font-size: 13px;
+                    width: 76px;
+                    height: 76px;
+                    margin-top: -5px;
+                    margin-right: -4px;
+                    z-index: 50;
+                    margin-left: -14px;
+                    span img {
+                        width: 52px;
+                        height: auto;
+                    }
+                }
             }
         }
         .tile-image {
             img {
-                width: 55px;
+                width: 45px;
                 height: auto;
             }
         }
@@ -393,125 +532,6 @@ input, button, select, textarea {
 
 
 
-
-/* Boards */
-
-.item {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-}
-    .tile {
-        background-color: #fff;
-        border-radius: 10px;
-        cursor: pointer;
-        text-align: center;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        width: 100px;
-        height: 100px;
-        font-size: 13px;
-        font-weight: 600;
-        line-height: 1;
-        @include box-shadow(rgba(black,0.2) 0 2px 1px);
-        position: relative;
-        .item-content {
-            width: 100px;
-            height: 100px;
-            display: table-cell;
-            text-align: center;
-            overflow: visible;
-            white-space: normal;
-            padding: 0;
-        }
-
-        &.dragging {
-            opacity: .8;
-            background-color: #e8e8e8;
-            transform:rotate(-20deg) scale(1.10,1.10);
-            z-index: 50;
-            margin-top: -5px;
-            margin-left: -5px;
-            width: 70px;
-            height: 70px;
-        }
-        &.will-insert-before {
-            background-color: #cff;
-
-            padding-left: 5px;
-            margin-left: 5px;
-        }
-
-        &.active, &.activated, &:focus, &:active {
-            top: 1px;
-            @include box-shadow(rgba(white,0.6) 0 0 10px);
-        }
-        span {
-            display: block;
-            &.tile-image {
-                top: 3px;
-                img {
-                    width: 80px;
-                    height: auto;
-                }
-                z-index: 1;
-                position: relative;
-            }
-            &.tile-name {
-                z-index: 2;
-                position: absolute;
-                bottom: 4px;
-                margin: 0 auto;
-                text-align: center;
-                width: 100%;
-                padding: 0 4px;
-            }
-        }
-    }
-
-
-    .tile.folder {
-        color: blue;
-    }
-    .assembly-bar .tile:hover {
-        transform: scale(1.05,1.05);
-    }
-
-
-.board {
-    margin-left: 120px;
-    padding-top: 170px;
-    width: 794px;
-    .list {
-        display: flex;
-        display: -webkit-flex;
-        flex-wrap: wrap;
-        -webkit-flex-flow: row wrap;
-    }
-    .tile, .item-content {
-        height: 76px;
-        width: 76px;
-        line-height: 13px;
-        text-decoration: none;
-        overflow: visible;
-        word-wrap: normal;
-        white-space: normal;
-    }
-    .tile .tile-image {
-        img {
-            width: 52px;
-            height: auto;
-        }
-    }
-    div[ng-repeat="word in wordlists"] a.tile.item-content {
-        @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(white,0.6) -4px -4px 0);
-        &.active, &.activated, &:focus, &:active {
-            top: 1px;
-            @include box-shadow(rgba(white,0.5) -4px -5px 0, rgba(white,0.6) 0 0 10px);
-        }
-    }
-
-}
 
 /* Ionic Stuff */
 
