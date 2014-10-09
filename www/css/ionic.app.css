@@ -7273,9 +7273,9 @@ input, button, select, textarea {
   .sidebar.menu-comment {
     right: 0; }
   .sidebar .tile {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
-    -moz-box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
-    box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.9) 0 3px 0;
+    -moz-box-shadow: rgba(0, 0, 0, 0.9) 0 3px 0;
+    box-shadow: rgba(0, 0, 0, 0.9) 0 3px 0;
     height: 110px;
     margin: 0 auto;
     margin-bottom: 10px; }
@@ -7338,9 +7338,9 @@ input, button, select, textarea {
   font-size: 13px;
   font-weight: 600;
   line-height: 1;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
-  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0;
+  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0;
   position: relative;
   transition: transform 0.5s, rotate 1s; }
   .tile .item-content {
@@ -7348,10 +7348,9 @@ input, button, select, textarea {
     height: 100px;
     display: table-cell;
     text-align: center;
-    vertical-align: bottom;
     overflow: visible;
     white-space: normal;
-    padding: 0 3px 2px 3px; }
+    padding: 0; }
   .tile.dragging {
     opacity: 0.8;
     background-color: #e8e8e8;
@@ -7367,12 +7366,26 @@ input, button, select, textarea {
     margin-left: 5px; }
   .tile.active, .tile.activated, .tile:focus, .tile:active {
     top: 1px;
-    box-shadow: none; }
+    -webkit-box-shadow: rgba(255, 255, 255, 0.6) 0 0 10px;
+    -moz-box-shadow: rgba(255, 255, 255, 0.6) 0 0 10px;
+    box-shadow: rgba(255, 255, 255, 0.6) 0 0 10px; }
   .tile span {
     display: block; }
-    .tile span.tile-image img {
-      width: 80px;
-      height: auto; }
+    .tile span.tile-image {
+      top: 3px;
+      z-index: 1;
+      position: relative; }
+      .tile span.tile-image img {
+        width: 80px;
+        height: auto; }
+    .tile span.tile-name {
+      z-index: 2;
+      position: absolute;
+      bottom: 4px;
+      margin: 0 auto;
+      text-align: center;
+      width: 100%;
+      padding: 0 4px; }
 
 .tile.folder {
   color: blue; }
@@ -7392,10 +7405,23 @@ input, button, select, textarea {
   .board .tile, .board .item-content {
     height: 76px;
     width: 76px;
-    text-decoration: none; }
+    line-height: 13px;
+    text-decoration: none;
+    overflow: visible;
+    word-wrap: normal;
+    white-space: normal; }
   .board .tile .tile-image img {
-    width: 60px;
+    width: 52px;
     height: auto; }
+  .board div[ng-repeat="word in wordlists"] a.tile.item-content {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0, rgba(0, 0, 0, 0.3) -4px -3px 0;
+    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0, rgba(0, 0, 0, 0.3) -4px -3px 0;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0, rgba(0, 0, 0, 0.3) -4px -3px 0; }
+    .board div[ng-repeat="word in wordlists"] a.tile.item-content.active, .board div[ng-repeat="word in wordlists"] a.tile.item-content.activated, .board div[ng-repeat="word in wordlists"] a.tile.item-content:focus, .board div[ng-repeat="word in wordlists"] a.tile.item-content:active {
+      top: 1px;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.2) -4px -4px 0, rgba(255, 255, 255, 0.6) 0 0 10px;
+      -moz-box-shadow: rgba(0, 0, 0, 0.2) -4px -4px 0, rgba(255, 255, 255, 0.6) 0 0 10px;
+      box-shadow: rgba(0, 0, 0, 0.2) -4px -4px 0, rgba(255, 255, 255, 0.6) 0 0 10px; }
 
 /* Ionic Stuff */
 .scroll {
