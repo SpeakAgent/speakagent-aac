@@ -269,6 +269,23 @@ input, button, select, textarea {
             &.active, &.activated {
                 top: 2px;
                 box-shadow: none;
+                background-color: #E52F32;
+                &:after {
+                    border-right-color: #E52F32;
+                }
+            }
+            &.disabled,
+            &[disabled] {
+                opacity: 1.0;
+                background-color: #9E6869;
+                box-shadow: none;
+                top: 1px;
+                &:after {
+                    border-right-color: #9E6869;
+                }
+                i {
+                    opacity: 0.8;
+                }
             }
 
         }
@@ -284,6 +301,17 @@ input, button, select, textarea {
             &.active, &.activated {
                 top: 3px;
                 box-shadow: none;
+                background-color: #83E083;
+            }
+            &.disabled,
+            &[disabled] {
+                opacity: 1.0;
+                background-color: #7EB07E;
+                box-shadow: none;
+                top: 3px;
+                i {
+                    opacity: 0.8;
+                }
             }
         }
     }
@@ -385,9 +413,8 @@ input, button, select, textarea {
         font-size: 13px;
         font-weight: 600;
         line-height: 1;
-        @include box-shadow(rgba(black,0.2) 0 3px 0);
+        @include box-shadow(rgba(black,0.2) 0 2px 1px);
         position: relative;
-        transition: transform 0.5s, rotate 1s;
         .item-content {
             width: 100px;
             height: 100px;
@@ -477,10 +504,10 @@ input, button, select, textarea {
         }
     }
     div[ng-repeat="word in wordlists"] a.tile.item-content {
-        @include box-shadow(rgba(black,0.2) 0 3px 0, rgba(black,0.3) -4px -3px 0);
+        @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(white,0.6) -4px -4px 0);
         &.active, &.activated, &:focus, &:active {
             top: 1px;
-            @include box-shadow(rgba(black,0.2) -4px -4px 0, rgba(white,0.6) 0 0 10px);
+            @include box-shadow(rgba(white,0.5) -4px -5px 0, rgba(white,0.6) 0 0 10px);
         }
     }
 

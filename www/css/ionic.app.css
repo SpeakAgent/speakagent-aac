@@ -7243,7 +7243,19 @@ input, button, select, textarea {
         left: -60px; }
       .menu-speech-bar .speech-controls .button-delete.active, .menu-speech-bar .speech-controls .button-delete.activated {
         top: 2px;
-        box-shadow: none; }
+        box-shadow: none;
+        background-color: #E52F32; }
+        .menu-speech-bar .speech-controls .button-delete.active:after, .menu-speech-bar .speech-controls .button-delete.activated:after {
+          border-right-color: #E52F32; }
+      .menu-speech-bar .speech-controls .button-delete.disabled, .menu-speech-bar .speech-controls .button-delete[disabled] {
+        opacity: 1;
+        background-color: #9E6869;
+        box-shadow: none;
+        top: 1px; }
+        .menu-speech-bar .speech-controls .button-delete.disabled:after, .menu-speech-bar .speech-controls .button-delete[disabled]:after {
+          border-right-color: #9E6869; }
+        .menu-speech-bar .speech-controls .button-delete.disabled i, .menu-speech-bar .speech-controls .button-delete[disabled] i {
+          opacity: 0.8; }
     .menu-speech-bar .speech-controls .button-speak {
       background-color: #66cc66;
       height: 100px;
@@ -7259,7 +7271,15 @@ input, button, select, textarea {
         font-size: 42px; }
       .menu-speech-bar .speech-controls .button-speak.active, .menu-speech-bar .speech-controls .button-speak.activated {
         top: 3px;
-        box-shadow: none; }
+        box-shadow: none;
+        background-color: #83E083; }
+      .menu-speech-bar .speech-controls .button-speak.disabled, .menu-speech-bar .speech-controls .button-speak[disabled] {
+        opacity: 1;
+        background-color: #7EB07E;
+        box-shadow: none;
+        top: 3px; }
+        .menu-speech-bar .speech-controls .button-speak.disabled i, .menu-speech-bar .speech-controls .button-speak[disabled] i {
+          opacity: 0.8; }
 
 /***
     Sidebars
@@ -7338,11 +7358,10 @@ input, button, select, textarea {
   font-size: 13px;
   font-weight: 600;
   line-height: 1;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0;
-  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0;
-  position: relative;
-  transition: transform 0.5s, rotate 1s; }
+  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+  position: relative; }
   .tile .item-content {
     width: 100px;
     height: 100px;
@@ -7414,14 +7433,14 @@ input, button, select, textarea {
     width: 52px;
     height: auto; }
   .board div[ng-repeat="word in wordlists"] a.tile.item-content {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0, rgba(0, 0, 0, 0.3) -4px -3px 0;
-    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0, rgba(0, 0, 0, 0.3) -4px -3px 0;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0, rgba(0, 0, 0, 0.3) -4px -3px 0; }
+    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(255, 255, 255, 0.6) -4px -4px 0;
+    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(255, 255, 255, 0.6) -4px -4px 0;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(255, 255, 255, 0.6) -4px -4px 0; }
     .board div[ng-repeat="word in wordlists"] a.tile.item-content.active, .board div[ng-repeat="word in wordlists"] a.tile.item-content.activated, .board div[ng-repeat="word in wordlists"] a.tile.item-content:focus, .board div[ng-repeat="word in wordlists"] a.tile.item-content:active {
       top: 1px;
-      -webkit-box-shadow: rgba(0, 0, 0, 0.2) -4px -4px 0, rgba(255, 255, 255, 0.6) 0 0 10px;
-      -moz-box-shadow: rgba(0, 0, 0, 0.2) -4px -4px 0, rgba(255, 255, 255, 0.6) 0 0 10px;
-      box-shadow: rgba(0, 0, 0, 0.2) -4px -4px 0, rgba(255, 255, 255, 0.6) 0 0 10px; }
+      -webkit-box-shadow: rgba(255, 255, 255, 0.5) -4px -5px 0, rgba(255, 255, 255, 0.6) 0 0 10px;
+      -moz-box-shadow: rgba(255, 255, 255, 0.5) -4px -5px 0, rgba(255, 255, 255, 0.6) 0 0 10px;
+      box-shadow: rgba(255, 255, 255, 0.5) -4px -5px 0, rgba(255, 255, 255, 0.6) 0 0 10px; }
 
 /* Ionic Stuff */
 .scroll {
