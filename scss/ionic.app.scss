@@ -251,10 +251,10 @@ input, button, select, textarea {
         }
     }
     div[ng-repeat="word in wordlists"] a.tile.item-content {
-        @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(white,0.6) -4px -4px 0);
+        @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(black,0.5) 4px -4px 0);
         &.active, &.activated, &:focus, &:active {
             top: 1px;
-            @include box-shadow(rgba(white,0.5) -4px -5px 0, rgba(white,0.6) 0 0 10px);
+            @include box-shadow(rgba(black,0.5) 4px -5px 0, rgba(black,0) 0 0 10px);
         }
     }
 
@@ -331,7 +331,9 @@ input, button, select, textarea {
         .speech-tiles {
             padding-top: 5px;
             padding-left: 6px;
-            display: inline-block;
+            display: block;
+            height: 86px;
+            overflow: hidden;
             .tile {
                 height: 70px;
                 width: 70px;
@@ -388,6 +390,7 @@ input, button, select, textarea {
             padding: 10px 10px 10px 4px;
             margin-top: 24px;
             position: relative;
+            z-index: 10;
             @include box-shadow(rgba(black,0.2) 0 2px 0);
             &:after {
                 right: 100%;
