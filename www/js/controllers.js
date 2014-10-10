@@ -308,7 +308,9 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
   $scope.wordlists = [];
   var boardsListURL = $rootScope.apiBaseHREF+'boards/';
-  var responsePromise = $http.get(boardsListURL + board + '/?page_size=100');
+  var responsePromise = $http.get(boardsListURL + board + '/?page_size=100',
+    { cache: true }
+  );
 
   responsePromise.success(function(data, status, headers, config) {
       console.log(data);
