@@ -3,6 +3,7 @@
   "private": "true",
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.0.0-beta.8",
-    "mb-dragToReorder" : "brandly/angular-drag-to-reorder"
-  }
+    "mb-dragToReorder": "brandly/angular-drag-to-reorder"
+  },
+  "dependencies": {}
 }
