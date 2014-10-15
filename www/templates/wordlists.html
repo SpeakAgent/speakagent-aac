@@ -37,7 +37,7 @@
       <div class="list">
 
         <div ng-repeat="word in wordlists">
-          <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="tile item-content {{word.type}}" ng-if="word.target">
+          <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
               <span class="tile-image"><img src="{{staticBaseHREF}}symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
           </a>
