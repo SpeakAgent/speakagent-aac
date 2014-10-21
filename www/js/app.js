@@ -51,7 +51,17 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       ionic.Platform.fullScreen();
       StatusBar.hide();
     }
-    analytics.startTrackerWithId('UA-54749327-1');
+    try {
+      if(analytics) {
+        analytics.startTrackerWithId('UA-54749327-1');
+        $rootScope.AnalyticsAvailable = true;
+        console.log('Analytics instantiated.');
+      }
+    } catch (e) {
+      $rootScope.AnalyticsAvailable = false;
+      console.log('Analytics is unavailable.');
+    }
+
     try {
       if(ttsPlugin) {
         var ret = ttsPlugin.initTTS(function ttsInitialized() {
@@ -143,6 +153,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/wordlists/1');
+  $urlRouterProvider.otherwise('/app/wordlists/5');
 });
 

@@ -7127,6 +7127,107 @@ input, button, select, textarea {
 .main-container {
   background-color: #6FC9CB; }
 
+/* Boards */
+.item {
+  background-color: transparent;
+  border: none;
+  padding: 0; }
+
+.tile {
+  background-color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 100px;
+  height: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+  position: relative;
+  transition: rotate 0.2s; }
+  .tile .item-content {
+    width: 100px;
+    height: 100px;
+    display: table-cell;
+    text-align: center;
+    overflow: visible;
+    white-space: normal;
+    padding: 0; }
+  .tile.dragging {
+    opacity: 1;
+    background-color: #fff;
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+    z-index: 50;
+    margin-top: -5px;
+    margin-left: 0;
+    width: 90px;
+    height: 90px; }
+  .tile.will-insert-before {
+    background-color: red;
+    padding-left: 5px;
+    margin-left: 5px; }
+  .tile.active, .tile.activated, .tile:focus, .tile:active {
+    top: 1px;
+    box-shadow: none; }
+    .tile.active span, .tile.activated span, .tile:focus span, .tile:active span {
+      opacity: 0.7; }
+  .tile span {
+    display: block; }
+    .tile span.tile-image {
+      top: 3px;
+      z-index: 1;
+      position: relative; }
+      .tile span.tile-image img {
+        width: 80px;
+        height: auto; }
+    .tile span.tile-name {
+      z-index: 2;
+      position: absolute;
+      bottom: 4px;
+      margin: 0 auto;
+      text-align: center;
+      width: 100%;
+      padding: 0 4px; }
+
+.tile.folder {
+  color: blue; }
+
+.board {
+  margin-left: 120px;
+  padding-top: 170px;
+  width: 794px; }
+  .board .list {
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -webkit-flex-flow: row wrap; }
+  .board .tile, .board .item-content {
+    height: 76px;
+    width: 76px;
+    line-height: 13px;
+    text-decoration: none;
+    overflow: visible;
+    word-wrap: normal;
+    white-space: normal; }
+  .board .tile .tile-image img {
+    width: 52px;
+    height: auto; }
+  .board div[ng-repeat="word in wordlists"] a.tile.item-content {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
+    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0; }
+    .board div[ng-repeat="word in wordlists"] a.tile.item-content.active, .board div[ng-repeat="word in wordlists"] a.tile.item-content.activated, .board div[ng-repeat="word in wordlists"] a.tile.item-content:focus, .board div[ng-repeat="word in wordlists"] a.tile.item-content:active {
+      top: 1px;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px;
+      -moz-box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px;
+      box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px; }
+
 /* Permenant Speech Bar */
 .menu-speech-bar {
   top: 44px;
@@ -7170,14 +7271,14 @@ input, button, select, textarea {
     -webkit-border-radius: 9px;
     -moz-border-radius: 9px;
     border-radius: 9px;
-    margin-top: 12px;
+    margin-top: 10px;
     margin-right: 30px;
     width: 100%;
-    padding: 4.5px;
+    padding: 5px;
     text-overflow: clip ellipsis;
-    width: 85%;
+    width: 84%;
     position: relative;
-    height: 86px; }
+    height: 90px; }
     .menu-speech-bar .assembly-bar:after {
       right: 100%;
       top: 50%;
@@ -7192,19 +7293,38 @@ input, button, select, textarea {
       border-width: 8px;
       margin-top: -8px; }
     .menu-speech-bar .assembly-bar .speech-tiles {
-      padding-top: 4px;
-      padding-left: 6px; }
+      padding-top: 5px;
+      padding-left: 6px;
+      display: block;
+      height: 86px;
+      overflow: hidden; }
       .menu-speech-bar .assembly-bar .speech-tiles .tile {
         height: 70px;
         width: 70px;
         display: inline-block;
-        border: 1px solid #6FC9CB;
+        border: 1px solid #b1b1b1;
         overflow: hidden;
         font-size: 85%;
         float: left;
         box-shadow: none; }
+        .menu-speech-bar .assembly-bar .speech-tiles .tile.active, .menu-speech-bar .assembly-bar .speech-tiles .tile.activated, .menu-speech-bar .assembly-bar .speech-tiles .tile:focus, .menu-speech-bar .assembly-bar .speech-tiles .tile:active, .menu-speech-bar .assembly-bar .speech-tiles .tile.dragging {
+          top: 0;
+          border-color: #6FC9CB;
+          -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+          -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+          box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+          font-size: 13px;
+          width: 76px;
+          height: 76px;
+          margin-top: -5px;
+          margin-right: -4px;
+          z-index: 50;
+          margin-left: -14px; }
+          .menu-speech-bar .assembly-bar .speech-tiles .tile.active span img, .menu-speech-bar .assembly-bar .speech-tiles .tile.activated span img, .menu-speech-bar .assembly-bar .speech-tiles .tile:focus span img, .menu-speech-bar .assembly-bar .speech-tiles .tile:active span img, .menu-speech-bar .assembly-bar .speech-tiles .tile.dragging span img {
+            width: 52px;
+            height: auto; }
     .menu-speech-bar .assembly-bar .tile-image img {
-      width: 55px;
+      width: 45px;
       height: auto; }
   .menu-speech-bar .speech-controls {
     height: 78px;
@@ -7223,6 +7343,7 @@ input, button, select, textarea {
       padding: 10px 10px 10px 4px;
       margin-top: 24px;
       position: relative;
+      z-index: 10;
       -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
       -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
       box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0; }
@@ -7243,7 +7364,19 @@ input, button, select, textarea {
         left: -60px; }
       .menu-speech-bar .speech-controls .button-delete.active, .menu-speech-bar .speech-controls .button-delete.activated {
         top: 2px;
-        box-shadow: none; }
+        box-shadow: none;
+        background-color: #E52F32; }
+        .menu-speech-bar .speech-controls .button-delete.active:after, .menu-speech-bar .speech-controls .button-delete.activated:after {
+          border-right-color: #E52F32; }
+      .menu-speech-bar .speech-controls .button-delete.disabled, .menu-speech-bar .speech-controls .button-delete[disabled] {
+        opacity: 1;
+        background-color: #9E6869;
+        box-shadow: none;
+        top: 1px; }
+        .menu-speech-bar .speech-controls .button-delete.disabled:after, .menu-speech-bar .speech-controls .button-delete[disabled]:after {
+          border-right-color: #9E6869; }
+        .menu-speech-bar .speech-controls .button-delete.disabled i, .menu-speech-bar .speech-controls .button-delete[disabled] i {
+          opacity: 0.8; }
     .menu-speech-bar .speech-controls .button-speak {
       background-color: #66cc66;
       height: 100px;
@@ -7259,7 +7392,15 @@ input, button, select, textarea {
         font-size: 42px; }
       .menu-speech-bar .speech-controls .button-speak.active, .menu-speech-bar .speech-controls .button-speak.activated {
         top: 3px;
-        box-shadow: none; }
+        box-shadow: none;
+        background-color: #83E083; }
+      .menu-speech-bar .speech-controls .button-speak.disabled, .menu-speech-bar .speech-controls .button-speak[disabled] {
+        opacity: 1;
+        background-color: #7EB07E;
+        box-shadow: none;
+        top: 3px; }
+        .menu-speech-bar .speech-controls .button-speak.disabled i, .menu-speech-bar .speech-controls .button-speak[disabled] i {
+          opacity: 0.8; }
 
 /***
     Sidebars
@@ -7273,9 +7414,9 @@ input, button, select, textarea {
   .sidebar.menu-comment {
     right: 0; }
   .sidebar .tile {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
-    -moz-box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
-    box-shadow: rgba(0, 0, 0, 0.7) 0 2px 0;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.9) 0 3px 0;
+    -moz-box-shadow: rgba(0, 0, 0, 0.9) 0 3px 0;
+    box-shadow: rgba(0, 0, 0, 0.9) 0 3px 0;
     height: 110px;
     margin: 0 auto;
     margin-bottom: 10px; }
@@ -7319,83 +7460,6 @@ input, button, select, textarea {
     .misc-control.active .icon:before, .misc-control.activated .icon:before {
       text-shadow: none;
       top: 2px; }
-
-/* Boards */
-.item {
-  background-color: transparent;
-  border: none;
-  padding: 0; }
-
-.tile {
-  background-color: #fff;
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: center;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  width: 100px;
-  height: 100px;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
-  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 0;
-  position: relative;
-  transition: transform 0.5s, rotate 1s; }
-  .tile .item-content {
-    width: 100px;
-    height: 100px;
-    display: table-cell;
-    text-align: center;
-    vertical-align: bottom;
-    overflow: visible;
-    white-space: normal;
-    padding: 0 3px 2px 3px; }
-  .tile.dragging {
-    opacity: 0.8;
-    background-color: #e8e8e8;
-    transform: rotate(-20deg) scale(1.1, 1.1);
-    z-index: 50;
-    margin-top: -5px;
-    margin-left: -5px;
-    width: 70px;
-    height: 70px; }
-  .tile.will-insert-before {
-    background-color: #cff;
-    padding-left: 5px;
-    margin-left: 5px; }
-  .tile.active, .tile.activated, .tile:focus, .tile:active {
-    top: 1px;
-    box-shadow: none; }
-  .tile span {
-    display: block; }
-    .tile span.tile-image img {
-      width: 80px;
-      height: auto; }
-
-.tile.folder {
-  color: blue; }
-
-.assembly-bar .tile:hover {
-  transform: scale(1.05, 1.05); }
-
-.board {
-  margin-left: 120px;
-  padding-top: 170px;
-  width: 794px; }
-  .board .list {
-    display: flex;
-    display: -webkit-flex;
-    flex-wrap: wrap;
-    -webkit-flex-flow: row wrap; }
-  .board .tile, .board .item-content {
-    height: 76px;
-    width: 76px;
-    text-decoration: none; }
-  .board .tile .tile-image img {
-    width: 60px;
-    height: auto; }
 
 /* Ionic Stuff */
 .scroll {
