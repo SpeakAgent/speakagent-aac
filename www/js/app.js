@@ -78,13 +78,14 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         $rootScope.estimoteIsAvailable = true;
         console.log('Estimote API is available.');
         var beaconPing = 0;
+
         Estimote.startRangingBeacons(function(res) {
-            beaconPing = beaconPing + 1;
-            console.log('Estimote response #' + beaconPing + ': ', JSON.stringify(res));
-            text = document.getElementById("estimotes");
-            text.innerHTML = text.innerHTML + "<br>" + 'Estimote response #' + beaconPing + ': ' + JSON.stringify(res);
+          beaconPing = beaconPing + 1;
+          console.log('Beacon ping #'+beaconPing);
+          $rootScope.$broadcast('beaconsDiscovered', res);
         });
 
+        console.log('Waiting for replies.');
       }
     } catch (e) {
       $rootScope.estimoteIsAvailable = false;

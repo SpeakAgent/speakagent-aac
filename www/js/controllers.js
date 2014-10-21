@@ -313,25 +313,19 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   );
 
   responsePromise.success(function(data, status, headers, config) {
-      console.log(data);
-      $scope.wordlists = data.tile_set.sort(function(a, b) {
-        return a.ordinal - b.ordinal;
-      });
+    console.log(data);
+    $scope.wordlists = data.tile_set.sort(function(a, b) {
+      return a.ordinal - b.ordinal;
+    });
   });
 
   responsePromise.error(function(data, status, headers, config) {
       console.log("Unable to fetch symbols for board. " + status);
   });
 
-  if ($rootScope.estimoteIsAvailable) {
-      console.log('Estimotes are available; starting up.');
-      Estimote.startRangingBeacons(function(res) {
-          console.log('Estimote response: ', res);
-      });
-      console.log('Waiting for replies.');
-  } else {
-    console.log('Estimotes are not available. ');
-  }
+  $scope.$on('beaconsDiscovered', function(e, beacons) {
+    console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
+  });
 
   ionic.onGesture('dragstart', function(e) {
 
