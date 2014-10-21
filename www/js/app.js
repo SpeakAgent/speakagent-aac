@@ -1,4 +1,3 @@
-// Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
@@ -73,7 +72,32 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     } catch (e) {
       console.log('TTS is not available.');
     }
+
+    try {
+      if (Estimote) {
+        $rootScope.estimoteIsAvailable = true;
+        console.log('Estimote API is available.');
+        var beaconPing = 0;
+
+        Estimote.startRangingBeacons(function(res) {
+          beaconPing = beaconPing + 1;
+          console.log('Beacon ping #'+beaconPing);
+          $rootScope.$broadcast('beaconsDiscovered', res);
+        },
+        function(res) {
+          console.log('Estimote API failed to range.');
+        },
+        { interval : 5 });
+
+        console.log('Waiting for replies.');
+      }
+    } catch (e) {
+      $rootScope.estimoteIsAvailable = false;
+      console.log('Estimote API is not available.');
+    }
   });
+
+
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
