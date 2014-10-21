@@ -306,6 +306,8 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   }
   $scope.assemblyBarPhrase = $rootScope.assemblyBarPhrase;
 
+  $scope.maxAssemblyBarTiles = 8;
+
   $scope.wordlists = [];
   var boardsListURL = $rootScope.apiBaseHREF+'boards/';
   var responsePromise = $http.get(boardsListURL + board + '/?page_size=100',
@@ -326,6 +328,15 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   $scope.$on('beaconsDiscovered', function(e, beacons) {
     console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
   });
+  if ($rootScope.estimoteIsAvailable) {
+      console.log('Estimotes are available; starting up.');
+      Estimote.startRangingBeacons(function(res) {
+          console.log('Estimote response: ', res);
+      });
+      console.log('Waiting for replies.');
+  } else {
+    console.log('Estimotes are not available. ');
+  }
 
   ionic.onGesture('dragstart', function(e) {
 
@@ -433,6 +444,11 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     $scope.draggedElement = null;
     $scope.dragStartX = null;
     $scope.moveMeIndex = null;
+
+    // They changed the phrase, so let's not clear it
+    //
+    $scope.clearAssemblyBarOnAdd = false;
+
   }, document.getElementById('assembly-bar'));
 
   // Look in our list of tiles and find the tile that is under the x, y
@@ -465,9 +481,19 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     $scope.TTSAvailable = $rootScope.TTSAvailable;
 
     if (obj.phrase) {
-      console.log('phrase to add: ' + obj.phrase);
-      $scope.assemblyBarPhrase.push(obj);
-      $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+      if ($scope.clearAssemblyBarOnAdd) {
+        $scope.assemblyBarPhrase = [];
+      }
+      $scope.clearAssemblyBarOnAdd = false;
+
+      // Limit the length of the assembly bar to the most number of tiles
+      // we can handle.
+      //
+      if ($scope.assemblyBarPhrase.length < $scope.maxAssemblyBarTiles) {
+        console.log('phrase to add: ' + obj.phrase);
+        $scope.assemblyBarPhrase.push(obj);
+        $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+      }
     }
     console.log('assembly bar phrase: ', $scope.assemblyBarPhrase);
     if($rootScope.AnalyticsAvailable) {
@@ -497,11 +523,17 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       $scope.assemblyBarPhrase = [];
     }
 
+    // If they delete something, then let's assume they don't want
+    // to clear the phrase if they add a new tile.
+    //
+    $scope.clearAssemblyBarOnAdd = false;
+
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'DeleteClick', removed);
     }
   };
+
   $scope.speakButtonClicked = function() {
     console.log('speak button clicked.');
 
@@ -515,6 +547,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     if ($rootScope.TTSAvailable) {
       ttsPlugin.speak($wordsToSpeak);
+      $scope.clearAssemblyBarOnAdd = true;
     }
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'SpeakPhrase', $wordsToSpeak);
