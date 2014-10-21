@@ -323,6 +323,16 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       console.log("Unable to fetch symbols for board. " + status);
   });
 
+  if ($rootScope.estimoteIsAvailable) {
+      console.log('Estimotes are available; starting up.');
+      Estimote.startRangingBeacons(function(res) {
+          console.log('Estimote response: ', res);
+      });
+      console.log('Waiting for replies.');
+  } else {
+    console.log('Estimotes are not available. ');
+  }
+
   ionic.onGesture('dragstart', function(e) {
 
     // find our element in the list, and make sure it's the tile and not
@@ -429,6 +439,11 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     $scope.draggedElement = null;
     $scope.dragStartX = null;
     $scope.moveMeIndex = null;
+
+    // They changed the phrase, so let's not clear it
+    //
+    $scope.clearAssemblyBarOnAdd = false;
+
   }, document.getElementById('assembly-bar'));
 
   // Look in our list of tiles and find the tile that is under the x, y
@@ -461,6 +476,11 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     $scope.TTSAvailable = $rootScope.TTSAvailable;
 
     if (obj.phrase) {
+      if ($scope.clearAssemblyBarOnAdd) {
+        $scope.assemblyBarPhrase = [];
+      }
+      $scope.clearAssemblyBarOnAdd = false;
+
       console.log('phrase to add: ' + obj.phrase);
       $scope.assemblyBarPhrase.push(obj);
       $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
@@ -493,11 +513,17 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       $scope.assemblyBarPhrase = [];
     }
 
+    // If they delete something, then let's assume they don't want
+    // to clear the phrase if they add a new tile.
+    //
+    $scope.clearAssemblyBarOnAdd = false;
+
     $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'DeleteClick', removed);
     }
   };
+
   $scope.speakButtonClicked = function() {
     console.log('speak button clicked.');
 
@@ -511,6 +537,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
     if ($rootScope.TTSAvailable) {
       ttsPlugin.speak($wordsToSpeak);
+      $scope.clearAssemblyBarOnAdd = true;
     }
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'SpeakPhrase', $wordsToSpeak);
