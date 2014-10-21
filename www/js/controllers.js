@@ -306,6 +306,8 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   }
   $scope.assemblyBarPhrase = $rootScope.assemblyBarPhrase;
 
+  $scope.maxAssemblyBarTiles = 8;
+
   $scope.wordlists = [];
   var boardsListURL = $rootScope.apiBaseHREF+'boards/';
   var responsePromise = $http.get(boardsListURL + board + '/?page_size=100',
@@ -481,9 +483,14 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       }
       $scope.clearAssemblyBarOnAdd = false;
 
-      console.log('phrase to add: ' + obj.phrase);
-      $scope.assemblyBarPhrase.push(obj);
-      $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+      // Limit the length of the assembly bar to the most number of tiles
+      // we can handle.
+      //
+      if ($scope.assemblyBarPhrase.length < $scope.maxAssemblyBarTiles) {
+        console.log('phrase to add: ' + obj.phrase);
+        $scope.assemblyBarPhrase.push(obj);
+        $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+      }
     }
     console.log('assembly bar phrase: ', $scope.assemblyBarPhrase);
     if($rootScope.AnalyticsAvailable) {
