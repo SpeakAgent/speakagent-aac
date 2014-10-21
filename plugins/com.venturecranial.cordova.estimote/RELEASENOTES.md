@@ -1,4 +1,4 @@
-<!--
+https://github.com/VentureCranial/estimote-cordova <!--
 #    Copyright 2014 Venture Cranial, LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

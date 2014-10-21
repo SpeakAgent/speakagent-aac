@@ -83,7 +83,11 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
           beaconPing = beaconPing + 1;
           console.log('Beacon ping #'+beaconPing);
           $rootScope.$broadcast('beaconsDiscovered', res);
-        });
+        },
+        function(res) {
+          console.log('Estimote API failed to range.');
+        },
+        { interval : 5 });
 
         console.log('Waiting for replies.');
       }
