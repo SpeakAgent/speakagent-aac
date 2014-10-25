@@ -1,4 +1,4 @@
-angular.module('speakagentAAC.controllers', ['ionic'])
+angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers.AssemblyBar' ])
 
 .controller('LocationCtrl', function($scope, $ionicPopup, $timeout) {
   if($rootScope.AnalyticsAvailable) {
@@ -261,7 +261,8 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     $scope.authToken = null;
     localStorage.removeItem('authToken');
     console.log('Logout complete');
-  }
+  };
+
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
@@ -280,7 +281,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
         if($rootScope.AnalyticsAvailable) {
           analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
           analytics.setUserId($scope.loginData.username);
-          analytics.addCustomDimension('userid', $scope.loginData.username)
+          analytics.addCustomDimension('userid', $scope.loginData.username);
         }
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
@@ -318,24 +319,36 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
 })
 
-.controller('WordlistsCtrl', function($stateParams, $scope, $http, $rootScope) {
-  console.log('State params ', $stateParams);
 
-  var board = $stateParams.board ? $stateParams.board : '1';
-  if($rootScope.AnalyticsAvailable) {
-    analytics.trackView('Board ID: '+board);
-  }
-  $scope.assemblyBarPhrase = $rootScope.assemblyBarPhrase;
+.controller('WordlistsCtrl', ['$stateParams', '$scope', '$http',
+  '$rootScope', 'deleteAssemblyBarTileAtIndex', 'setClearOnAdd',
+  'getAssemblyBarText', 'assemblyBarTileCount', 'addTileToAssemblyBar',
+  'getAssemblyBarTiles',
+
+  function($stateParams, $scope, $http, $rootScope,
+    deleteAssemblyBarTileAtIndex, setClearOnAdd, getAssemblyBarText,
+    assemblyBarTileCount, addTileToAssemblyBar, getAssemblyBarTiles) {
+
 
   $scope.maxAssemblyBarTiles = 8;
 
+  console.log('State params ', $stateParams);
+
+  var board = $stateParams.board ? $stateParams.board : '1';
+  board = parseInt(board, 10);
+
+  if($rootScope.AnalyticsAvailable) {
+    analytics.trackView('Board ID: '+board);
+  }
+
+  $scope.TTSAvailable = $rootScope.TTSAvailable;
+
   $scope.currentBoard = board;
   $scope.wordlists = [];
-  var cachedBoard = localStorage.getItem('board-'+board);
+  var cachedBoard = $rootScope.boards[board]; //localStorage.getItem('board-'+board);
   if (cachedBoard) {
     console.log('Found cached data for board: ' + board);
-    data = JSON.parse(cachedBoard);
-    $scope.wordlists = data.tile_set.sort(function(a, b) {
+    $scope.wordlists = cachedBoard.tile_set.sort(function(a, b) {
       return a.ordinal - b.ordinal;
     });
   } else {
@@ -356,152 +369,16 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     console.log('Estimotes are not available. ');
   }
 
-  ionic.onGesture('dragstart', function(e) {
-
-    // find our element in the list, and make sure it's the tile and not
-    // something inside it.
-    //
-    $scope.draggedElement = angular.element(e.srcElement);
-
-    while (!$scope.draggedElement.hasClass('tile') && !$scope.draggedElement.hasClass('assembly-bar')) {
-      $scope.draggedElement = $scope.draggedElement.parent();
-    }
-
-    if ($scope.draggedElement.hasClass('tile')) {
-
-      // Mark it as being dragged
-      $scope.draggedElement.addClass('dragging');
-
-      // Record where the user touched it so we can track where it
-      // moves to.
-      //
-      $scope.dragStartX =  e.gesture.touches[0].pageX;
-
-      // Record which tile is actually moving
-      //
-      $scope.moveMeIndex = $scope.draggedElement.data('$scope').$index;
-
-      // console.log('Moving tile #'+$scope.moveMeIndex);
-      // var tiles = [];
-      // $scope.assemblyBarPhrase.forEach(function(element) {
-      //   tiles.push(element.name);
-      // });
-
-      // console.log('AssemblyBarPhrases are ', tiles);
-
-      // Update our display.
-      //
-      $scope.$apply();
-
-    } else {
-      $scope.draggedElement = null;
-      $scope.dragStartX = null;
-      $scope.moveMeIndex = null;
-    }
-  }, document.getElementById('assembly-bar'));
-
-  // Handle the actual DRAG
-  //
-  ionic.onGesture('drag', function(e) {
-
-    if ($scope.nowMoving !== null) {
-
-      // How far have we moved, horizontally speaking?
-      var x = e.gesture.touches[0].pageX - $scope.dragStartX;
-
-      // Find the tile that we're moving OVER
-
-      var tile = $scope.findTileXY(e.gesture.touches[0].pageX, 0);
-
-      if (tile) {
-
-        // Find out which tile we will put the moving tile in front of.
-        //
-        var insertBeforeIndex = tile.data('$scope').$index;
-
-        // Find and yoink the tile we are moving (the one under our finger)
-        // from the list.
-        var moved = $scope.assemblyBarPhrase.splice($scope.moveMeIndex, 1);
-
-
-        // console.log('tile ', tile);
-        // console.log('insertBeforeIndex ' + insertBeforeIndex);
-        // console.log('moved ', moved);
-
-        // Move the tile into position.
-        //
-        $scope.assemblyBarPhrase.splice(insertBeforeIndex, 0, moved[0]);
-
-        // Update the index to reflect that we've moved it.
-        //
-        $scope.moveMeIndex = insertBeforeIndex;
-
-        // var tiles = [];
-        // $scope.assemblyBarPhrase.forEach(function(element) {
-        //   tiles.push(element.name);
-        // });
-
-        // console.log('AssemblyBarPhrases are ', tiles);
-
-        // Update the phrase.
-        //
-        $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-        $scope.$apply();
-        }
-    }
-
-  }, document.getElementById('assembly-bar'));
-
-
-  // We're done dragging.
-  ionic.onGesture('dragend', function(e) {
-    if ($scope.draggedElement) {
-      $scope.draggedElement.css(ionic.CSS.TRANSFORM, '');
-      angular.element($scope.draggedElement).removeClass('dragging');
-    }
-    $scope.draggedElement = null;
-    $scope.dragStartX = null;
-    $scope.moveMeIndex = null;
-
-    // They changed the phrase, so let's not clear it
-    //
-    $scope.clearAssemblyBarOnAdd = false;
-
-  }, document.getElementById('assembly-bar'));
-
-  // Look in our list of tiles and find the tile that is under the x, y
-  // coordinates.
-  //
-  $scope.findTileXY = function(x, y) {
-
-      /* this is old school; we can do it better i am sure */
-      console.log('in findtilexy');
-      var bar = angular.element(document.getElementById('assembly-bar'));
-      var kids = angular.element(bar.children()[0]).children();
-
-      for (var index = 0; index < kids.length; index++) {
-        var rect = kids[index].getBoundingClientRect();
-        if ((x > rect.left) && (x < rect.right)) {
-          var child = angular.element(kids[index]);
-          // Of course, we want to ignore the tile that is currently
-          // being dragged around.
-          //
-          if (!child.hasClass('dragging')) {
-            return child;
-          }
-        }
-      }
-      return null;
-  };
-
   $scope.wordTileClicked = function(evt, number) {
 
-    var match = $scope.wordlists.filter(function(o) {
-      return o.id === number;
-    });
+    var match = $scope.wordlists.filter(
+      function(o) {
+        return o.id === number;
+      }
+    );
 
     if (match.length < 1) {
-      console.log('id ' + number + ' not found in word list.');
+      console.log('Tile id ' + number + ' could not be hidden because it could not be found.');
       return;
     }
 
@@ -511,6 +388,9 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     // the tile.
     //
     if ($rootScope.editMode) {
+      // flag tile as  dirty so when edit is turned off it will save
+      //
+      obj.dirty = true;
       obj.hidden = obj.hidden ? false : true;
       evt.preventDefault();
       return;
@@ -523,79 +403,40 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       return;
     }
 
-
     console.log('word tile clicked: ', obj);
-    $scope.TTSAvailable = $rootScope.TTSAvailable;
 
     if (obj.phrase) {
-      if ($scope.clearAssemblyBarOnAdd) {
-        $scope.assemblyBarPhrase = [];
-      }
-      $scope.clearAssemblyBarOnAdd = false;
-
-      // Remove last tile from the list.
-      var previousTile = $scope.assemblyBarPhrase.pop();
-      if (previousTile) {
-
-        // If the previous tile was a folder that pointed to our current
-        // word list, then leave it off the assembly bar.
-        if ((previousTile.target) &&
-            (previousTile.phrase) &&
-            (previousTile.target == $scope.currentBoard)) {
-          previousTile = null;
-        }
-      }
-
-      // Add the last tile back if it survived the test
-      //
-      if (previousTile) {
-        $scope.assemblyBarPhrase.push(previousTile);
-      }
 
       // Limit the length of the assembly bar to the most number of tiles
       // we can handle.
       //
-      if ($scope.assemblyBarPhrase.length < $scope.maxAssemblyBarTiles) {
+      if (assemblyBarTileCount() < $scope.maxAssemblyBarTiles) {
         console.log('phrase to add: ' + obj.phrase);
-        $scope.assemblyBarPhrase.push(obj);
+        addTileToAssemblyBar(obj);
       }
     }
 
-    $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-    console.log('assembly bar phrase: ', $scope.assemblyBarPhrase);
+    console.log('assembly bar phrase: ', getAssemblyBarTiles());
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
     }
   };
 
-  $scope.speechTileClicked = function(index, obj) {
-    console.log('speech tile clicked: ',  obj);
-    console.log('phrase to remove: ' + obj.phrase);
-    $scope.TTSAvailable = $rootScope.TTSAvailable;
-
-    $scope.assemblyBarPhrase.splice(index, 1);
-    $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-    if($rootScope.AnalyticsAvailable) {
-      analytics.trackEvent('Boards', 'TileRemove', obj.phrase);
-    }
-  };
 
   $scope.deleteButtonClicked = function() {
     console.log('delete button clicked.');
-    var removed = $scope.assemblyBarPhrase.pop();
+
+    deleteAssemblyBarTileAtIndex(-1);
+
+    // var removed = $scope.assemblyBarPhrase.pop();
     $scope.TTSAvailable = $rootScope.TTSAvailable;
-    if (removed) {
-      console.log('phrase removed: ' + removed.phrase);
-    } else {
-      $scope.assemblyBarPhrase = [];
-    }
 
     // If they delete something, then let's assume they don't want
     // to clear the phrase if they add a new tile.
     //
-    $scope.clearAssemblyBarOnAdd = false;
+    setClearOnAdd(false);
 
-    $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
+    // $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'DeleteClick', removed);
     }
@@ -604,17 +445,12 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   $scope.speakButtonClicked = function() {
     console.log('speak button clicked.');
 
-    var $wordsToSpeak = "";
-
-    angular.forEach($scope.assemblyBarPhrase, function (tile,i) {
-      /* Of course, this will need to be glued better but for proof
-         of concept, concatenation works for now. */
-      $wordsToSpeak = $wordsToSpeak + tile.phrase + ' ';
-    });
+    var wordsToSpeak = getAssemblyBarText();
+    console.log('about to speak: ', wordsToSpeak);
 
     if ($rootScope.TTSAvailable) {
-      ttsPlugin.speak($wordsToSpeak);
-      $scope.clearAssemblyBarOnAdd = true;
+      ttsPlugin.speak(wordsToSpeak);
+      setClearsOnAdd(true);
     }
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'SpeakPhrase', $wordsToSpeak);
@@ -622,71 +458,113 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   };
 
   $rootScope.toggleEdit = function() {
+
+    // Save "dirty" tiles back to the cache and reset the dirty flag.
+    //
+    if ($rootScope.editMode) {
+
+      var board = $scope.currentBoard;
+
+      angular.forEach($scope.wordlists, function(tile) {
+        if (tile.dirty) {
+          var cachedTiles = $rootScope.boards[board].tile_set.filter(
+            function(tempTile) {
+              return (tempTile.id === tile.id);
+            });
+          cachedTiles[0].hidden = tile.hidden;
+          delete(tile.dirty);
+        }
+      });
+
+      // Persist it to local storage
+      localStorage.setItem('board-'+board, JSON.stringify($rootScope.boards[board]));
+    }
+
     $rootScope.editMode = !$rootScope.editMode;
     console.log('Edit mode toggled');
-    if ($rootScope.editMode) {
-      // debugger;
+  };
+
+}])
+
+
+
+.controller('SearchCtrl',  ['$scope', '$rootScope', '$window',
+   'addTileToAssemblyBar',
+
+  function($scope, $rootScope, $window, addTileToAssemblyBar) {
+
+  $scope.searchForTile = "";
+  $scope.matchedTiles = [];
+
+  console.log("scope ", $scope);
+
+  $scope.findMatchingTiles = function() {
+    $scope.matchedTiles = [];
+    if (!$scope.searchForTile) {
+      return;
     }
+
+    var matchStr = $scope.searchForTile.toLowerCase();
+    var matchedTiles = [];
+
+    console.log('findMatchingTiles', $scope);
+    console.log('looking for ', matchStr);
+
+    angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
+      console.log('board ', boardNumber);
+      angular.forEach(boardTiles.tile_set, function(tile) {
+        var m = tile.name.toLowerCase().indexOf(matchStr);
+        if (m >= 0) {
+          matchedTiles.push({'board' : boardNumber, 'tile': tile});
+        }
+      });
+    });
+
+    // de-duplicate
+
+    var seen = {};
+
+    var dedupedTiles = matchedTiles.filter(function(item) {
+        return seen.hasOwnProperty(item.tile.name) ? false : (seen[item.tile.name] = true);
+    });
+
+    // Sort remaining into view
+
+    $scope.matchedTiles = dedupedTiles.sort(function(a, b) {
+      if (a.tile.name < b.tile.name) {
+        return -1;
+      }
+      if (a.tile.name > b.tile.name) {
+        return 1;
+      }
+      return 0;
+    });
+
   };
 
-})
+  $scope.clearButtonClicked = function(evt) {
+    $scope.searchForTile = "";
+    $scope.matchedTiles = [];
+    var input = document.getElementById('searchForTile');
 
-.controller('WordlistCtrl', function($scope, $stateParams, $rootScope) {
-  // TODO: This is vestigal. Factor out.
-  $scope.activeWordlist = {
-    homeBoard: [
-      'be',
-      'have',
-      'do',
-      'say',
-      'get',
-      'make',
-      'go',
-      'know',
-      'take',
-      'see',
-      'come',
-      'think',
-      'look',
-      'want',
-      'give',
-      'use',
-      'find',
-      'tell',
-      'ask',
-      'work',
-      'seem',
-      'feel',
-      'try',
-      'leave',
-      'call'
-    ],
-    nouns: [
-      'time',
-      'person',
-      'year',
-      'way',
-      'day',
-      'thing',
-      'man',
-      'world',
-      'life',
-      'hand',
-      'part',
-      'child',
-      'eye',
-      'woman',
-      'place',
-      'work',
-      'week',
-      'case',
-      'point',
-      'government',
-      'company',
-      'number',
-      'group',
-      'problem',
-      'fact'
-    ]
+    // This will wait half a second to refocus, i'm sure there's a better
+    // way to do this angulary-like, but I CBA right now. It works.
+    //
+    setTimeout(function() { input.focus(); }, 500);
   };
-});
+
+  $scope.matchedTileClicked = function(index) {
+
+    var match = $scope.matchedTiles[index];
+    if (match) {
+      addTileToAssemblyBar(match.tile);
+
+      var target = match.tile.target ? match.tile.target : match.board;
+
+      console.log('Navigate to ....', match);
+      $window.location.href = "#/app/wordlists/" + target;
+    }
+
+  }
+
+}]);
