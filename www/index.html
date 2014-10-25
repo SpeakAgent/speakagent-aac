@@ -28,6 +28,7 @@
       <div class="buttons" ng-controller="SettingsCtrl">
         <a ng-href="#/app/wordlists/5/" href="#/app/wordlists/5/" class="button icon-left ion-home">Home</a>
         <a class="button icon-left ion-settings" ng-click="showSettings()">Settings</a>
+        <a ng-class="{'icon-left ion-edit button active button-positive' : editMode, 'icon-left ion-edit button': !editMode}" ng-click="toggleEdit()">Edit Board</a>
       </div>
       <div class="buttons secondary">
         <a class="button icon-left ion-search" nav-clear href="#/app/search">Search</a>

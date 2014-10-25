@@ -32,17 +32,17 @@
     </div>
 
     <div class="row main-container">
-      <div class="col col-80 board">
+      <div class="col col-80 board" ng-class="{'editMode' : editMode}">
 
       <div class="list">
 
-        <div ng-repeat="word in wordlists">
-          <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
+        <div ng-repeat="word in wordlists" class="wordlist">
+          <a ng-click="wordTileClicked($event, {{word.id}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="word.target">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
           </a>
 
-          <div ng-click="wordTileClicked({{word}});" class="tile {{word.type}}" ng-if="!word.target">
+          <div ng-click="wordTileClicked($event, {{word.id}});" class="tile {{word.type}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="!word.target">
             <div class="item-content">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>

@@ -247,6 +247,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     $scope.settingsModal.hide();
     $scope.loginModal.show();
   };
+
 })
 
 .controller('LoginCtrl', function($scope, $http, $rootScope){
@@ -328,6 +329,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   $scope.$on('beaconsDiscovered', function(e, beacons) {
     console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
   });
+
   if ($rootScope.estimoteIsAvailable) {
       console.log('Estimotes are available; starting up.');
       Estimote.startRangingBeacons(function(res) {
@@ -476,7 +478,36 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       return null;
   };
 
-  $scope.wordTileClicked = function(obj) {
+  $scope.wordTileClicked = function(evt, number) {
+
+    var match = $scope.wordlists.filter(function(o) {
+      return o.id === number;
+    });
+
+    if (match.length < 1) {
+      console.log('id ' + number + ' not found in word list.');
+      return;
+    }
+
+    obj = match[0];
+
+    // If we're in edit mode, we wanna set the hidden status on
+    // the tile.
+    //
+    if ($rootScope.editMode) {
+      obj.hidden = true;
+      evt.preventDefault();
+      return;
+    }
+
+    // If the item is hidden, don't fire an href or any other link.
+    //
+    if (obj.hidden) {
+      evt.preventDefault();
+      return;
+    }
+
+
     console.log('word tile clicked: ', obj);
     $scope.TTSAvailable = $rootScope.TTSAvailable;
 
@@ -553,6 +584,15 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       analytics.trackEvent('Boards', 'SpeakPhrase', $wordsToSpeak);
     }
   };
+
+  $rootScope.toggleEdit = function() {
+    $rootScope.editMode = !$rootScope.editMode;
+    console.log('Edit mode toggled');
+    if ($rootScope.editMode) {
+      // debugger;
+    }
+  };
+
 })
 
 .controller('WordlistCtrl', function($scope, $stateParams, $rootScope) {
