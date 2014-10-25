@@ -495,7 +495,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     // the tile.
     //
     if ($rootScope.editMode) {
-      obj.hidden = true;
+      obj.hidden = obj.hidden ? false : true;
       evt.preventDefault();
       return;
     }
