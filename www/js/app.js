@@ -113,7 +113,8 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       url: "/search",
       views: {
         'menuContent' :{
-          templateUrl: "templates/search.html"
+          templateUrl: "templates/search.html",
+          controller: 'SearchCtrl'
         }
       }
     })
@@ -134,16 +135,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         'menuContent' :{
           templateUrl: "templates/wordlists.html",
           controller: 'WordlistsCtrl'
-        }
-      }
-    })
-
-    .state('app.single', {
-      url: "/wordlist/:wordlistId",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/wordlist.html",
-          controller: 'WordlistCtrl'
         }
       }
     })

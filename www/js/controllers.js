@@ -297,6 +297,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
 })
 
+
 .controller('WordlistsCtrl', function($stateParams, $scope, $http, $rootScope) {
   console.log('State params ', $stateParams);
 
@@ -555,62 +556,6 @@ angular.module('speakagentAAC.controllers', ['ionic'])
   };
 })
 
-.controller('WordlistCtrl', function($scope, $stateParams, $rootScope) {
-  // TODO: This is vestigal. Factor out.
-  $scope.activeWordlist = {
-    homeBoard: [
-      'be',
-      'have',
-      'do',
-      'say',
-      'get',
-      'make',
-      'go',
-      'know',
-      'take',
-      'see',
-      'come',
-      'think',
-      'look',
-      'want',
-      'give',
-      'use',
-      'find',
-      'tell',
-      'ask',
-      'work',
-      'seem',
-      'feel',
-      'try',
-      'leave',
-      'call'
-    ],
-    nouns: [
-      'time',
-      'person',
-      'year',
-      'way',
-      'day',
-      'thing',
-      'man',
-      'world',
-      'life',
-      'hand',
-      'part',
-      'child',
-      'eye',
-      'woman',
-      'place',
-      'work',
-      'week',
-      'case',
-      'point',
-      'government',
-      'company',
-      'number',
-      'group',
-      'problem',
-      'fact'
-    ]
-  };
-});
+
+.controller('SearchCtrl', function($scope, $rootScope) {
+})

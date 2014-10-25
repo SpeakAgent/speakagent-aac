@@ -613,3 +613,83 @@ form {
     }
 }
 
+
+/***
+    Search screen
+    */
+
+.menu-search-bar {
+    top: $top-margin;
+    left: 0;
+    right: 0;
+    z-index: 15;
+    position: absolute;
+    padding: 8px 0 0 0;
+    .search-bar {
+        margin-left: 120px;
+        background-color: $light;
+        @include border-radius(9px);
+        margin-top: 10px;
+        margin-right: 30px;
+        width: 100%;
+        padding: 5px;
+        text-overflow: clip ellipsis;
+        width: 84%;
+        position: relative;
+        height: 90px;
+    }
+
+    input[type=text] {
+        font-size: 50px;
+        line-height: 72px;
+        height: 72px;
+    }
+
+    .search-controls {
+        height: 78px;
+        position: absolute;
+        right: 10px;
+        .button {
+            border: 0;
+            color: $light;
+            margin-left: 20px;
+            i {
+                border: 1px solid #fff;
+                border-radius: 100px;
+                padding: 10px;
+            }
+        }
+        .button-clearsearch {
+            background-color: #889988;
+            height: 72px;
+            width: 72px;
+            margin-top: 16px;
+            margin-right: 100px;
+            position: relative;
+            display: block;
+            @include box-shadow(rgba(black,0.3) 0 3px 0);
+            i {
+               padding: 14px 7px;
+               color: #889988;
+               background-color: #fff;
+            };
+            i.icon:before {font-size: 42px;}
+            &.active, &.activated {
+                top: 3px;
+                box-shadow: none;
+                background-color: #83E083;
+            }
+            &.disabled,
+            &[disabled] {
+                opacity: 1.0;
+                background-color: #7EB07E;
+                box-shadow: none;
+                top: 3px;
+                i {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+
+}
