@@ -337,45 +337,8 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       return a.ordinal - b.ordinal;
     });
   } else {
-    console.log('No cache found. Building cache.');
+    console.log('No cache found. Logout/login required.');
   }
-    // // Cache Data for Offline Use
-    // // TODO: Fix this to be much nicer
-    // var boardResponsePromise = $http.get($rootScope.apiBaseHREF + 'boards/?page_size=100',
-    //   { cache: true }
-    // );
-
-    // boardResponsePromise.success(function(data, status, headers, config) {
-    //   console.log('caching boards data...');
-    //   for (var i=0; i<data.count; i++) {
-    //     var board = data.results[i];
-    //     $rootScope.boardCache.put(board.id, JSON.stringify(board));
-    //     console.log('caching board: ' + board.id);
-    //   }
-    //   var cachedBoard = $rootScope.boardCache.get(board);
-    //   if (cachedBoard) {
-    //     console.log('Found cached data for board: ' + board);
-    //     data = JSON.parse(cachedBoard);
-    //     $scope.wordlists = data.tile_set.sort(function(a, b) {
-    //       return a.ordinal - b.ordinal;
-    //     });
-    //   }
-    // });
-  // var boardsListURL = $rootScope.apiBaseHREF+'boards/';
-  // var responsePromise = $http.get(boardsListURL + board + '/',
-  //   { cache: true }
-  // );
-
-  // responsePromise.success(function(data, status, headers, config) {
-  //   console.log(data);
-  //   $scope.wordlists = data.tile_set.sort(function(a, b) {
-  //     return a.ordinal - b.ordinal;
-  //   });
-  // });
-
-  // responsePromise.error(function(data, status, headers, config) {
-  //     console.log("Unable to fetch symbols for board. " + status);
-  // });
 
   $scope.$on('beaconsDiscovered', function(e, beacons) {
     console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
