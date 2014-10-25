@@ -308,6 +308,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
   $scope.maxAssemblyBarTiles = 8;
 
+  $scope.currentBoard = board;
   $scope.wordlists = [];
   var boardsListURL = $rootScope.apiBaseHREF+'boards/';
   var responsePromise = $http.get(boardsListURL + board + '/?page_size=100',
@@ -486,15 +487,35 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       }
       $scope.clearAssemblyBarOnAdd = false;
 
+      // Remove last tile from the list.
+      var previousTile = $scope.assemblyBarPhrase.pop();
+      if (previousTile) {
+
+        // If the previous tile was a folder that pointed to our current
+        // word list, then leave it off the assembly bar.
+        if ((previousTile.target) &&
+            (previousTile.phrase) &&
+            (previousTile.target == $scope.currentBoard)) {
+          previousTile = null;
+        }
+      }
+
+      // Add the last tile back if it survived the test
+      //
+      if (previousTile) {
+        $scope.assemblyBarPhrase.push(previousTile);
+      }
+
       // Limit the length of the assembly bar to the most number of tiles
       // we can handle.
       //
       if ($scope.assemblyBarPhrase.length < $scope.maxAssemblyBarTiles) {
         console.log('phrase to add: ' + obj.phrase);
         $scope.assemblyBarPhrase.push(obj);
-        $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
       }
     }
+
+    $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
     console.log('assembly bar phrase: ', $scope.assemblyBarPhrase);
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
