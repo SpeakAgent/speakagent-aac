@@ -341,6 +341,30 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     console.log('No cache found. Logout/login required.');
   }
 
+  /*********
+  /* Load QuickResponse Tiles
+  /*********/
+  var cachedQuickResponseBoard = JSON.parse(localStorage.getItem('board-'+$rootScope.quickResponseBoard));
+  if (cachedQuickResponseBoard){
+    $scope.quickResponseTiles = cachedQuickResponseBoard.tile_set.sort(function(a, b) {
+      return a.ordinal - b.ordinal;
+    });
+  } else {
+    console.log('Could not retrieve board cache for Quick Response tiles. Please logout and login again.');
+  }
+  /*********
+  /* Load WoW Tiles
+  /*********/
+  var currentWOWBoard = JSON.parse(localStorage.getItem('board-'+$rootScope.currentWOWBoard));
+  if (currentWOWBoard){
+    $scope.wowResponseTiles = currentWOWBoard.tile_set.sort(function(a, b) {
+      return a.ordinal - b.ordinal;
+    });
+  } else {
+    console.log('Could not retrieve board cache for WOW tiles. Please logout and login again.');
+  }
+  /***** end of sidebars *************/
+
   $scope.$on('beaconsDiscovered', function(e, beacons) {
     console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
   });
