@@ -321,11 +321,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
 .controller('WordlistsCtrl', ['$stateParams', '$scope', '$http',
   '$rootScope', 'deleteAssemblyBarTileAtIndex', 'setClearOnAdd',
-  'getAssemblyBarText',
+  'getAssemblyBarText', 'assemblyBarTileCount', 'addTileToAssemblyBar',
+  'getAssemblyBarTiles',
 
   function($stateParams, $scope, $http, $rootScope,
-    deleteAssemblyBarTileAtIndex, setClearOnAdd, getAssemblyBarText) {
+    deleteAssemblyBarTileAtIndex, setClearOnAdd, getAssemblyBarText,
+    assemblyBarTileCount, addTileToAssemblyBar, getAssemblyBarTiles) {
 
+
+  $scope.maxAssemblyBarTiles = 8;
 
   console.log('State params ', $stateParams);
 
@@ -362,6 +366,27 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   } else {
     console.log('Estimotes are not available. ');
   }
+
+  $scope.wordTileClicked = function(obj) {
+
+    console.log('word tile clicked: ', obj);
+
+    if (obj.phrase) {
+
+      // Limit the length of the assembly bar to the most number of tiles
+      // we can handle.
+      //
+      if (assemblyBarTileCount() < $scope.maxAssemblyBarTiles) {
+        console.log('phrase to add: ' + obj.phrase);
+        addTileToAssemblyBar(obj);
+      }
+    }
+
+    console.log('assembly bar phrase: ', getAssemblyBarTiles());
+    if($rootScope.AnalyticsAvailable) {
+      analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
+    }
+  };
 
   $scope.deleteButtonClicked = function() {
     console.log('delete button clicked.');
