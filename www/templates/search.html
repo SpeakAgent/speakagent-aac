@@ -1,21 +1,37 @@
 
 <ion-view title="Search" hide-nav-bar="true" class="board-container">
   <ion-content>
-    <div class="row menu-search-bar persistent">
-      <div id="search-bar" class="search-bar">
-        <input type="text" name="keyword">
+      <div ng-controller="SearchCtrl">
+        <div class="row menu-search-bar persistent">
+          <div id="search-bar" class="search-bar">
+            <input autofocus id="searchForSymbol" type="text" ng-model="searchForSymbol" ng-change="findMatchingSymbols()">
+          </div>
+
+          <div class="search-controls">
+              <button class="button circle button-clearsearch" ng-disabled="searchForSymbol.length == 0"
+                      ng-click="clearButtonClicked($event);"><i class="icon ion-close-round"></i></button>
+          </div>
+
+        </div>
+
+
+
+        <div class="row main-container">
+
+          <div class="list search-results">
+
+            <div ng-repeat="match in matchedSymbols">
+
+                  <div class="list-item" ng-click="matchedSymbolClicked($index)">
+                    <span class="tile">
+                      <span class="tile-image"><img src="img/symbols/{{match.tile.icon}}" /></span>
+                    </span>
+                    <span class="tile-name">{{match.tile.name}}</span>
+                  </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="search-controls">
-          <button class="button circle button-clearsearch" ng-disabled="keyword.length == 0"
-                  ng-click="clearButtonClicked();"><i class="icon ion-close-round"></i></button>
-      </div>
-
-    </div>
-
-    <div class="row main-container">
-        results go here
-    </div>
   </ion-content>
 </ion-view>
 

@@ -1,21 +1,23 @@
+<div ng-controller="AssemblyBar">
+
 <ion-view title="Wordlists" hide-nav-bar="true" class="board-container">
   <ion-content>
     <div class="row menu-speech-bar persistent">
       <div class="profile-button">
         <a class="aac-user"><img src="img/user-fpo.png" border="0"></a>
       </div>
-      <div id="assembly-bar" class="assembly-bar">
+      <div id="assembly-bar" class="assembly-bar" data-tap-disabled="true">
         <ul class="speech-tiles">
-          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in assemblyBarPhrase">
+          <li ng-click="barTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in barContents()">
             <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
             <span class="tile-name">{{word.name}}</span></li>
         </ul>
       </div>
 
       <div class="speech-controls">
-        <button class="button icon-left button-delete" ng-disabled="assemblyBarPhrase.length == 0"
+        <button class="button icon-left button-delete" ng-disabled="barContents().length == 0"
                 ng-click="deleteButtonClicked();"><i class="icon ion-close-round"></i></button>
-        <button class="button circle button-speak" ng-disabled="(assemblyBarPhrase.length == 0) || (TTSAvailable == false)"
+        <button class="button circle button-speak" ng-disabled="(barContents().length == 0) || (TTSAvailable == false)"
                 ng-click="speakButtonClicked();"><i class="icon ion-checkmark-round"></i></button>
       </div>
 
@@ -65,7 +67,4 @@
     </div>
   </ion-content>
 </ion-view>
-
-
-
-
+</div>

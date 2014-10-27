@@ -7,6 +7,8 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $location, $http) {
 
+  $rootScope.boards = [];
+
   // Make sure we're always logged in
   if (!$rootScope.authToken) {
     if(localStorage.getItem('authToken') !== null) {
