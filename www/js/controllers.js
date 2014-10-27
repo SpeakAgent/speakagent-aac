@@ -260,12 +260,14 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     $scope.authToken = null;
     localStorage.removeItem('authToken');
     console.log('Logout complete');
-  }
+  };
+
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
     $scope.loginData.username = $scope.loginData.username.toLowerCase();
 
+    // Handle login
     var tokenAuthURL = $rootScope.apiBaseAuthHREF+'api-token-auth/';
     var responsePromise = $http.post(tokenAuthURL,
       {
@@ -278,12 +280,31 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         if($rootScope.AnalyticsAvailable) {
           analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
           analytics.setUserId($scope.loginData.username);
-          analytics.addCustomDimension('userid', $scope.loginData.username)
+          analytics.addCustomDimension('userid', $scope.loginData.username);
         }
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
         $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
-        window.location = '#/app/wordlists/5/'; //TODO: Make better.
+
+        // Cache Data for Offline Use
+        // TODO: Fix this to be much nicer
+        var boardResponsePromise = $http.get($rootScope.apiBaseHREF + 'boards/?page_size=100',
+          { cache: true }
+        );
+
+        boardResponsePromise.success(function(data, status, headers, config) {
+          console.log('caching boards data...');
+          for (var i=0; i<data.count; i++) {
+            var board = data.results[i];
+            localStorage.setItem('board-'+board.id, JSON.stringify(board));
+            console.log('storing board: ' + board.id);
+          }
+          window.location = '#/app/wordlists/5/'; //TODO: Make better.
+        });
+
+        boardResponsePromise.error(function(data, status, headers, config) {
+            console.log("Unable to fetch boards data for caching. " + status);
+        });
     });
 
     responsePromise.error(function(data, status, headers, config) {
@@ -309,29 +330,25 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   console.log('State params ', $stateParams);
 
   var board = $stateParams.board ? $stateParams.board : '1';
+  board = parseInt(board, 10);
+
   if($rootScope.AnalyticsAvailable) {
     analytics.trackView('Board ID: '+board);
   }
 
   $scope.TTSAvailable = $rootScope.TTSAvailable;
 
+  $scope.currentBoard = board;
   $scope.wordlists = [];
-  var boardsListURL = $rootScope.apiBaseHREF+'boards/';
-  var responsePromise = $http.get(boardsListURL + board + '/?page_size=100',
-    { cache: true }
-  );
-
-  responsePromise.success(function(data, status, headers, config) {
-    console.log(data);
-    $scope.wordlists = data.tile_set.sort(function(a, b) {
+  var cachedBoard = $rootScope.boards[board]; //localStorage.getItem('board-'+board);
+  if (cachedBoard) {
+    console.log('Found cached data for board: ' + board);
+    $scope.wordlists = cachedBoard.tile_set.sort(function(a, b) {
       return a.ordinal - b.ordinal;
     });
-    $rootScope.boards[data.id] = $scope.wordlists;
-  });
-
-  responsePromise.error(function(data, status, headers, config) {
-      console.log("Unable to fetch symbols for board. " + status);
-  });
+  } else {
+    console.log('No cache found. Logout/login required.');
+  }
 
   $scope.$on('beaconsDiscovered', function(e, beacons) {
     console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
@@ -388,37 +405,59 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   function($scope, $rootScope, $window, addTileToAssemblyBar) {
 
-  $scope.searchForSymbol = "";
-  $scope.matchedSymbols = [];
+  $scope.searchForTile = "";
+  $scope.matchedTiles = [];
 
   console.log("scope ", $scope);
 
-  $scope.findMatchingSymbols = function() {
-    $scope.matchedSymbols = [];
-    if (!$scope.searchForSymbol) {
+  $scope.findMatchingTiles = function() {
+    $scope.matchedTiles = [];
+    if (!$scope.searchForTile) {
       return;
     }
 
-    $matchStr = $scope.searchForSymbol.toLowerCase();
+    var matchStr = $scope.searchForTile.toLowerCase();
+    var matchedTiles = [];
 
-    console.log('findMatchingSymbols', $scope);
-    console.log('looking for ', $matchStr);
+    console.log('findMatchingTiles', $scope);
+    console.log('looking for ', matchStr);
 
     angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
       console.log('board ', boardNumber);
-      angular.forEach(boardTiles, function(tile) {
-        var m = tile.name.toLowerCase().indexOf($matchStr);
+      angular.forEach(boardTiles.tile_set, function(tile) {
+        var m = tile.name.toLowerCase().indexOf(matchStr);
         if (m >= 0) {
-          $scope.matchedSymbols.push({'board' : boardNumber, 'tile': tile});
+          matchedTiles.push({'board' : boardNumber, 'tile': tile});
         }
       });
     });
+
+    // de-duplicate
+
+    var seen = {};
+
+    var dedupedTiles = matchedTiles.filter(function(item) {
+        return seen.hasOwnProperty(item.tile.name) ? false : (seen[item.tile.name] = true);
+    });
+
+    // Sort remaining into view
+
+    $scope.matchedTiles = dedupedTiles.sort(function(a, b) {
+      if (a.tile.name < b.tile.name) {
+        return -1;
+      }
+      if (a.tile.name > b.tile.name) {
+        return 1;
+      }
+      return 0;
+    });
+
   };
 
   $scope.clearButtonClicked = function(evt) {
-    $scope.searchForSymbol = "";
-    $scope.matchedSymbols = [];
-    var input = document.getElementById('searchForSymbol');
+    $scope.searchForTile = "";
+    $scope.matchedTiles = [];
+    var input = document.getElementById('searchForTile');
 
     // This will wait half a second to refocus, i'm sure there's a better
     // way to do this angulary-like, but I CBA right now. It works.
@@ -426,9 +465,9 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     setTimeout(function() { input.focus(); }, 500);
   };
 
-  $scope.matchedSymbolClicked = function(index) {
+  $scope.matchedTileClicked = function(index) {
 
-    var match = $scope.matchedSymbols[index];
+    var match = $scope.matchedTiles[index];
     if (match) {
       addTileToAssemblyBar(match.tile);
 

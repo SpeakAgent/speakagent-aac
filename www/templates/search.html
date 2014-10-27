@@ -4,11 +4,11 @@
       <div ng-controller="SearchCtrl">
         <div class="row menu-search-bar persistent">
           <div id="search-bar" class="search-bar">
-            <input autofocus id="searchForSymbol" type="text" ng-model="searchForSymbol" ng-change="findMatchingSymbols()">
+            <input autofocus id="searchForTile" type="text" ng-model="searchForTile" ng-change="findMatchingTiles()">
           </div>
 
           <div class="search-controls">
-              <button class="button circle button-clearsearch" ng-disabled="searchForSymbol.length == 0"
+              <button class="button circle button-clearsearch" ng-disabled="searchForTile.length == 0"
                       ng-click="clearButtonClicked($event);"><i class="icon ion-close-round"></i></button>
           </div>
 
@@ -20,9 +20,9 @@
 
           <div class="list search-results">
 
-            <div ng-repeat="match in matchedSymbols">
+            <div ng-repeat="match in matchedTiles">
 
-                  <div class="list-item" ng-click="matchedSymbolClicked($index)">
+                  <div class="list-item" ng-click="matchedTileClicked($index)">
                     <span class="tile">
                       <span class="tile-image"><img src="img/symbols/{{match.tile.icon}}" /></span>
                     </span>

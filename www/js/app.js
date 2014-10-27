@@ -34,12 +34,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       console.log('set apiBaseHREF and apiBaseAuthHREF and staticBaseHREF');
     }
 
-  // until heroku is updated with latest version, i am using my box.
-  // $rootScope.apiBaseHREF = 'http://10.15.20.36:8000/v1/';
-  // $rootScope.apiBaseAuthHREF = 'http://10.15.20.36:8000/';
-
-  $rootScope.assemblyBarPhrase = [];
-
   }
 
   $ionicPlatform.ready(function() {
@@ -97,8 +91,28 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       $rootScope.estimoteIsAvailable = false;
       console.log('Estimote API is not available.');
     }
-  });
 
+    // Load caches into memory
+    //
+
+    var boardsLoaded = 0;
+    try {
+      var storageLength = localStorage.length;
+      for(var i=0; i<storageLength; i++) {
+        var key = localStorage.key(i);
+        if (key.indexOf('board-') === 0) {
+          var str = key.split('-')[1];
+          var boardNumber = parseInt(str, 10);
+          $rootScope.boards[boardNumber] = JSON.parse(localStorage.getItem(key));
+          boardsLoaded++;
+        }
+      }
+
+      console.log(boardsLoaded + ' boards loaded from cache.');
+    } catch (e) {
+      console.log('Exception while restoring cache...', e);
+    }
+  });
 
 })
 

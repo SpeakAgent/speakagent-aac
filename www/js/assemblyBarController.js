@@ -187,7 +187,8 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   };
 }])
 
-.factory('addTileToAssemblyBar', ['$window', function(win) {
+.factory('addTileToAssemblyBar', ['$window', 'setClearOnAdd',
+  function(win, setClearOnAdd) {
   return function(obj) {
 
     if ((!win.assemblyBarTiles) || (win.assemblyBarClearOnAdd)) {
