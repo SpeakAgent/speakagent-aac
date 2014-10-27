@@ -323,12 +323,12 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 .controller('WordlistsCtrl', ['$stateParams', '$scope', '$http',
   '$rootScope', 'deleteAssemblyBarTileAtIndex', 'setClearOnAdd',
   'getAssemblyBarText', 'assemblyBarTileCount', 'addTileToAssemblyBar',
-  'getAssemblyBarTiles',
+  'getAssemblyBarTiles', 'removeUnspokenFoldersFromAssemblyBar',
 
   function($stateParams, $scope, $http, $rootScope,
     deleteAssemblyBarTileAtIndex, setClearOnAdd, getAssemblyBarText,
-    assemblyBarTileCount, addTileToAssemblyBar, getAssemblyBarTiles) {
-
+    assemblyBarTileCount, addTileToAssemblyBar, getAssemblyBarTiles,
+    removeUnspokenFoldersFromAssemblyBar) {
 
   $scope.maxAssemblyBarTiles = 8;
 
@@ -406,6 +406,10 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     console.log('word tile clicked: ', obj);
 
     if (obj.phrase) {
+
+      // Remove folders with no "phrase" value from the assembly bar.
+      //
+      removeUnspokenFoldersFromAssemblyBar();
 
       // Limit the length of the assembly bar to the most number of tiles
       // we can handle.

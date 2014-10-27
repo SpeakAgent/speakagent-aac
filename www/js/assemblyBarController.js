@@ -262,4 +262,20 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
     win.assemblyBarClearOnAdd = clearOnAdd;
     return clearOnAdd;
   };
+}])
+
+.factory('removeUnspokenFoldersFromAssemblyBar', ['$window', function(win) {
+  return function() {
+    if (!win.assemblyBarTiles) {
+      win.assemblyBarTiles = [];
+    }
+
+    var tmp = win.assemblyBarTiles.filter(
+      function(tile) {
+        return ((!tile.target) || (tile.phrase.trim()));
+      });
+
+    win.assemblyBarTiles = tmp;
+    return win.assemblyBarTiles;
+  };
 }]);
