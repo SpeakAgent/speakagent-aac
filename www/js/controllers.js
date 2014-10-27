@@ -329,7 +329,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     assemblyBarTileCount, addTileToAssemblyBar, getAssemblyBarTiles,
     removeUnspokenFoldersFromAssemblyBar) {
 
-
   $scope.maxAssemblyBarTiles = 8;
 
   console.log('State params ', $stateParams);
