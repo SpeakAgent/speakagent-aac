@@ -9,8 +9,6 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
     getAssemblyBarTiles, assemblyBarTileCount, setClearOnAdd,
     moveTileInFrontOfIndex, deleteAssemblyBarTileAtIndex) {
 
-  $scope.maxAssemblyBarTiles = 8;
-
   ionic.onGesture('dragstart', function(e) {
 
     // find our element in the list, and make sure it's the tile and not
@@ -151,27 +149,6 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
       return null;
   };
 
-  $scope.wordTileClicked = function(obj) {
-
-    console.log('word tile clicked: ', obj);
-
-    if (obj.phrase) {
-
-      // Limit the length of the assembly bar to the most number of tiles
-      // we can handle.
-      //
-      if (assemblyBarTileCount() < $scope.maxAssemblyBarTiles) {
-        console.log('phrase to add: ' + obj.phrase);
-        addTileToAssemblyBar(obj);
-      }
-    }
-
-    console.log('assembly bar phrase: ', getAssemblyBarTiles());
-    if($rootScope.AnalyticsAvailable) {
-      analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
-    }
-  };
-
   $scope.barTileClicked = function(index, obj) {
     console.log('bar tile clicked: ',  obj);
 
@@ -284,5 +261,21 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   return function(clearOnAdd) {
     win.assemblyBarClearOnAdd = clearOnAdd;
     return clearOnAdd;
+  };
+}])
+
+.factory('removeUnspokenFoldersFromAssemblyBar', ['$window', function(win) {
+  return function() {
+    if (!win.assemblyBarTiles) {
+      win.assemblyBarTiles = [];
+    }
+
+    var tmp = win.assemblyBarTiles.filter(
+      function(tile) {
+        return ((!tile.target) || (tile.phrase.trim()));
+      });
+
+    win.assemblyBarTiles = tmp;
+    return win.assemblyBarTiles;
   };
 }]);
