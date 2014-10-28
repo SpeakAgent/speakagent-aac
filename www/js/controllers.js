@@ -266,6 +266,7 @@ angular.module('speakagentAAC.controllers', ['ionic'])
     console.log('Doing login', $scope.loginData);
     $scope.loginData.username = $scope.loginData.username.toLowerCase();
 
+    // Handle login
     var tokenAuthURL = $rootScope.apiBaseAuthHREF+'api-token-auth/';
     var responsePromise = $http.post(tokenAuthURL,
       {
@@ -283,7 +284,26 @@ angular.module('speakagentAAC.controllers', ['ionic'])
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
         $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
-        window.location = '#/app/wordlists/5/'; //TODO: Make better.
+
+        // Cache Data for Offline Use
+        // TODO: Fix this to be much nicer
+        var boardResponsePromise = $http.get($rootScope.apiBaseHREF + 'boards/?page_size=100',
+          { cache: true }
+        );
+
+        boardResponsePromise.success(function(data, status, headers, config) {
+          console.log('caching boards data...');
+          for (var i=0; i<data.count; i++) {
+            var board = data.results[i];
+            localStorage.setItem('board-'+board.id, JSON.stringify(board));
+            console.log('storing board: ' + board.id);
+          }
+          window.location = '#/app/wordlists/5/'; //TODO: Make better.
+        });
+
+        boardResponsePromise.error(function(data, status, headers, config) {
+            console.log("Unable to fetch boards data for caching. " + status);
+        });
     });
 
     responsePromise.error(function(data, status, headers, config) {
@@ -308,22 +328,18 @@ angular.module('speakagentAAC.controllers', ['ionic'])
 
   $scope.maxAssemblyBarTiles = 8;
 
+  $scope.currentBoard = board;
   $scope.wordlists = [];
-  var boardsListURL = $rootScope.apiBaseHREF+'boards/';
-  var responsePromise = $http.get(boardsListURL + board + '/?page_size=100',
-    { cache: true }
-  );
-
-  responsePromise.success(function(data, status, headers, config) {
-    console.log(data);
+  var cachedBoard = localStorage.getItem('board-'+board);
+  if (cachedBoard) {
+    console.log('Found cached data for board: ' + board);
+    data = JSON.parse(cachedBoard);
     $scope.wordlists = data.tile_set.sort(function(a, b) {
       return a.ordinal - b.ordinal;
     });
-  });
-
-  responsePromise.error(function(data, status, headers, config) {
-      console.log("Unable to fetch symbols for board. " + status);
-  });
+  } else {
+    console.log('No cache found. Logout/login required.');
+  }
 
   $scope.$on('beaconsDiscovered', function(e, beacons) {
     console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
@@ -486,15 +502,35 @@ angular.module('speakagentAAC.controllers', ['ionic'])
       }
       $scope.clearAssemblyBarOnAdd = false;
 
+      // Remove last tile from the list.
+      var previousTile = $scope.assemblyBarPhrase.pop();
+      if (previousTile) {
+
+        // If the previous tile was a folder that pointed to our current
+        // word list, then leave it off the assembly bar.
+        if ((previousTile.target) &&
+            (previousTile.phrase) &&
+            (previousTile.target == $scope.currentBoard)) {
+          previousTile = null;
+        }
+      }
+
+      // Add the last tile back if it survived the test
+      //
+      if (previousTile) {
+        $scope.assemblyBarPhrase.push(previousTile);
+      }
+
       // Limit the length of the assembly bar to the most number of tiles
       // we can handle.
       //
       if ($scope.assemblyBarPhrase.length < $scope.maxAssemblyBarTiles) {
         console.log('phrase to add: ' + obj.phrase);
         $scope.assemblyBarPhrase.push(obj);
-        $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
       }
     }
+
+    $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
     console.log('assembly bar phrase: ', $scope.assemblyBarPhrase);
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
