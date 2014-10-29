@@ -6,8 +6,10 @@
 angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $location, $http) {
+  $rootScope.boards = [];
   $rootScope.currentWOWBoard = 24; // Default WOW board ID
   $rootScope.quickResponseBoard = 25; // Quick response board ID
+
   // Make sure we're always logged in
   if (!$rootScope.authToken) {
     if(localStorage.getItem('authToken') !== null) {
@@ -32,12 +34,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       localStorage.setItem('staticBaseHREF', $rootScope.staticBaseHREF);
       console.log('set apiBaseHREF and apiBaseAuthHREF and staticBaseHREF');
     }
-
-  // until heroku is updated with latest version, i am using my box.
-  // $rootScope.apiBaseHREF = 'http://10.15.20.36:8000/v1/';
-  // $rootScope.apiBaseAuthHREF = 'http://10.15.20.36:8000/';
-
-  $rootScope.assemblyBarPhrase = [];
 
   }
 
@@ -96,8 +92,28 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       $rootScope.estimoteIsAvailable = false;
       console.log('Estimote API is not available.');
     }
-  });
 
+    // Load caches into memory
+    //
+
+    var boardsLoaded = 0;
+    try {
+      var storageLength = localStorage.length;
+      for(var i=0; i<storageLength; i++) {
+        var key = localStorage.key(i);
+        if (key.indexOf('board-') === 0) {
+          var str = key.split('-')[1];
+          var boardNumber = parseInt(str, 10);
+          $rootScope.boards[boardNumber] = JSON.parse(localStorage.getItem(key));
+          boardsLoaded++;
+        }
+      }
+
+      console.log(boardsLoaded + ' boards loaded from cache.');
+    } catch (e) {
+      console.log('Exception while restoring cache...', e);
+    }
+  });
 
 })
 
@@ -114,7 +130,8 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       url: "/search",
       views: {
         'menuContent' :{
-          templateUrl: "templates/search.html"
+          templateUrl: "templates/search.html",
+          controller: 'SearchCtrl'
         }
       }
     })
@@ -135,16 +152,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         'menuContent' :{
           templateUrl: "templates/wordlists.html",
           controller: 'WordlistsCtrl'
-        }
-      }
-    })
-
-    .state('app.single', {
-      url: "/wordlist/:wordlistId",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/wordlist.html",
-          controller: 'WordlistCtrl'
         }
       }
     })
