@@ -7174,7 +7174,7 @@ input, button, select, textarea {
     margin-left: 5px; }
   .list-item.active .tile, .list-item.activated .tile, .tile.active, .tile.activated, .tile:focus, .tile:active {
     top: 1px;
-    box-shadow: none !important; }
+    box-shadow: none; }
     .list-item.active .tile span, .list-item.activated .tile span, .tile.active span, .tile.activated span, .tile:focus span, .tile:active span {
       opacity: 0.5; }
   .tile span {
@@ -7194,9 +7194,6 @@ input, button, select, textarea {
       text-align: center;
       width: 100%;
       padding: 0 4px; }
-
-.tile.folder {
-  color: blue; }
 
 .board {
   margin-left: 120px;
@@ -7221,14 +7218,14 @@ input, button, select, textarea {
     width: 52px;
     height: auto; }
   .board a.tile.folder {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
-    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0; }
+    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.3) -4px -4px 0 1px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.3) -4px -4px 0 1px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.3) -4px -4px 0 1px; }
     .board a.tile.folder.active, .board a.tile.folder.activated, .board a.tile.folder:focus, .board a.tile.folder:active {
       top: 1px;
-      -webkit-box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px;
-      -moz-box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px;
-      box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px; }
+      -webkit-box-shadow: rgba(0, 0, 0, 0) 4px -5px 0, rgba(0, 0, 0, 0.3) -4px -5px 0 1px;
+      -moz-box-shadow: rgba(0, 0, 0, 0) 4px -5px 0, rgba(0, 0, 0, 0.3) -4px -5px 0 1px;
+      box-shadow: rgba(0, 0, 0, 0) 4px -5px 0, rgba(0, 0, 0, 0.3) -4px -5px 0 1px; }
 
 @-webkit-keyframes wiggle {
   from {
@@ -7507,8 +7504,9 @@ input, button, select, textarea {
     height: 110px;
     margin: 0 auto;
     margin-bottom: 10px; }
-    .sidebar .tile.active, .sidebar .tile.activated {
-      top: 3px; }
+    .sidebar .tile.active, .sidebar .tile.activated, .sidebar .tile:focus, .sidebar .tile:active {
+      top: 3px;
+      box-shadow: none !important; }
 
 /* Misc Application Controls */
 .misc-control {

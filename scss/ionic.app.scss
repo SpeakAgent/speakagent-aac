@@ -194,7 +194,7 @@ input, button, select, textarea {
             span {
                 opacity: 0.5;
             }
-            box-shadow: none !important;
+            box-shadow: none;
         }
         span {
             display: block;
@@ -219,10 +219,6 @@ input, button, select, textarea {
         }
     }
 
-
-    .tile.folder {
-        color: blue;
-    }
 
 
 .board {
@@ -256,10 +252,10 @@ input, button, select, textarea {
         }
     }
     a.tile.folder {
-        @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(black,0.5) 4px -4px 0);
+        @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(black,0.3) -4px -4px 0 1px);
         &.active, &.activated, &:focus, &:active {
             top: 1px;
-            @include box-shadow(rgba(black,0.5) 4px -5px 0, rgba(black,0) 0 0 10px);
+            @include box-shadow(rgba(black,0) 4px -5px 0, rgba(black,0.3) -4px -5px 0 1px);
         }
     }
 }
@@ -562,8 +558,9 @@ input, button, select, textarea {
         height: 110px;
         margin: 0 auto;
         margin-bottom: 10px;
-        &.active, &.activated {
+        &.active, &.activated, &:focus, &:active {
             top: 3px;
+            box-shadow: none  !important;
         }
     }
 }
