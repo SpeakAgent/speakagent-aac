@@ -120,6 +120,15 @@ input, button, select, textarea {
         &.icon-left:before {
             color: $primary-color;
         }
+        &.button-positive.active {
+            background-color: $dark !important;
+            box-shadow: none;
+            border-color: white;
+            color: white;
+            &.icon-left:before {
+                color: white;
+            }
+        }
     }
     .secondary {
         position: absolute;
@@ -301,35 +310,39 @@ input, button, select, textarea {
 
 
 .editMode {
-        .wordlist:nth-child(3n+0) .tile {
-            -webkit-animation-name: wiggle;
-            animation-name: wiggle;
 
-        }
-
-        .wordlist:nth-child(3n+1) .tile {
-            -webkit-animation-name: wiggle1;
-            animation-name: wiggle1;
-        }
-
-        .wordlist:nth-child(3n+2) .tile {
-            -webkit-animation-name: wiggle2;
-            animation-name: wiggle2;
-        }
 
 
         .tile {
-            -webkit-animation-duration: .5s;
-            -webkit-animation-iteration-count: infinite;
-            -webkit-animation-timing-function: ease;
-
-            animation-duration: .5s;
-            animation-iteration-count: infinite;
-            animation-timing-function: ease;
+            &:before {
+                font-family: "Ionicons";
+                content: "\f128";
+                color: $assertive;
+                z-index: 9;
+                top: -2px;
+                left: -5px;
+                font-size: 22px;
+                background-color: #fff;
+                display: block;
+                @include border-radius(8px);
+                width: 20px;
+                height: 10px;
+                position: absolute;
+            }
         }
 
         .tile-hidden {
             opacity: .35;
+            &:before {
+                color: $positive;
+                font-family: "Ionicons";
+                content: "\f120";
+                opacity: 1;
+            }
+            box-shadow: none;
+            &:active, &.active, &.activated, &:focus {
+                top: 0;
+            }
         }
 
     }

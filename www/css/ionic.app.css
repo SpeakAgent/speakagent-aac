@@ -7115,6 +7115,13 @@ input, button, select, textarea {
     color: #b1b1b1; }
     .bar-global a.button.icon-left:before {
       color: #6FC9CB; }
+    .bar-global a.button.button-positive.active {
+      background-color: #2c2c2c !important;
+      box-shadow: none;
+      border-color: white;
+      color: white; }
+      .bar-global a.button.button-positive.active.icon-left:before {
+        color: white; }
   .bar-global .secondary {
     position: absolute;
     top: 5px;
@@ -7293,24 +7300,32 @@ input, button, select, textarea {
   to {
     transform: rotateZ(2deg); } }
 
-.editMode .wordlist:nth-child(3n+0) .tile {
-  -webkit-animation-name: wiggle;
-  animation-name: wiggle; }
-.editMode .wordlist:nth-child(3n+1) .tile {
-  -webkit-animation-name: wiggle1;
-  animation-name: wiggle1; }
-.editMode .wordlist:nth-child(3n+2) .tile {
-  -webkit-animation-name: wiggle2;
-  animation-name: wiggle2; }
-.editMode .tile {
-  -webkit-animation-duration: 0.5s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: ease;
-  animation-duration: 0.5s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease; }
+.editMode .tile:before {
+  font-family: "Ionicons";
+  content: "\f128";
+  color: #c81e21;
+  z-index: 9;
+  top: -2px;
+  left: -5px;
+  font-size: 22px;
+  background-color: #fff;
+  display: block;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  width: 20px;
+  height: 10px;
+  position: absolute; }
 .editMode .tile-hidden {
-  opacity: 0.35; }
+  opacity: 0.35;
+  box-shadow: none; }
+  .editMode .tile-hidden:before {
+    color: #4d8c8d;
+    font-family: "Ionicons";
+    content: "\f120";
+    opacity: 1; }
+  .editMode .tile-hidden:active, .editMode .tile-hidden.active, .editMode .tile-hidden.activated, .editMode .tile-hidden:focus {
+    top: 0; }
 
 /* Permenant Speech Bar */
 .menu-speech-bar {
