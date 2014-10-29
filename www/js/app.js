@@ -65,28 +65,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       console.log('TTS is not available.');
     }
 
-    try {
-      if (Estimote) {
-        $rootScope.estimoteIsAvailable = true;
-        console.log('Estimote API is available.');
-        var beaconPing = 0;
-
-        Estimote.startRangingBeacons(function(res) {
-          beaconPing = beaconPing + 1;
-          console.log('Beacon ping #'+beaconPing);
-          $rootScope.$broadcast('beaconsDiscovered', res);
-        },
-        function(res) {
-          console.log('Estimote API failed to range.');
-        },
-        { interval : 15 });
-
-        console.log('Waiting for replies.');
-      }
-    } catch (e) {
-      $rootScope.estimoteIsAvailable = false;
-      console.log('Estimote API is not available.');
-    }
 
     // Load caches into memory
     //
@@ -127,7 +105,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       ionic.Platform.fullScreen();
       StatusBar.hide();
     }
-
+z
   });
 
 })

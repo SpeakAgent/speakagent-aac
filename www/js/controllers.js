@@ -454,7 +454,9 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         });
 
         if (closestBeacon) {
-          console.log('closest beacon is ', closestBeacon);
+          console.log('closest beacon is ', JSON.stringify(closestBeacon));
+          console.log('current beacon is ', JSON.stringify($rootScope.currentBeacon));
+
           if ((!$rootScope.currentBeacon) ||
               ($rootScope.currentBeacon.major != closestBeacon.major) ||
               ($rootScope.currentBeacon.minor != closestBeacon.minor)) {
@@ -468,83 +470,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     } catch (e) {
       console.log('Exception finding closest beacon: ', e);
     }
-  });
-
-  $scope.$on('refreshWowContext', function(e) {
-    console.log('Refreshing WOW Context.');
-
-    var newBoard = null;
-
-    try {
-      // Get day of week
-      //
-      var date = new Date();
-      var daynum = date.getDay();
-      var is_weekend =(daynum === 0) || (daynum === 6);
-
-      var hour = date.getHours();
-      var hourStr = (hour < 10) ? '0' : '';
-      hourStr = hourStr + hour.toString() + ':00:00';
-
-      console.log('user profile', $rootScope.userProfile);
-
-      var wow_configs = $rootScope.userProfile.wow_configs;
-
-      if ((wow_configs) && (wow_configs.length)) {
-        var bestMatch = 0;
-        angular.forEach(wow_configs, function(wow) {
-
-          var matchCount = 0;
-
-          if (wow.time === hourStr) {
-            matchCount = matchCount + 1;
-          }
-
-          if ( (wow.day === 'all') ||
-               (wow.day === 'weekend' && is_weekend) ||
-               (wow.day === 'weekday' && !is_weekend) ||
-               (wow.day === 'm' && daynum === 1) ||
-               (wow.day === 't' && daynum === 2) ||
-               (wow.day === 'w' && daynum === 3) ||
-               (wow.day === 'th' && daynum === 4) ||
-               (wow.day === 'f' && daynum === 5) ) {
-            matchCount = matchCount + 1;
-          }
-
-          if (($rootScope.currentBeacon) && (wow.location))  {
-            if ( (wow.beacon_major === $rootScope.currentBeacon.major) &&
-                  (wow.beacon_minor === $rootScope.currentBeacon.minor) ) {
-             matchCount = matchCount + 1;
-             }
-          }
-
-          // If we matched more things than any previous match, then
-          // select that board.
-
-          if (matchCount > bestMatch) {
-            newBoard = wow.board.id;
-            bestMatch = matchCount;
-          }
-        }); //foreach
-      }
-    } catch (e) {
-      console.log('Exception trying to figure out new WOW board: ', e);
-    }
-
-    if ((newBoard) && (newBoard !==$scope.currentWOWBoard)) {
-      $timeout(function() {
-        console.log('New WOW Board selected: ', newBoard);
-        $scope.currentWOWBoard = newBoard;
-        var board = $scope.boards[$scope.currentWOWBoard];
-        if (board){
-          $scope.wowResponseTiles = board.tile_set.sort(function(a, b) {
-            return a.ordinal - b.ordinal;
-          });
-        }
-      });
-    }
-
-    console.log('Done refreshing WOW Context.');
   });
 
   $scope.wordTileClicked = function(obj) {
