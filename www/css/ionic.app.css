@@ -7661,7 +7661,8 @@ form .item-get-location input {
     height: 60px; }
   .menu-search-bar input[type=text] {
     font-size: 20px;
-    line-height: 35px; }
+    line-height: 34px;
+    margin-top: 3px; }
   .menu-search-bar .search-controls {
     height: 78px;
     position: absolute;
