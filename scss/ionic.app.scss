@@ -255,7 +255,7 @@ input, button, select, textarea {
             height: auto;
         }
     }
-    div[ng-repeat="word in wordlists"] a.tile.item-content {
+    a.tile.folder {
         @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(black,0.5) 4px -4px 0);
         &.active, &.activated, &:focus, &:active {
             top: 1px;

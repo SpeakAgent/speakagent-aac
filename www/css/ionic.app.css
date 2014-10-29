@@ -7220,11 +7220,11 @@ input, button, select, textarea {
   .board .tile .tile-image img {
     width: 52px;
     height: auto; }
-  .board div[ng-repeat="word in wordlists"] a.tile.item-content {
+  .board a.tile.folder {
     -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
     -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
     box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0; }
-    .board div[ng-repeat="word in wordlists"] a.tile.item-content.active, .board div[ng-repeat="word in wordlists"] a.tile.item-content.activated, .board div[ng-repeat="word in wordlists"] a.tile.item-content:focus, .board div[ng-repeat="word in wordlists"] a.tile.item-content:active {
+    .board a.tile.folder.active, .board a.tile.folder.activated, .board a.tile.folder:focus, .board a.tile.folder:active {
       top: 1px;
       -webkit-box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px;
       -moz-box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px;
