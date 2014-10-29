@@ -7358,13 +7358,7 @@ input, button, select, textarea {
         width: 90px;
         height: 90px;
         border-radius: 90px;
-        -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 3px 0;
-        -moz-box-shadow: rgba(0, 0, 0, 0.4) 0 3px 0;
-        box-shadow: rgba(0, 0, 0, 0.4) 0 3px 0;
         position: relative; }
-      .menu-speech-bar .profile-button .aac-user.active img, .menu-speech-bar .profile-button .aac-user.activated img, .menu-speech-bar .profile-button .aac-user:focus img, .menu-speech-bar .profile-button .aac-user:active img {
-        box-shadow: none;
-        top: 2px; }
   .menu-speech-bar .assembly-bar {
     background-color: #fff;
     -webkit-border-radius: 9px;

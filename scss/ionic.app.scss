@@ -379,14 +379,7 @@ input, button, select, textarea {
                 width: 90px;
                 height: 90px;
                 border-radius: 90px;
-                @include box-shadow(rgba(black,0.4) 0 3px 0);
                 position: relative;
-            }
-            &.active, &.activated, &:focus, &:active {
-                img {
-                    box-shadow: none;
-                    top: 2px;
-                }
             }
         }
     }
