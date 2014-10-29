@@ -6,6 +6,9 @@
 angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $location, $http) {
+  $rootScope.boards = [];
+  $rootScope.currentWOWBoard = 24; // Default WOW board ID
+  $rootScope.quickResponseBoard = 25; // Quick response board ID
 
   // Make sure we're always logged in
   if (!$rootScope.authToken) {
@@ -31,12 +34,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       localStorage.setItem('staticBaseHREF', $rootScope.staticBaseHREF);
       console.log('set apiBaseHREF and apiBaseAuthHREF and staticBaseHREF');
     }
-
-  // until heroku is updated with latest version, i am using my box.
-  // $rootScope.apiBaseHREF = 'http://10.15.20.36:8000/v1/';
-  // $rootScope.apiBaseAuthHREF = 'http://10.15.20.36:8000/';
-
-  $rootScope.assemblyBarPhrase = [];
 
   }
 
@@ -97,7 +94,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     }
   });
 
-
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -113,7 +109,8 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       url: "/search",
       views: {
         'menuContent' :{
-          templateUrl: "templates/search.html"
+          templateUrl: "templates/search.html",
+          controller: 'SearchCtrl'
         }
       }
     })
@@ -134,16 +131,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         'menuContent' :{
           templateUrl: "templates/wordlists.html",
           controller: 'WordlistsCtrl'
-        }
-      }
-    })
-
-    .state('app.single', {
-      url: "/wordlist/:wordlistId",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/wordlist.html",
-          controller: 'WordlistCtrl'
         }
       }
     })

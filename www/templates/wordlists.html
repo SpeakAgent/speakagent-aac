@@ -1,42 +1,31 @@
+<div ng-controller="AssemblyBar">
+
 <ion-view title="Wordlists" hide-nav-bar="true" class="board-container">
-  <ion-content scroll="false">
+  <ion-content has-bouncing="false" scroll="false" overflow-scroll="false">
     <div class="row menu-speech-bar persistent">
       <div class="profile-button">
         <a class="aac-user"><img src="img/user-fpo.png" border="0"></a>
       </div>
-      <div id="assembly-bar" class="assembly-bar">
+      <div id="assembly-bar" class="assembly-bar" data-tap-disabled="true">
         <ul class="speech-tiles">
-          <li ng-click="speechTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in assemblyBarPhrase">
+          <li ng-click="barTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in barContents()">
             <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
             <span class="tile-name">{{word.name}}</span></li>
         </ul>
       </div>
 
       <div class="speech-controls">
-        <button class="button icon-left button-delete" ng-disabled="assemblyBarPhrase.length == 0"
+        <button class="button icon-left button-delete" ng-disabled="barContents().length == 0"
                 ng-click="deleteButtonClicked();"><i class="icon ion-close-round"></i></button>
-        <button class="button circle button-speak" ng-disabled="(assemblyBarPhrase.length == 0) || (TTSAvailable == false)"
+        <button class="button circle button-speak" ng-disabled="(barContents().length == 0) || (TTSAvailable == false)"
                 ng-click="speakButtonClicked();"><i class="icon ion-checkmark-round"></i></button>
       </div>
 
     </div>
 
     <div class="sidebar menu-wow persistent">
-      <ul>
-        <li class="tile"><div class="item-content"><span class="tile-image"><img src="img/symbols/what_time.png" /></span><span class="tile-name">What time is it?</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Two</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Three</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Four</span></div></li>
-      </ul>
-      <a class="button menu-start-over misc-control" ng-href="#/app/wordlists/5/" href="#/app/wordlists/5/"><i class="icon ion-home"></i></a>
-    </div>
-
-    <div class="row main-container">
-      <div class="col col-80 board">
-
       <div class="list">
-
-        <div ng-repeat="word in wordlists">
+        <div ng-repeat="word in wowResponseTiles">
           <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
@@ -50,22 +39,48 @@
           </div>
         </div>
       </div>
+      <a class="button menu-start-over misc-control" ng-href="#/app/wordlists/5/" href="#/app/wordlists/5/"><i class="icon ion-home"></i></a>
+    </div>
+
+    <div class="row main-container">
+      <div class="col col-80 board" ng-class="{'editMode' : editMode}">
+
+      <div class="list">
+
+        <div ng-repeat="word in wordlists" class="wordlist">
+          <a ng-click="wordTileClicked($event, {{word.id}});" href="#/app/wordlists/{{word.target}}" class="tile item-content {{word.kind}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="word.target">
+              <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
+              <span class="tile-name">{{word.name}}</span>
+          </a>
+
+          <div ng-click="wordTileClicked($event, {{word.id}});" class="tile {{word.kind}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="!word.target">
+            <div class="item-content">
+              <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
+              <span class="tile-name">{{word.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     </div>
     <div class="sidebar menu-comment persistent">
       <ul>
-        <li class="tile"><div class="item-content">
-          <span class="tile-image">Image</span>
-          <span class="tile-name">Yes</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">No</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">One Moment Please</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Help!</span></div></li>
+        <li ng-repeat="word in quickResponseTiles" class="tile">
+          <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
+              <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
+              <span class="tile-name">{{word.name}}</span>
+          </a>
+
+          <div ng-click="wordTileClicked({{word}});" class="tile {{word.type}}" ng-if="!word.target">
+            <div class="item-content">
+              <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
+              <span class="tile-name">{{word.name}}</span>
+            </div>
+          </div>
+        </li>
       </ul>
       <div class="button menu-alert misc-control"><i class="icon ion-ios7-bell"></i></div>
     </div>
   </ion-content>
 </ion-view>
-
-
-
-
+</div>

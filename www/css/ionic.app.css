@@ -7207,6 +7207,8 @@ input, button, select, textarea {
     display: -webkit-flex;
     flex-wrap: wrap;
     -webkit-flex-flow: row wrap; }
+  .board .tile-hidden {
+    opacity: 0; }
   .board .tile, .board .item-content {
     height: 76px;
     width: 76px;
@@ -7218,15 +7220,100 @@ input, button, select, textarea {
   .board .tile .tile-image img {
     width: 52px;
     height: auto; }
-  .board div[ng-repeat="word in wordlists"] a.tile.item-content {
+  .board a.tile.folder {
     -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
     -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
     box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0; }
-    .board div[ng-repeat="word in wordlists"] a.tile.item-content.active, .board div[ng-repeat="word in wordlists"] a.tile.item-content.activated, .board div[ng-repeat="word in wordlists"] a.tile.item-content:focus, .board div[ng-repeat="word in wordlists"] a.tile.item-content:active {
+    .board a.tile.folder.active, .board a.tile.folder.activated, .board a.tile.folder:focus, .board a.tile.folder:active {
       top: 1px;
       -webkit-box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px;
       -moz-box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px;
       box-shadow: rgba(0, 0, 0, 0.5) 4px -5px 0, rgba(0, 0, 0, 0) 0 0 10px; }
+
+@-webkit-keyframes wiggle {
+  from {
+    -webkit-transform: rotateZ(2deg); }
+
+  50% {
+    -webkit-transform: rotateZ(-2deg); }
+
+  to {
+    -webkit-transform: rotateZ(2deg); } }
+
+@keyframes wiggle {
+  from {
+    transform: rotateZ(2deg); }
+
+  50% {
+    transform: rotateZ(-2deg); }
+
+  to {
+    transform: rotateZ(2deg); } }
+
+@-webkit-keyframes wiggle1 {
+  from {
+    -webkit-transform: rotateZ(-2deg); }
+
+  50% {
+    -webkit-transform: rotateZ(2deg); }
+
+  to {
+    -webkit-transform: rotateZ(-2deg); } }
+
+@keyframes wiggle1 {
+  from {
+    transform: rotateZ(-2deg); }
+
+  50% {
+    transform: rotateZ(2deg); }
+
+  to {
+    transform: rotateZ(-2deg); } }
+
+@-webkit-keyframes wiggle2 {
+  from {
+    -webkit-transform: rotateZ(0deg); }
+
+  25% {
+    -webkit-transform: rotateZ(-2deg); }
+
+  50% {
+    -webkit-transform: rotateZ(0deg); }
+
+  to {
+    -webkit-transform: rotateZ(2deg); } }
+
+@keyframes wiggle {
+  from {
+    transform: rotateZ(0deg); }
+
+  25% {
+    transform: rotateZ(-2deg); }
+
+  50% {
+    transform: rotateZ(0deg); }
+
+  to {
+    transform: rotateZ(2deg); } }
+
+.editMode .wordlist:nth-child(3n+0) .tile {
+  -webkit-animation-name: wiggle;
+  animation-name: wiggle; }
+.editMode .wordlist:nth-child(3n+1) .tile {
+  -webkit-animation-name: wiggle1;
+  animation-name: wiggle1; }
+.editMode .wordlist:nth-child(3n+2) .tile {
+  -webkit-animation-name: wiggle2;
+  animation-name: wiggle2; }
+.editMode .tile {
+  -webkit-animation-duration: 0.5s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease; }
+.editMode .tile-hidden {
+  opacity: 0.35; }
 
 /* Permenant Speech Bar */
 .menu-speech-bar {
@@ -7532,3 +7619,107 @@ form .item-get-location input {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0; }
+
+/***
+    Search screen
+    */
+.menu-search-bar {
+  top: 44px;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  position: absolute;
+  padding: 25px 0 0 0; }
+  .menu-search-bar .search-bar {
+    margin-left: 120px;
+    background-color: #fff;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    margin-top: 10px;
+    margin-right: 30px;
+    padding: 5px;
+    text-overflow: clip ellipsis;
+    width: 84%;
+    position: relative;
+    height: 90px; }
+  .menu-search-bar input[type=text] {
+    font-size: 50px;
+    line-height: 72px;
+    height: 72px; }
+  .menu-search-bar .search-controls {
+    height: 78px;
+    position: absolute;
+    right: 10px; }
+    .menu-search-bar .search-controls .button {
+      border: 0;
+      color: #fff;
+      margin-left: 20px; }
+      .menu-search-bar .search-controls .button i {
+        border: 1px solid #fff;
+        border-radius: 100px;
+        padding: 10px; }
+    .menu-search-bar .search-controls .button-clearsearch {
+      background-color: #889988;
+      height: 72px;
+      width: 72px;
+      margin-top: 16px;
+      margin-right: 100px;
+      position: relative;
+      display: block;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 3px 0;
+      -moz-box-shadow: rgba(0, 0, 0, 0.3) 0 3px 0;
+      box-shadow: rgba(0, 0, 0, 0.3) 0 3px 0; }
+      .menu-search-bar .search-controls .button-clearsearch i {
+        padding: 14px 7px;
+        color: #889988;
+        background-color: #fff; }
+      .menu-search-bar .search-controls .button-clearsearch i.icon:before {
+        font-size: 42px; }
+      .menu-search-bar .search-controls .button-clearsearch.active, .menu-search-bar .search-controls .button-clearsearch.activated {
+        top: 3px;
+        box-shadow: none;
+        background-color: #83E083; }
+      .menu-search-bar .search-controls .button-clearsearch.disabled, .menu-search-bar .search-controls .button-clearsearch[disabled] {
+        opacity: 1;
+        background-color: #7EB07E;
+        box-shadow: none;
+        top: 3px; }
+        .menu-search-bar .search-controls .button-clearsearch.disabled i, .menu-search-bar .search-controls .button-clearsearch[disabled] i {
+          opacity: 0.8; }
+
+.search-results {
+  margin-left: 120px;
+  margin-top: 220px;
+  width: 84%; }
+  .search-results .list {
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    -webkit-flex-flow: row wrap; }
+  .search-results .list-item {
+    margin-bottom: 15px;
+    padding-top: 5px;
+    display: block;
+    width: 100%;
+    height: 100px;
+    background-color: #fff; }
+    .search-results .list-item .tile {
+      border: 1px solid black;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
+      -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
+      box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px, rgba(0, 0, 0, 0.5) 4px -4px 0;
+      height: 76px;
+      width: 76px;
+      display: inline-block;
+      margin-left: 15px;
+      margin-top: 10px; }
+    .search-results .list-item .tile-image img {
+      padding-top: 3px;
+      width: 70px;
+      height: auto; }
+    .search-results .list-item .tile-name {
+      vertical-align: top;
+      margin-left: 30px;
+      font-size: 42px;
+      line-height: 100px; }
