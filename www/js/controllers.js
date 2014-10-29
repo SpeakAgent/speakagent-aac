@@ -421,7 +421,19 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   /***** end of sidebars *************/
 
   $rootScope.currentBeacon = null;
+
+  // FIXME: Debugging only
+  // $interval(function() {
+  //   console.log('Calling beaconsDiscovered - forced');
+  //   $rootScope.$broadcast('beaconsDiscovered');
+  //   }, 3000); // make 10 more like 30 or so
+
   $scope.$on('beaconsDiscovered', function(e, beacons) {
+
+    // FIXME: debugging only
+
+    // beacons = JSON.parse('{"isScanning":true,"count":3,"beaconList":[{"major":13146,"minor":1972,"rssi":-57,"color":3,"distance":0.108569774241653},{"major":11024,"minor":22575,"rssi":-72,"color":2,"distance":1.128328673992085},{"major":19004,"minor":47181,"rssi":-81,"color":1,"distance":2.413987846517621}]}');
+
     console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
 
     try {
@@ -429,9 +441,13 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         var distanceThreshold = 1;
         // idunno what that value should be, we'll need to play with it.
 
+        console.log('beacons.beaconList', beacons.beaconList);
         var theBeacon = angular.forEach(beacons.beaconList, function(b) {
+          console.log('Beacon test: ', b);
+          console.log('major: ' + b.major + ', minor: ' + b.minor + ', distance: ' + b.distance);
           if (b.distance < distanceThreshold) {
             if ((!closestBeacon) || (b.distance < closestBeacon.distance)) {
+              console.log('... closest so far');
               closestBeacon = b;
             }
           }
@@ -439,7 +455,8 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
         if (closestBeacon) {
           console.log('closest beacon is ', closestBeacon);
-          if (($rootScope.currentBeacon.major != closestBeacon.major) ||
+          if ((!$rootScope.currentBeacon) ||
+              ($rootScope.currentBeacon.major != closestBeacon.major) ||
               ($rootScope.currentBeacon.minor != closestBeacon.minor)) {
             console.log('beacon changed; refreshing wow context');
             $rootScope.currentBeacon = closestBeacon;
@@ -468,6 +485,8 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       var hour = date.getHours();
       var hourStr = (hour < 10) ? '0' : '';
       hourStr = hourStr + hour.toString() + ':00:00';
+
+      console.log('user profile', $rootScope.userProfile);
 
       var wow_configs = $rootScope.userProfile.wow_configs;
 
