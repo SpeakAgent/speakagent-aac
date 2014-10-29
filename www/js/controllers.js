@@ -281,7 +281,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         if($rootScope.AnalyticsAvailable) {
           analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
           analytics.setUserId($scope.loginData.username);
-          analytics.addCustomDimension('userid', $scope.loginData.username);
+          analytics.addCustomDimension('dimension1', $scope.loginData.username);
         }
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
