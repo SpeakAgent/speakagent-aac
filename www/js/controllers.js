@@ -250,7 +250,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
 })
 
-.controller('LoginCtrl', function($scope, $http, $rootScope){
+.controller('LoginCtrl', function($scope, $http, $rootScope, $ionicLoading){
   // Form data for the login modal
   $scope.loginData = {};
   $scope.authToken = $rootScope.authToken;
@@ -268,6 +268,9 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     console.log('Doing login', $scope.loginData);
     $scope.loginData.username = $scope.loginData.username.toLowerCase();
 
+    $ionicLoading.show({
+          template: 'Logging in...'
+        });
     // Handle login
     var tokenAuthURL = $rootScope.apiBaseAuthHREF+'api-token-auth/';
     var responsePromise = $http.post(tokenAuthURL,
@@ -277,6 +280,10 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       });
 
     responsePromise.success(function(data, status, headers, config) {
+        $ionicLoading.hide();
+        $ionicLoading.show({
+              template: 'Caching data from server...'
+            });
         console.log(data);
         if($rootScope.AnalyticsAvailable) {
           analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
@@ -298,8 +305,10 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           for (var i=0; i<data.count; i++) {
             var board = data.results[i];
             localStorage.setItem('board-'+board.id, JSON.stringify(board));
+            $rootScope.boards[board.id] = board
             console.log('storing board: ' + board.id);
           }
+          $ionicLoading.hide();
           window.location = '#/app/wordlists/5/'; //TODO: Make better.
         });
 
@@ -323,12 +332,12 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 .controller('WordlistsCtrl', ['$stateParams', '$scope', '$http',
   '$rootScope', 'deleteAssemblyBarTileAtIndex', 'setClearOnAdd',
   'getAssemblyBarText', 'assemblyBarTileCount', 'addTileToAssemblyBar',
-  'getAssemblyBarTiles', 'removeUnspokenFoldersFromAssemblyBar',
+  'getAssemblyBarTiles', 'removeUnspokenFoldersFromAssemblyBar', '$ionicLoading',
 
   function($stateParams, $scope, $http, $rootScope,
     deleteAssemblyBarTileAtIndex, setClearOnAdd, getAssemblyBarText,
     assemblyBarTileCount, addTileToAssemblyBar, getAssemblyBarTiles,
-    removeUnspokenFoldersFromAssemblyBar) {
+    removeUnspokenFoldersFromAssemblyBar, $ionicLoading) {
 
   $scope.maxAssemblyBarTiles = 8;
 
@@ -342,6 +351,33 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   }
 
   $scope.TTSAvailable = $rootScope.TTSAvailable;
+
+  // Load board caches into memory
+  //
+
+  if ($rootScope.boards.length < 1) {
+    var boardsLoaded = 0;
+    $ionicLoading.show({
+      template: 'Loading cached data...'
+    });
+    try {
+      var storageLength = localStorage.length;
+      for(var i=0; i<storageLength; i++) {
+        var key = localStorage.key(i);
+        if (key.indexOf('board-') === 0) {
+          var str = key.split('-')[1];
+          var boardNumber = parseInt(str, 10);
+          $rootScope.boards[boardNumber] = JSON.parse(localStorage.getItem(key));
+          boardsLoaded++;
+        }
+      }
+
+      console.log(boardsLoaded + ' boards loaded from cache.');
+      $ionicLoading.hide();
+    } catch (e) {
+      console.log('Exception while restoring cache...', e);
+    }
+  }
 
   $scope.currentBoard = board;
   $scope.wordlists = [];
