@@ -24,12 +24,21 @@
     </div>
 
     <div class="sidebar menu-wow persistent">
-      <ul>
-        <li class="tile"><div class="item-content"><span class="tile-image"><img src="img/symbols/what_time.png" /></span><span class="tile-name">What time is it?</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Two</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Three</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Wow Four</span></div></li>
-      </ul>
+      <div class="list">
+        <div ng-repeat="word in wowResponseTiles">
+          <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
+              <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
+              <span class="tile-name">{{word.name}}</span>
+          </a>
+
+          <div ng-click="wordTileClicked({{word}});" class="tile {{word.type}}" ng-if="!word.target">
+            <div class="item-content">
+              <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
+              <span class="tile-name">{{word.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <a class="button menu-start-over misc-control" ng-href="#/app/wordlists/5/" href="#/app/wordlists/5/"><i class="icon ion-home"></i></a>
     </div>
 
@@ -56,12 +65,19 @@
     </div>
     <div class="sidebar menu-comment persistent">
       <ul>
-        <li class="tile"><div class="item-content">
-          <span class="tile-image">Image</span>
-          <span class="tile-name">Yes</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">No</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">One Moment Please</span></div></li>
-        <li class="tile"><div class="item-content"><span class="tile-image">Image</span><span class="tile-name">Help!</span></div></li>
+        <li ng-repeat="word in quickResponseTiles" class="tile">
+          <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
+              <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
+              <span class="tile-name">{{word.name}}</span>
+          </a>
+
+          <div ng-click="wordTileClicked({{word}});" class="tile {{word.type}}" ng-if="!word.target">
+            <div class="item-content">
+              <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
+              <span class="tile-name">{{word.name}}</span>
+            </div>
+          </div>
+        </li>
       </ul>
       <div class="button menu-alert misc-control"><i class="icon ion-ios7-bell"></i></div>
     </div>

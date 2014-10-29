@@ -6,8 +6,9 @@
 angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $location, $http) {
-
   $rootScope.boards = [];
+  $rootScope.currentWOWBoard = 24; // Default WOW board ID
+  $rootScope.quickResponseBoard = 25; // Quick response board ID
 
   // Make sure we're always logged in
   if (!$rootScope.authToken) {
