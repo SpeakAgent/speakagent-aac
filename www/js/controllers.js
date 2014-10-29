@@ -313,7 +313,8 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         });
 
         boardResponsePromise.error(function(data, status, headers, config) {
-            console.log("Unable to fetch boards data for caching. " + status);
+          $ionicLoading.hide();
+          console.log("Unable to fetch boards data for caching. " + status);
         });
     });
 
@@ -375,6 +376,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       console.log(boardsLoaded + ' boards loaded from cache.');
       $ionicLoading.hide();
     } catch (e) {
+      $ionicLoading.hide();
       console.log('Exception while restoring cache...', e);
     }
   }
