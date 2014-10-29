@@ -7,8 +7,11 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $location, $http) {
   $rootScope.boards = [];
-  $rootScope.currentWOWBoard = 24; // Default WOW board ID
-  $rootScope.quickResponseBoard = 25; // Quick response board ID
+  $rootScope.defaultWOWBoard = 24; // Default WOW board ID
+  $rootScope.defaultQuickResponseBoard = 25; // Quick response board ID
+
+  $rootScope.currentWOWBoard = $rootScope.defaultWOWBoard;
+  $rootScope.currentQuickResponseBoard = $rootScope.defaultQuickResponseBoard;
 
   // Make sure we're always logged in
   if (!$rootScope.authToken) {
@@ -35,19 +38,11 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       console.log('set apiBaseHREF and apiBaseAuthHREF and staticBaseHREF');
     }
 
-  }
+    // Moved this from ready() to run because sometimes on reload,
+    // the board controller would run before the ready() function
+    // which of course means that speech, estimotes, and board cache
+    // aren't loaded yet.
 
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      ionic.Platform.fullScreen();
-      StatusBar.hide();
-    }
     try {
       if(analytics) {
         analytics.startTrackerWithId('UA-54749327-1');
@@ -84,7 +79,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         function(res) {
           console.log('Estimote API failed to range.');
         },
-        { interval : 5 });
+        { interval : 15 });
 
         console.log('Waiting for replies.');
       }
@@ -95,7 +90,6 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
     // Load caches into memory
     //
-
     var boardsLoaded = 0;
     try {
       var storageLength = localStorage.length;
@@ -108,11 +102,32 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
           boardsLoaded++;
         }
       }
-
       console.log(boardsLoaded + ' boards loaded from cache.');
     } catch (e) {
-      console.log('Exception while restoring cache...', e);
+      console.log('Exception while restoring boards from cache: ', e);
+    };
+
+    try {
+      $rootScope.userProfile = JSON.parse(localStorage.getItem('userProfile'));
+    } catch (e) {
+      console.log('Exception while restoring user profile from cache: ', e);
     }
+
+    console.log('leaving RUN');
+  }
+
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+    if(window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      ionic.Platform.fullScreen();
+      StatusBar.hide();
+    }
+
   });
 
 })

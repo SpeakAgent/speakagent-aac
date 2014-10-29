@@ -259,6 +259,9 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     $rootScope.authToken = null;
     $scope.authToken = null;
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userProfile');
+    $rootScope.userProfile = null;
+
     console.log('Logout complete');
   };
 
@@ -277,6 +280,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
     responsePromise.success(function(data, status, headers, config) {
         console.log(data);
+
         if($rootScope.AnalyticsAvailable) {
           analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
           analytics.setUserId($scope.loginData.username);
@@ -292,6 +296,13 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           { cache: true }
         );
 
+        // FIXME: We need some way to get the profile either by username or
+        // to have the api token to return the id or profile link back so that we
+        // can fetch it.  This works for now, tho, I think.
+        //
+        var profileResponsePromise = $http.get($rootScope.apiBaseAuthHREF + 'userprofile/',
+          { cache: true }
+        );
         boardResponsePromise.success(function(data, status, headers, config) {
           console.log('caching boards data...');
           for (var i=0; i<data.count; i++) {
@@ -305,6 +316,28 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         boardResponsePromise.error(function(data, status, headers, config) {
             console.log("Unable to fetch boards data for caching. " + status);
         });
+
+        // FIXME: This could probably be encapsulated in a user object/service
+        // or something, but for now, $rootScope it is.
+        //
+        profileResponsePromise.success(function(data, status, headers, config) {
+          console.log('caching user profile...', data);
+          var results = data.results[0];
+          var user = {};
+          user.first_name = results.first_name;
+          user.last_name = results.last_name;
+          user.email = results.email;
+          user.avatar = results.avatar;
+          user.wow_configs = results.wow_configs;
+
+          localStorage.setItem('userProfile', JSON.stringify(user));
+          $rootScope.userProfile = user;
+        });
+
+        profileResponsePromise.error(function(data, status, headers, config) {
+            console.log("Unable to fetch user profile for caching. " + status);
+        });
+
     });
 
     responsePromise.error(function(data, status, headers, config) {
@@ -320,11 +353,12 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
 
 .controller('WordlistsCtrl', ['$stateParams', '$scope', '$http',
-  '$rootScope', 'deleteAssemblyBarTileAtIndex', 'setClearOnAdd',
+  '$rootScope', '$interval', '$timeout',
+  'deleteAssemblyBarTileAtIndex', 'setClearOnAdd',
   'getAssemblyBarText', 'assemblyBarTileCount', 'addTileToAssemblyBar',
   'getAssemblyBarTiles', 'removeUnspokenFoldersFromAssemblyBar',
 
-  function($stateParams, $scope, $http, $rootScope,
+  function($stateParams, $scope, $http, $rootScope, $interval, $timeout,
     deleteAssemblyBarTileAtIndex, setClearOnAdd, getAssemblyBarText,
     assemblyBarTileCount, addTileToAssemblyBar, getAssemblyBarTiles,
     removeUnspokenFoldersFromAssemblyBar) {
@@ -332,6 +366,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   $scope.maxAssemblyBarTiles = 8;
 
   console.log('State params ', $stateParams);
+  console.log('User profile ', $rootScope.userProfile);
 
   var board = $stateParams.board ? $stateParams.board : '1';
   board = parseInt(board, 10);
@@ -354,10 +389,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     console.log('No cache found. Logout/login required.');
   }
 
+  $interval(function() {
+    console.log('Calling refreshWowContext(timer)');
+    $rootScope.$broadcast('refreshWowContext');
+    }, 5000); // make 10 more like 30 or so
+
   /*********
   /* Load QuickResponse Tiles
   /*********/
-  var cachedQuickResponseBoard = JSON.parse(localStorage.getItem('board-'+$rootScope.quickResponseBoard));
+  var cachedQuickResponseBoard = $rootScope.boards[$rootScope.currentQuickResponseBoard];
   if (cachedQuickResponseBoard){
     $scope.quickResponseTiles = cachedQuickResponseBoard.tile_set.sort(function(a, b) {
       return a.ordinal - b.ordinal;
@@ -368,28 +408,125 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   /*********
   /* Load WoW Tiles
   /*********/
-  var currentWOWBoard = JSON.parse(localStorage.getItem('board-'+$rootScope.currentWOWBoard));
+  var currentWOWBoard = $rootScope.boards[$rootScope.currentWOWBoard];
   if (currentWOWBoard){
     $scope.wowResponseTiles = currentWOWBoard.tile_set.sort(function(a, b) {
       return a.ordinal - b.ordinal;
     });
   } else {
+    console.log('current wow board should be ', $rootScope.currentWOWBoard);
+    console.log('boards ', $rootScope.boards);
     console.log('Could not retrieve board cache for WOW tiles. Please logout and login again.');
   }
   /***** end of sidebars *************/
 
+  $rootScope.currentBeacon = null;
   $scope.$on('beaconsDiscovered', function(e, beacons) {
     console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
+
+    try {
+        var closestBeacon = null;
+        var distanceThreshold = 1;
+        // idunno what that value should be, we'll need to play with it.
+
+        var theBeacon = angular.forEach(beacons.beaconList, function(b) {
+          if (b.distance < distanceThreshold) {
+            if ((!closestBeacon) || (b.distance < closestBeacon.distance)) {
+              closestBeacon = b;
+            }
+          }
+        });
+
+        if (closestBeacon) {
+          console.log('closest beacon is ', closestBeacon);
+          if (($rootScope.currentBeacon.major != closestBeacon.major) ||
+              ($rootScope.currentBeacon.minor != closestBeacon.minor)) {
+            console.log('beacon changed; refreshing wow context');
+            $rootScope.currentBeacon = closestBeacon;
+            $scope.$broadcast('refreshWowContext');
+          }
+        }
+
+        // closestBeacon.major and closestBeacon.minor have the id's you need to pair against your WOWLocation records to get the board # }
+    } catch (e) {
+      console.log('Exception finding closest beacon: ', e);
+    }
   });
-  if ($rootScope.estimoteIsAvailable) {
-      console.log('Estimotes are available; starting up.');
-      Estimote.startRangingBeacons(function(res) {
-          console.log('Estimote response: ', res);
+
+  $scope.$on('refreshWowContext', function(e) {
+    console.log('Refreshing WOW Context.');
+
+    var newBoard = null;
+
+    try {
+      // Get day of week
+      //
+      var date = new Date();
+      var daynum = date.getDay();
+      var is_weekend =(daynum === 0) || (daynum === 6);
+
+      var hour = date.getHours();
+      var hourStr = (hour < 10) ? '0' : '';
+      hourStr = hourStr + hour.toString() + ':00:00';
+
+      var wow_configs = $rootScope.userProfile.wow_configs;
+
+      if ((wow_configs) && (wow_configs.length)) {
+        var bestMatch = 0;
+        angular.forEach(wow_configs, function(wow) {
+
+          var matchCount = 0;
+
+          if (wow.time === hourStr) {
+            matchCount = matchCount + 1;
+          }
+
+          if ( (wow.day === 'all') ||
+               (wow.day === 'weekend' && is_weekend) ||
+               (wow.day === 'weekday' && !is_weekend) ||
+               (wow.day === 'm' && daynum === 1) ||
+               (wow.day === 't' && daynum === 2) ||
+               (wow.day === 'w' && daynum === 3) ||
+               (wow.day === 'th' && daynum === 4) ||
+               (wow.day === 'f' && daynum === 5) ) {
+            matchCount = matchCount + 1;
+          }
+
+          if (($rootScope.currentBeacon) && (wow.location))  {
+            if ( (wow.beacon_major === $rootScope.currentBeacon.major) &&
+                  (wow.beacon_minor === $rootScope.currentBeacon.minor) ) {
+             matchCount = matchCount + 1;
+             }
+          }
+
+          // If we matched more things than any previous match, then
+          // select that board.
+
+          if (matchCount > bestMatch) {
+            newBoard = wow.board.id;
+            bestMatch = matchCount;
+          }
+        }); //foreach
+      }
+    } catch (e) {
+      console.log('Exception trying to figure out new WOW board: ', e);
+    }
+
+    if ((newBoard) && (newBoard !==$scope.currentWOWBoard)) {
+      $timeout(function() {
+        console.log('New WOW Board selected: ', newBoard);
+        $scope.currentWOWBoard = newBoard;
+        var board = $scope.boards[$scope.currentWOWBoard];
+        if (board){
+          $scope.wowResponseTiles = board.tile_set.sort(function(a, b) {
+            return a.ordinal - b.ordinal;
+          });
+        }
       });
-      console.log('Waiting for replies.');
-  } else {
-    console.log('Estimotes are not available. ');
-  }
+    }
+
+    console.log('Done refreshing WOW Context.');
+  });
 
   $scope.wordTileClicked = function(obj) {
 
@@ -449,6 +586,26 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       analytics.trackEvent('Boards', 'SpeakPhrase', $wordsToSpeak);
     }
   };
+
+  $scope.quickResponseTileClicked = function(obj) {
+    console.log('quick response button clicked.', obj);
+
+    var wordsToSpeak = obj.phrase;
+    console.log('about to speak: ', wordsToSpeak);
+
+    if ($rootScope.TTSAvailable) {
+      ttsPlugin.speak(wordsToSpeak);
+    }
+    if($rootScope.AnalyticsAvailable) {
+      analytics.trackEvent('Boards', 'SpeakPhraseQuick', $wordsToSpeak);
+    }
+  };
+
+  $scope.attentionRequested = function() {
+    console.log('User hit the bell button');
+  };
+
+
 }])
 
 
