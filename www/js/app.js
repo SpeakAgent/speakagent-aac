@@ -5,13 +5,21 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
-.run(function($ionicPlatform, $rootScope, $location, $http) {
+.run(['$ionicPlatform', '$rootScope', '$location', '$http', '$timeout',
+  '$interval', 'fetchBoardFromLocalStorage',
+  function($ionicPlatform, $rootScope, $location, $http, $timeout,
+    $interval, fetchBoardFromLocalStorage) {
+
   $rootScope.boards = [];
   $rootScope.defaultWOWBoard = 24; // Default WOW board ID
   $rootScope.defaultQuickResponseBoard = 25; // Quick response board ID
+  $rootScope.defaultMainBoard = 5;
 
   $rootScope.currentWOWBoard = $rootScope.defaultWOWBoard;
   $rootScope.currentQuickResponseBoard = $rootScope.defaultQuickResponseBoard;
+
+  $rootScope.beaconInterval = 30; // seconds
+  $rootScope.contextInterval = 30; // seconds
 
   // Make sure we're always logged in
   if (!$rootScope.authToken) {
@@ -65,34 +73,25 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       console.log('TTS is not available.');
     }
 
-
-    // Load caches into memory
+    // Load the main, wow, and quick board
     //
-    var boardsLoaded = 0;
-    try {
-      var storageLength = localStorage.length;
-      for(var i=0; i<storageLength; i++) {
-        var key = localStorage.key(i);
-        if (key.indexOf('board-') === 0) {
-          var str = key.split('-')[1];
-          var boardNumber = parseInt(str, 10);
-          $rootScope.boards[boardNumber] = JSON.parse(localStorage.getItem(key));
-          boardsLoaded++;
-        }
-      }
-      console.log(boardsLoaded + ' boards loaded from cache.');
-    } catch (e) {
-      console.log('Exception while restoring boards from cache: ', e);
-    };
+    var boardNumber;
+    for (boardNumber in [$rootScope.defaultMainBoard,
+      $rootScope.defaultWOWBoard,
+      $rootScope.defaultQuickResponseBoard]) {
+      fetchBoardFromLocalStorage(boardNumber);
+    }
 
+    // Load the user profile
+    //
     try {
       $rootScope.userProfile = JSON.parse(localStorage.getItem('userProfile'));
     } catch (e) {
       console.log('Exception while restoring user profile from cache: ', e);
     }
-
-    console.log('leaving RUN');
   }
+
+  console.log('leaving RUN');
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -105,12 +104,89 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       ionic.Platform.fullScreen();
       StatusBar.hide();
     }
-z
+
+    try {
+      if (Estimote) {
+        $rootScope.estimoteIsAvailable = true;
+        console.log('Estimote API is available. Waiting for beacons.');
+        var beaconPing = 0;
+
+        Estimote.startRangingBeacons(function(res) {
+          beaconPing = beaconPing + 1;
+          // console.log('Beacon ping #'+beaconPing);
+          $rootScope.$broadcast('beaconsDiscovered', res);
+        },
+        function(res) {
+          console.log('Estimote API failed to range.');
+        },
+        { interval : $rootScope.beaconInterval });
+
+        // console.log('Waiting for replies.');
+      }
+    } catch (e) {
+      $rootScope.estimoteIsAvailable = false;
+      console.log('Estimote API is not available.');
+    }
+
+    $interval(function() {
+      $rootScope.$broadcast('refreshWowContext');
+    }, $rootScope.contextInterval);
+
+
+    // Load the rest of the caches into memory asynchronously
+    //
+    $timeout(function() {
+      var boardsLoaded = 0;
+      try {
+        var storageLength = localStorage.length;
+        for(var i=0; i<storageLength; i++) {
+          var key = localStorage.key(i);
+          if (key.indexOf('board-') === 0) {
+            var str = key.split('-')[1];
+            var boardNumber = parseInt(str, 10);
+            fetchBoardFromLocalStorage(boardNumber);
+            boardsLoaded++;
+          }
+        }
+        console.log(boardsLoaded + ' boards loaded from localStorage.');
+      } catch (e) {
+        console.log('Exception while restoring boards from cache: ', e);
+      }
+    });
+
   });
 
-})
+}])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.factory('fetchBoardFromLocalStorage', ['$rootScope', function($rootScope) {
+  return function(boardNumber) {
+
+    var ret = null;
+
+    try {
+      ret =  $rootScope.boards[boardNumber];
+      if (ret) {
+        return ret;
+      }
+    } catch (e) {
+    }
+
+    try {
+      var key = 'board-' + boardNumber;
+      ret = JSON.parse(localStorage.getItem(key));
+      $rootScope.boards[boardNumber] = ret;
+    } catch (e) {
+      console.log('Could not load board #' + boardNumber + ' from cache.');
+    }
+
+    return ret;
+  };
+}])
+
+
+.config(['$stateProvider', '$urlRouterProvider',
+  function($stateProvider, $urlRouterProvider) {
+
   $stateProvider
     .state('app', {
       url: "/app",
@@ -159,6 +235,6 @@ z
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/wordlists/5');
-});
+  $urlRouterProvider.otherwise('/app/wordlists/' + 5);
+}]);
 

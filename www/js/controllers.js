@@ -19,7 +19,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   // Called when the browser is granted permissions for the location
   //
   $scope.locationRetrieved = function(position) {
-    // console.log("position came back ", position);
     $scope.locationData.position = position;
 
     var lat = parseFloat(position.coords.latitude);
@@ -29,7 +28,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
     $scope.updateDistanceToFavorites(lat, lng);
 
-    // console.log("kicking off geocode via google maps: ", latlng);
     $scope.geocoder.geocode({'latLng': latlng}, function(results, status) {
       $scope.geocodeComplete(results, status);
     });
@@ -57,7 +55,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
               if ($scope.locationData.favorites) {
                 saveButtonDisabled = false;
               }
-              // console.log("Found location data " + $scope.locationData.address);
               return false;
             }
           });
@@ -108,7 +105,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   // Save the location when the user taps the save button
   $scope.doSaveLocation = function() {
-    // console.log('Doing save location ', $scope.locationData);
 
     var savePopup = $ionicPopup.show({
       template: '<input type="text" ng-model="locationData.name">',
@@ -152,7 +148,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
     $scope.locationData.favorites.push(fave);
     $scope.storeFavoriteLocations();
-    // console.log('Saving location to local storage ', $scope.locationData);
     return true;
   };
 
@@ -247,29 +242,33 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     $scope.settingsModal.hide();
     $scope.loginModal.show();
   };
+
 })
 
-.controller('LoginCtrl', function($scope, $http, $rootScope){
+.controller('LoginCtrl', function($scope, $http, $rootScope, $ionicLoading){
   // Form data for the login modal
   $scope.loginData = {};
   $scope.authToken = $rootScope.authToken;
   // Perform logout
   $scope.doLogout = function() {
-    console.log('Doing logout');
+    // console.log('Doing logout');
     $rootScope.authToken = null;
     $scope.authToken = null;
     localStorage.removeItem('authToken');
     localStorage.removeItem('userProfile');
     $rootScope.userProfile = null;
 
-    console.log('Logout complete');
+    // console.log('Logout complete');
   };
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    // console.log('Doing login', $scope.loginData);
     $scope.loginData.username = $scope.loginData.username.toLowerCase();
 
+    $ionicLoading.show({
+          template: 'Logging in...'
+        });
     // Handle login
     var tokenAuthURL = $rootScope.apiBaseAuthHREF+'api-token-auth/';
     var responsePromise = $http.post(tokenAuthURL,
@@ -279,12 +278,16 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       });
 
     responsePromise.success(function(data, status, headers, config) {
-        console.log(data);
+        $ionicLoading.hide();
+        $ionicLoading.show({
+              template: 'Caching data from server...'
+            });
+        // console.log(data);
 
         if($rootScope.AnalyticsAvailable) {
           analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
           analytics.setUserId($scope.loginData.username);
-          analytics.addCustomDimension('userid', $scope.loginData.username);
+          analytics.addCustomDimension('dimension1', $scope.loginData.username);
         }
         $rootScope.authToken = data.token;
         localStorage.setItem('authToken', $rootScope.authToken);
@@ -304,24 +307,27 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           { cache: true }
         );
         boardResponsePromise.success(function(data, status, headers, config) {
-          console.log('caching boards data...');
+          // console.log('caching boards data...');
           for (var i=0; i<data.count; i++) {
             var board = data.results[i];
             localStorage.setItem('board-'+board.id, JSON.stringify(board));
-            console.log('storing board: ' + board.id);
+            $rootScope.boards[board.id] = board
+            // console.log('storing board: ' + board.id);
           }
+          $ionicLoading.hide();
           window.location = '#/app/wordlists/5/'; //TODO: Make better.
         });
 
         boardResponsePromise.error(function(data, status, headers, config) {
-            console.log("Unable to fetch boards data for caching. " + status);
+          $ionicLoading.hide();
+          console.log("Unable to fetch boards data for caching. " + status);
         });
 
         // FIXME: This could probably be encapsulated in a user object/service
         // or something, but for now, $rootScope it is.
         //
         profileResponsePromise.success(function(data, status, headers, config) {
-          console.log('caching user profile...', data);
+          // console.log('caching user profile...', data);
           var results = data.results[0];
           var user = {};
           user.first_name = results.first_name;
@@ -353,23 +359,23 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
 
 .controller('WordlistsCtrl', ['$stateParams', '$scope', '$http',
-  '$rootScope', '$interval', '$timeout',
+  '$rootScope', '$interval', '$timeout', 'fetchBoardFromLocalStorage',
   'deleteAssemblyBarTileAtIndex', 'setClearOnAdd',
   'getAssemblyBarText', 'assemblyBarTileCount', 'addTileToAssemblyBar',
-  'getAssemblyBarTiles', 'removeUnspokenFoldersFromAssemblyBar',
+  'getAssemblyBarTiles', 'removeUnspokenFoldersFromAssemblyBar', '$ionicLoading',
 
   function($stateParams, $scope, $http, $rootScope, $interval, $timeout,
+    fetchBoardFromLocalStorage,
     deleteAssemblyBarTileAtIndex, setClearOnAdd, getAssemblyBarText,
     assemblyBarTileCount, addTileToAssemblyBar, getAssemblyBarTiles,
-    removeUnspokenFoldersFromAssemblyBar) {
+    removeUnspokenFoldersFromAssemblyBar, $ionicLoading) {
 
   $scope.maxAssemblyBarTiles = 8;
 
-  console.log('State params ', $stateParams);
-  console.log('User profile ', $rootScope.userProfile);
-
   var board = $stateParams.board ? $stateParams.board : '1';
   board = parseInt(board, 10);
+  $scope.currentBoard = board;
+  $scope.wordlists = [];
 
   if($rootScope.AnalyticsAvailable) {
     analytics.trackView('Board ID: '+board);
@@ -377,11 +383,8 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $scope.TTSAvailable = $rootScope.TTSAvailable;
 
-  $scope.currentBoard = board;
-  $scope.wordlists = [];
-  var cachedBoard = $rootScope.boards[board]; //localStorage.getItem('board-'+board);
+  var cachedBoard = fetchBoardFromLocalStorage(board);
   if (cachedBoard) {
-    console.log('Found cached data for board: ' + board);
     $scope.wordlists = cachedBoard.tile_set.sort(function(a, b) {
       return a.ordinal - b.ordinal;
     });
@@ -389,15 +392,10 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     console.log('No cache found. Logout/login required.');
   }
 
-  $interval(function() {
-    console.log('Calling refreshWowContext(timer)');
-    $rootScope.$broadcast('refreshWowContext');
-    }, 5000); // make 10 more like 30 or so
-
   /*********
   /* Load QuickResponse Tiles
   /*********/
-  var cachedQuickResponseBoard = $rootScope.boards[$rootScope.currentQuickResponseBoard];
+  var cachedQuickResponseBoard = fetchBoardFromLocalStorage($rootScope.currentQuickResponseBoard);
   if (cachedQuickResponseBoard){
     $scope.quickResponseTiles = cachedQuickResponseBoard.tile_set.sort(function(a, b) {
       return a.ordinal - b.ordinal;
@@ -408,14 +406,14 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   /*********
   /* Load WoW Tiles
   /*********/
-  var currentWOWBoard = $rootScope.boards[$rootScope.currentWOWBoard];
+  var currentWOWBoard = fetchBoardFromLocalStorage($rootScope.currentWOWBoard);
   if (currentWOWBoard){
     $scope.wowResponseTiles = currentWOWBoard.tile_set.sort(function(a, b) {
       return a.ordinal - b.ordinal;
     });
   } else {
-    console.log('current wow board should be ', $rootScope.currentWOWBoard);
-    console.log('boards ', $rootScope.boards);
+    // console.log('current wow board should be ', $rootScope.currentWOWBoard);
+    // console.log('boards ', $rootScope.boards);
     console.log('Could not retrieve board cache for WOW tiles. Please logout and login again.');
   }
   /***** end of sidebars *************/
@@ -430,32 +428,33 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $scope.$on('beaconsDiscovered', function(e, beacons) {
 
-    // FIXME: debugging only
-
-    // beacons = JSON.parse('{"isScanning":true,"count":3,"beaconList":[{"major":13146,"minor":1972,"rssi":-57,"color":3,"distance":0.108569774241653},{"major":11024,"minor":22575,"rssi":-72,"color":2,"distance":1.128328673992085},{"major":19004,"minor":47181,"rssi":-81,"color":1,"distance":2.413987846517621}]}');
-
-    console.log('in beaconsDiscovered. e: ', e, ' beacons: ', JSON.stringify(beacons));
+    var currentBeaconInRangeAtLeast = false;
 
     try {
         var closestBeacon = null;
-        var distanceThreshold = 1;
-        // idunno what that value should be, we'll need to play with it.
+        var distanceThreshold = 8; // meters
 
-        console.log('beacons.beaconList', beacons.beaconList);
+        // console.log('beacons.beaconList', beacons.beaconList);
         var theBeacon = angular.forEach(beacons.beaconList, function(b) {
-          console.log('Beacon test: ', b);
-          console.log('major: ' + b.major + ', minor: ' + b.minor + ', distance: ' + b.distance);
-          if (b.distance < distanceThreshold) {
+          // console.log('Beacon test: ', b);
+          // console.log('major: ' + b.major + ', minor: ' + b.minor + ', distance: ' + b.distance);
+          if ((b.distance >= 0.0) && (b.distance < distanceThreshold)) {
             if ((!closestBeacon) || (b.distance < closestBeacon.distance)) {
-              console.log('... closest so far');
+              // console.log('... closest so far');
               closestBeacon = b;
             }
+          }
+
+          if (($rootScope.currentBeacon) &&
+              (($rootScope.currentBeacon.major == b.major) ||
+              ($rootScope.currentBeacon.minor == b.minor))) {
+            currentBeaconInRangeAtLeast = true;
           }
         });
 
         if (closestBeacon) {
           console.log('closest beacon is ', JSON.stringify(closestBeacon));
-          console.log('current beacon is ', JSON.stringify($rootScope.currentBeacon));
+          // console.log('current beacon is ', JSON.stringify($rootScope.currentBeacon));
 
           if ((!$rootScope.currentBeacon) ||
               ($rootScope.currentBeacon.major != closestBeacon.major) ||
@@ -464,17 +463,162 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
             $rootScope.currentBeacon = closestBeacon;
             $scope.$broadcast('refreshWowContext');
           }
+        } else {
+          // see if the beacon we are currently tracking is at least in the list
+          //
+          if (currentBeaconInRangeAtLeast) {
+            // beacon may not be closest, but it is still nearby
+          } else {
+            // If we can't see it at ALL, then dump it. IF this is
+            // the second time it's missing, then refresh the wow
+            // context and get rid of it.
+            //
+            if ($rootScope.currentBeacon == null) {
+              $scope.$broadcast('refreshWowContext');
+            }
+            $rootScope.currentBeacon = null;
+          }
         }
 
-        // closestBeacon.major and closestBeacon.minor have the id's you need to pair against your WOWLocation records to get the board # }
     } catch (e) {
       console.log('Exception finding closest beacon: ', e);
     }
   });
 
-  $scope.wordTileClicked = function(obj) {
+ $scope.$on('refreshWowContext', function(e) {
+    // console.log('Refreshing WOW Context.');
 
-    console.log('word tile clicked: ', obj);
+    var newBoard = $rootScope.defaultWOWBoard;
+
+    try {
+      // Get day of week
+      //
+      var date = new Date();
+      var daynum = date.getDay();
+      var is_weekend =(daynum === 0) || (daynum === 6);
+
+      var hour = date.getHours();
+      var hourStr = (hour < 10) ? '0' : '';
+      hourStr = hourStr + hour.toString() + ':00:00';
+
+      // console.log('user profile', $rootScope.userProfile);
+
+      // This is tricky -- the logic is
+      // if we have a location, that's a strong affinity.
+      // if we have a time, that's a medium-high affinity
+      // if we have a specific day, that's a medium affinity
+      // if we have an "any" day and nothing else, that's a low affinity
+
+      // This yields:
+
+      // match none: 0
+      // match any day: 3
+      // a specific day: 5
+      // specific time, any day: 11
+      // any day and location: 15
+      // specifc day and time: 16
+      // specific day and location: 20
+      // time and location: 26
+      // all 3: 31
+
+      var wow_configs = $rootScope.userProfile.wow_configs;
+
+      if ((wow_configs) && (wow_configs.length)) {
+
+        var maxStrength = 0;
+
+        angular.forEach(wow_configs, function(wow) {
+
+          var matchStrength = 0;
+
+          if (($rootScope.currentBeacon) && (wow.location))  {
+            if ( (wow.beacon_major == $rootScope.currentBeacon.major) &&
+                  (wow.beacon_minor == $rootScope.currentBeacon.minor) ) {
+             matchStrength = 15;
+             }
+          }
+
+          if ((wow.time) && (wow.time === hourStr)) {
+            matchStrength = matchStrength + 11;
+          }
+
+          if ((matchStrength == 1) && (wow.day === 'all')) {
+            matchStrength = maxStrength + 3;
+          }
+
+          if ( (wow.day === 'weekend' && is_weekend) ||
+               (wow.day === 'weekday' && !is_weekend) ||
+               (wow.day === 'm' && daynum === 1) ||
+               (wow.day === 't' && daynum === 2) ||
+               (wow.day === 'w' && daynum === 3) ||
+               (wow.day === 'th' && daynum === 4) ||
+               (wow.day === 'f' && daynum === 5) ) {
+            matchStrength = matchStrength + 5;
+          }
+
+          if ((matchStrength > 0) && (matchStrength >= maxStrength)) {
+            maxStrength = matchStrength;
+            newBoard = wow.board.id;
+          }
+
+          // console.log('WOW Location: ' + wow.board.id + ', strength: ' + matchStrength);
+        }); //foreach
+      }
+    } catch (e) {
+      console.log('Exception trying to figure out new WOW board: ', e);
+    }
+
+    if ((newBoard) && (newBoard !==$scope.currentWOWBoard)) {
+      $timeout(function() {
+        // console.log('New WOW Board selected: ', newBoard);
+        $scope.currentWOWBoard = newBoard;
+        var board = $scope.boards[$scope.currentWOWBoard];
+        if (board){
+          $scope.wowResponseTiles = board.tile_set.sort(function(a, b) {
+            return a.ordinal - b.ordinal;
+          });
+        }
+      });
+    }
+
+    // console.log('Done refreshing WOW Context.');
+  });
+
+  $scope.wordTileClicked = function(evt, number) {
+
+    var match = $scope.wordlists.filter(
+      function(o) {
+        return o.id === number;
+      }
+    );
+
+    if (match.length < 1) {
+      console.log('Tile id ' + number + ' could not be found.');
+      return;
+    }
+
+    obj = match[0];
+
+    // If we're in edit mode, we wanna set the hidden status on
+    // the tile.
+    //
+    if ($rootScope.editMode) {
+      // flag tile as  dirty so when edit is turned off it will save
+      //
+      obj.dirty = true;
+      obj.hidden = obj.hidden ? false : true;
+      evt.preventDefault();
+      return;
+    }
+
+    // If the item is hidden, don't fire an href or any other link.
+    //
+    if (obj.hidden) {
+      evt.preventDefault();
+      return;
+    }
+
+    // console.log('word tile clicked: ', obj);
 
     if (obj.phrase) {
 
@@ -486,19 +630,20 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       // we can handle.
       //
       if (assemblyBarTileCount() < $scope.maxAssemblyBarTiles) {
-        console.log('phrase to add: ' + obj.phrase);
+        // console.log('phrase to add: ' + obj.phrase);
         addTileToAssemblyBar(obj);
       }
     }
 
-    console.log('assembly bar phrase: ', getAssemblyBarTiles());
+    // console.log('assembly bar phrase: ', getAssemblyBarTiles());
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
     }
   };
 
+
   $scope.deleteButtonClicked = function() {
-    console.log('delete button clicked.');
+    // console.log('delete button clicked.');
 
     deleteAssemblyBarTileAtIndex(-1);
 
@@ -517,31 +662,31 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   };
 
   $scope.speakButtonClicked = function() {
-    console.log('speak button clicked.');
+    // console.log('speak button clicked.');
 
     var wordsToSpeak = getAssemblyBarText();
-    console.log('about to speak: ', wordsToSpeak);
+    // console.log('about to speak: ', wordsToSpeak);
+    setClearOnAdd(true);
 
     if ($rootScope.TTSAvailable) {
       ttsPlugin.speak(wordsToSpeak);
-      setClearsOnAdd(true);
     }
     if($rootScope.AnalyticsAvailable) {
-      analytics.trackEvent('Boards', 'SpeakPhrase', $wordsToSpeak);
+      analytics.trackEvent('Boards', 'SpeakPhrase', wordsToSpeak);
     }
   };
 
   $scope.quickResponseTileClicked = function(obj) {
-    console.log('quick response button clicked.', obj);
+    // console.log('quick response button clicked.', obj);
 
     var wordsToSpeak = obj.phrase;
-    console.log('about to speak: ', wordsToSpeak);
+    // console.log('about to speak: ', wordsToSpeak);
 
     if ($rootScope.TTSAvailable) {
       ttsPlugin.speak(wordsToSpeak);
     }
     if($rootScope.AnalyticsAvailable) {
-      analytics.trackEvent('Boards', 'SpeakPhraseQuick', $wordsToSpeak);
+      analytics.trackEvent('Boards', 'SpeakPhraseQuick', wordsToSpeak);
     }
   };
 
@@ -549,6 +694,32 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     console.log('User hit the bell button');
   };
 
+  $rootScope.toggleEdit = function() {
+
+    // Save "dirty" tiles back to the cache and reset the dirty flag.
+    //
+    if ($rootScope.editMode) {
+
+      var board = $scope.currentBoard;
+
+      angular.forEach($scope.wordlists, function(tile) {
+        if (tile.dirty) {
+          var cachedTiles = $rootScope.boards[board].tile_set.filter(
+            function(tempTile) {
+              return (tempTile.id === tile.id);
+            });
+          cachedTiles[0].hidden = tile.hidden;
+          delete(tile.dirty);
+        }
+      });
+
+      // Persist it to local storage
+      localStorage.setItem('board-'+board, JSON.stringify($rootScope.boards[board]));
+    }
+
+    $rootScope.editMode = !$rootScope.editMode;
+    // console.log('Edit mode toggled');
+  };
 
 }])
 
@@ -562,7 +733,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   $scope.searchForTile = "";
   $scope.matchedTiles = [];
 
-  console.log("scope ", $scope);
+  // console.log("scope ", $scope);
 
   $scope.findMatchingTiles = function() {
     $scope.matchedTiles = [];
@@ -577,7 +748,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     console.log('looking for ', matchStr);
 
     angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
-      console.log('board ', boardNumber);
+      // console.log('board ', boardNumber);
       angular.forEach(boardTiles.tile_set, function(tile) {
         var m = tile.name.toLowerCase().indexOf(matchStr);
         if (m >= 0) {
@@ -630,7 +801,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       console.log('Navigate to ....', match);
       $window.location.href = "#/app/wordlists/" + target;
     }
-    // <a href="#/app/wordlists/{{match.board}}">
 
   }
 

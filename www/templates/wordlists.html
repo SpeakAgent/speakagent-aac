@@ -1,14 +1,14 @@
 <div ng-controller="AssemblyBar">
 
 <ion-view title="Wordlists" hide-nav-bar="true" class="board-container">
-  <ion-content>
+  <ion-content has-bouncing="false" scroll="false" overflow-scroll="false">
     <div class="row menu-speech-bar persistent">
       <div class="profile-button">
         <a class="aac-user"><img src="img/user-fpo.png" border="0"></a>
       </div>
       <div id="assembly-bar" class="assembly-bar" data-tap-disabled="true">
         <ul class="speech-tiles">
-          <li ng-click="barTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in barContents()">
+          <li ng-click="barTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in barContents() track by $index">
             <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
             <span class="tile-name">{{word.name}}</span></li>
         </ul>
@@ -43,17 +43,17 @@
     </div>
 
     <div class="row main-container">
-      <div class="col col-80 board">
+      <div class="col col-80 board" ng-class="{'editMode' : editMode}">
 
       <div class="list">
 
-        <div ng-repeat="word in wordlists">
-          <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.kind=='folder'">
+        <div ng-repeat="word in wordlists" class="wordlist">
+          <a ng-click="wordTileClicked($event, {{word.id}});" href="#/app/wordlists/{{word.target}}" class="tile item-content {{word.kind}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="word.target">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
           </a>
 
-          <div ng-click="wordTileClicked({{word}});" class="tile {{word.type}}" ng-if="word.kind!='folder'">
+          <div ng-click="wordTileClicked($event, {{word.id}});" class="tile {{word.kind}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="!word.target">
             <div class="item-content">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
@@ -66,7 +66,7 @@
     <div class="sidebar menu-comment persistent">
       <ul>
         <li ng-repeat="quickWord in quickResponseTiles" class="tile">
-          <div ng-click="quickResponseTileClicked({{quickWord}});" class="tile {{quickWord.type}}">
+          <div ng-click="quickResponseTileClicked({{quickWord}});" class="tile {{quickWord.kind}}">
             <div class="item-content">
               <span class="tile-image"><img src="img/symbols/{{quickWord.icon}}" /></span>
               <span class="tile-name">{{quickWord.name}}</span>

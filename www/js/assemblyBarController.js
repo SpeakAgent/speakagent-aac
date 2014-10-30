@@ -259,6 +259,7 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
 
 .factory('setClearOnAdd', ['$window', function(win) {
   return function(clearOnAdd) {
+    console.log('set clear on add: ', clearOnAdd);
     win.assemblyBarClearOnAdd = clearOnAdd;
     return clearOnAdd;
   };

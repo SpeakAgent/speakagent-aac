@@ -235,6 +235,11 @@ input, button, select, textarea {
         flex-wrap: wrap;
         -webkit-flex-flow: row wrap;
     }
+
+    .tile-hidden {
+        opacity: 0;
+    }
+
     .tile, .item-content {
         height: 76px;
         width: 76px;
@@ -250,15 +255,88 @@ input, button, select, textarea {
             height: auto;
         }
     }
-    div[ng-repeat="word in wordlists"] a.tile.item-content {
+    a.tile.folder {
         @include box-shadow(rgba(black,0.2) 0 2px 1px, rgba(black,0.5) 4px -4px 0);
         &.active, &.activated, &:focus, &:active {
             top: 1px;
             @include box-shadow(rgba(black,0.5) 4px -5px 0, rgba(black,0) 0 0 10px);
         }
     }
-
 }
+
+@-webkit-keyframes wiggle {
+    from {-webkit-transform: rotateZ(2deg);}
+    50% {-webkit-transform: rotateZ(-2deg);}
+    to {-webkit-transform: rotateZ(2deg);}
+}
+
+@keyframes wiggle {
+    from {transform: rotateZ(2deg);}
+    50% {transform: rotateZ(-2deg);}
+    to {transform: rotateZ(2deg);}
+}
+
+
+@-webkit-keyframes wiggle1 {
+    from {-webkit-transform: rotateZ(-2deg);}
+    50% {-webkit-transform: rotateZ(2deg);}
+    to {-webkit-transform: rotateZ(-2deg);}
+}
+
+@keyframes wiggle1 {
+    from {transform: rotateZ(-2deg);}
+    50% {transform: rotateZ(2deg);}
+    to {transform: rotateZ(-2deg);}
+}
+
+@-webkit-keyframes wiggle2 {
+    from {-webkit-transform: rotateZ(0deg);}
+    25% {-webkit-transform: rotateZ(-2deg);}
+    50% {-webkit-transform: rotateZ(0deg);}
+    to {-webkit-transform: rotateZ(2deg);}
+}
+
+@keyframes wiggle {
+    from {transform: rotateZ(0deg);}
+    25% {transform: rotateZ(-2deg);}
+    50% {transform: rotateZ(0deg);}
+    to {transform: rotateZ(2deg);}
+}
+
+
+.editMode {
+        .wordlist:nth-child(3n+0) .tile {
+            -webkit-animation-name: wiggle;
+            animation-name: wiggle;
+
+        }
+
+        .wordlist:nth-child(3n+1) .tile {
+            -webkit-animation-name: wiggle1;
+            animation-name: wiggle1;
+        }
+
+        .wordlist:nth-child(3n+2) .tile {
+            -webkit-animation-name: wiggle2;
+            animation-name: wiggle2;
+        }
+
+
+        .tile {
+            -webkit-animation-duration: .5s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-timing-function: ease;
+
+            animation-duration: .5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease;
+        }
+
+        .tile-hidden {
+            opacity: .35;
+        }
+
+    }
 
 /* Permenant Speech Bar */
 
