@@ -150,7 +150,7 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   };
 
   $scope.barTileClicked = function(index, obj) {
-    console.log('bar tile clicked: ',  obj);
+    // console.log('bar tile clicked: ',  obj);
 
     newTiles = deleteAssemblyBarTileAtIndex(index);
 
@@ -259,7 +259,6 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
 
 .factory('setClearOnAdd', ['$window', function(win) {
   return function(clearOnAdd) {
-    console.log('set clear on add: ', clearOnAdd);
     win.assemblyBarClearOnAdd = clearOnAdd;
     return clearOnAdd;
   };

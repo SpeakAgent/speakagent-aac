@@ -568,12 +568,12 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       console.log('Exception trying to figure out new WOW board: ', e);
     }
 
-    if ((newBoard) && (newBoard !==$scope.currentWOWBoard)) {
+    if ((newBoard) && (newBoard !== $rootScope.currentWOWBoard)) {
       $timeout(function() {
         // console.log('New WOW Board selected: ', newBoard);
-        $scope.currentWOWBoard = newBoard;
-        var board = $scope.boards[$scope.currentWOWBoard];
-        if (board){
+        $rootScope.currentWOWBoard = newBoard;
+        var board = fetchBoardFromLocalStorage($rootScope.currentWOWBoard);
+        if (board) {
           $scope.wowResponseTiles = board.tile_set.sort(function(a, b) {
             return a.ordinal - b.ordinal;
           });
@@ -641,6 +641,33 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     }
   };
 
+  $scope.wowTileClicked = function(evt, number) {
+    var currentWOWBoard = fetchBoardFromLocalStorage($rootScope.currentWOWBoard);
+
+    var match = currentWOWBoard.tile_set.filter(
+      function(o) {
+        return o.id === number;
+      }
+    );
+
+    if (match.length < 1) {
+      console.log('WOW tile id ' + number + ' could not be found.');
+      return;
+    }
+
+    obj = match[0];
+
+    if (obj.phrase) {
+      removeUnspokenFoldersFromAssemblyBar();
+      if (assemblyBarTileCount() < $scope.maxAssemblyBarTiles) {
+        addTileToAssemblyBar(obj);
+      }
+    }
+
+    if($rootScope.AnalyticsAvailable) {
+      analytics.trackEvent('Boards', 'WOWTileAdd', obj.phrase);
+    }
+  };
 
   $scope.deleteButtonClicked = function() {
     // console.log('delete button clicked.');
