@@ -150,7 +150,7 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   };
 
   $scope.barTileClicked = function(index, obj) {
-    console.log('bar tile clicked: ',  obj);
+    // console.log('bar tile clicked: ',  obj);
 
     newTiles = deleteAssemblyBarTileAtIndex(index);
 
