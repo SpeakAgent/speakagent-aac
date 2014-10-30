@@ -4,7 +4,7 @@
   <ion-content has-bouncing="false" scroll="false" overflow-scroll="false">
     <div class="row menu-speech-bar persistent">
       <div class="profile-button">
-        <a class="aac-user"><img src="img/user-fpo.png" border="0"></a>
+        <div class="aac-user"><img src="img/user-fpo.png" border="0"></div>
       </div>
       <div id="assembly-bar" class="assembly-bar" data-tap-disabled="true">
         <ul class="speech-tiles">
@@ -65,7 +65,7 @@
     </div>
     <div class="sidebar menu-comment persistent">
       <ul>
-        <li ng-repeat="word in quickResponseTiles" class="tile">
+        <li ng-repeat="word in quickResponseTiles">
           <a ng-click="wordTileClicked({{word}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
