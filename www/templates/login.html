@@ -3,6 +3,9 @@
     <div class="login-container" ng-if="!authToken">
       <h1>Login</h1>
       <p>You must login in order to use this app.</p>
+      <p class="error" ng-if="loginError">{{loginError}}
+        <br>Please doublecheck your username and password.
+      </p>
       <form ng-submit="doLogin()">
         <div class="list">
           <label class="item item-input">

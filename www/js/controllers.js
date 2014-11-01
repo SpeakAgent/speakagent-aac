@@ -265,6 +265,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   $scope.doLogin = function() {
     // console.log('Doing login', $scope.loginData);
     $scope.loginData.username = $scope.loginData.username.toLowerCase();
+    $scope.loginError = '';
 
     $ionicLoading.show({
           template: 'Logging in...'
@@ -280,7 +281,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     responsePromise.success(function(data, status, headers, config) {
         $ionicLoading.hide();
         $ionicLoading.show({
-              template: 'Caching data from server...'
+              template: 'Caching data & profile from server...'
             });
         // console.log(data);
 
@@ -335,7 +336,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           user.email = results.email;
           user.avatar = results.avatar;
           user.wow_configs = results.wow_configs;
-
           localStorage.setItem('userProfile', JSON.stringify(user));
           $rootScope.userProfile = user;
         });
@@ -347,7 +347,9 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     });
 
     responsePromise.error(function(data, status, headers, config) {
+        $ionicLoading.hide();
         console.log("Unable to fetch auth token. " + status);
+        $scope.loginError = "Unable to fetch auth token. " + status;
     });
   };
 })
