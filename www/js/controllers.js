@@ -335,7 +335,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           user.last_name = results.last_name;
           user.email = results.email;
           user.avatar = results.avatar;
-          user.wow_configs = results.wow_configs;
+          user.wow_configs = results.wow_configs ? results.wow_configs : [];
           localStorage.setItem('userProfile', JSON.stringify(user));
           $rootScope.userProfile = user;
         });
