@@ -135,6 +135,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     try {
       if (Media) {
         $rootScope.ringBell = function(){
+          console.log('ringing bell');
           var bell = new Media('ding.mp3');
           bell.seekTo(0);
           bell.play();

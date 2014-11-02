@@ -689,6 +689,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   };
 
   $scope.attentionRequested = function() {
+    $rootScope.ringBell();
     console.log('User hit the bell button');
   };
 
