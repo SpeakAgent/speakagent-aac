@@ -145,6 +145,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
           console.log('ringing bell');
           var bell = new Media('ding.mp3');
           bell.seekTo(0);
+          bell.setVolume(0.5);
           bell.play();
         }
       }
