@@ -21,7 +21,8 @@
         </div>
       </div>
     </div>
-    <p><button ng-click="clearWOWOverride()">Resume automatic WOW management.</button></p>
+    <p ng-if="WOWOverride"><button ng-click="clearWOWOverride()">Resume automatic WOW management.</button></p>
+    <p ng-if="!WOWOverride">WOW Boards currently being managed automatically.</p>
   </ion-content>
 </ion-view>
 
