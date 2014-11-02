@@ -34,14 +34,6 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
       //
       $scope.moveMeIndex = $scope.draggedElement.data('$scope').$index;
 
-      // console.log('Moving tile #'+$scope.moveMeIndex);
-      // var tiles = [];
-      // $scope.assemblyBarPhrase.forEach(function(element) {
-      //   tiles.push(element.name);
-      // });
-
-      // console.log('AssemblyBarPhrases are ', tiles);
-
       // Update our display.
       //
       $scope.$apply();
@@ -74,33 +66,13 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
 
         // Find and yoink the tile we are moving (the one under our finger)
         // from the list.
-
+        //
         moveTileInFrontOfIndex($scope.moveMeIndex, insertBeforeIndex);
-        // var moved = $scope.assemblyBarPhrase.splice($scope.moveMeIndex, 1);
-
-
-        // // console.log('tile ', tile);
-        // // console.log('insertBeforeIndex ' + insertBeforeIndex);
-        // // console.log('moved ', moved);
-
-        // // Move the tile into position.
-        // //
-        // $scope.assemblyBarPhrase.splice(insertBeforeIndex, 0, moved[0]);
 
         // Update the index to reflect that we've moved it.
         //
         $scope.moveMeIndex = insertBeforeIndex;
 
-        // var tiles = [];
-        // $scope.assemblyBarPhrase.forEach(function(element) {
-        //   tiles.push(element.name);
-        // });
-
-        // console.log('AssemblyBarPhrases are ', tiles);
-
-        // Update the phrase.
-        //
-        // $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
         $scope.$apply();
         }
     }
@@ -130,7 +102,6 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   $scope.findTileXY = function(x, y) {
 
       /* this is old school; we can do it better i am sure */
-      console.log('in findtilexy');
       var bar = angular.element(document.getElementById('assembly-bar'));
       var kids = angular.element(bar.children()[0]).children();
 
@@ -150,7 +121,6 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   };
 
   $scope.barTileClicked = function(index, obj) {
-    // console.log('bar tile clicked: ',  obj);
 
     newTiles = deleteAssemblyBarTileAtIndex(index);
 
@@ -205,12 +175,14 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   };
 }])
 
+.factory('clearAssemblyBar', ['$window', 'setClearOnAdd',
+  function(win, setClearOnAdd) {
+  return function(force) {
 
-
-.factory('clearAssemblyBar', ['$window', function(win) {
-  return function() {
-    win.assemblyBarTiles = [];
-    setClearOnAdd(false);
+    if ((force) || (win.assemblyBarClearOnAdd)) {
+      win.assemblyBarTiles = [];
+      setClearOnAdd(false);
+    }
     return win.assemblyBarTiles;
   };
 }])
