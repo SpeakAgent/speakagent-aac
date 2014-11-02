@@ -328,7 +328,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           user.last_name = results.last_name;
           user.email = results.email;
           user.avatar = results.avatar;
-          user.wow_configs = results.wow_configs ? results.wow_configs : [];
+          user.wow_configs = results.wow_configs;
           localStorage.setItem('userProfile', JSON.stringify(user));
           $rootScope.userProfile = user;
         });
@@ -688,10 +688,8 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     }
   };
 
-
   $scope.attentionRequested = function() {
     console.log('User hit the bell button');
-    $rootScope.ringBell();
   };
 
   $rootScope.toggleEdit = function() {
@@ -722,7 +720,32 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
 }])
 
+.directive('onLongPress', function($timeout) {
+  return {
+    restrict: 'A',
+    link: function($scope, $elm, $attrs) {
+      $elm.bind('touchstart', function(evt) {
+        $scope.longPress = true;
+        $timeout(function() {
+          if ($scope.longPress) {
+            $scope.$apply(function() {
+              $scope.$eval($attrs.onLongPress);
+            });
+          }
+        }, 600);
+      });
 
+      $elm.bind('touchend', function(evt) {
+        $scope.longPress = false;
+        if ($attrs.onTouchEnd) {
+          $scope.$apply(function() {
+            $scope.$eval($attrs.onTouchEnd);
+          });
+        }
+      });
+    }
+  };
+})
 
 .controller('SearchCtrl',  ['$scope', '$rootScope', '$window',
    'addTileToAssemblyBar',
@@ -742,15 +765,13 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     var matchedTiles = [];
 
     angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
-      if (boardTiles){
-        // console.log('board ', boardNumber);
-        angular.forEach(boardTiles.tile_set, function(tile) {
-          var m = tile.name.toLowerCase().indexOf(matchStr);
-          if (m >= 0) {
-            matchedTiles.push({'board' : boardNumber, 'tile': tile});
-          }
-        });
-      }
+      // console.log('board ', boardNumber);
+      angular.forEach(boardTiles.tile_set, function(tile) {
+        var m = tile.name.toLowerCase().indexOf(matchStr);
+        if (m >= 0) {
+          matchedTiles.push({'board' : boardNumber, 'tile': tile});
+        }
+      });
     });
 
     // de-duplicate
