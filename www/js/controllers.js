@@ -217,9 +217,9 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
 })
 
-
-
 .controller('SettingsCtrl', function($scope, $ionicModal, $rootScope, $timeout) {
+  $scope.authToken = $rootScope.authToken;
+
   // Create the Settings modal that we will use later
   $ionicModal.fromTemplateUrl('templates/settings.html', {
     scope: $scope
@@ -249,11 +249,13 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   // Form data for the login modal
   $scope.loginData = {};
   $scope.authToken = $rootScope.authToken;
+  $scope.username = $rootScope.username;
   // Perform logout
   $scope.doLogout = function() {
     $rootScope.authToken = null;
     $scope.authToken = null;
     localStorage.removeItem('authToken');
+    localStorage.removeItem('username');
     localStorage.removeItem('userProfile');
     $rootScope.userProfile = null;
 
@@ -287,7 +289,9 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           analytics.addCustomDimension('dimension1', $scope.loginData.username);
         }
         $rootScope.authToken = data.token;
+        $rootScope.username = $scope.loginData.username;
         localStorage.setItem('authToken', $rootScope.authToken);
+        localStorage.setItem('username', $rootScope.username);
         $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
 
         // Cache Data for Offline Use
@@ -367,9 +371,10 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $scope.maxAssemblyBarTiles = 8;
 
-  var board = $stateParams.board ? $stateParams.board : '1';
+  var board = $stateParams.board ? $stateParams.board : '5';
   board = parseInt(board, 10);
   $scope.currentBoard = board;
+  $rootScope.currentBoard = board;
   $scope.wordlists = [];
 
   if($rootScope.AnalyticsAvailable) {
@@ -500,7 +505,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
       var wow_configs = $rootScope.userProfile.wow_configs;
 
-      if ((wow_configs) && (wow_configs.length)) {
+      if ((wow_configs) && (wow_configs.length) && (!$rootScope.WOWOverride)) {
 
         var maxStrength = 0;
 
@@ -536,9 +541,12 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           if ((matchStrength > 0) && (matchStrength >= maxStrength)) {
             maxStrength = matchStrength;
             newBoard = wow.board.id;
+            $rootScope.currentWOWBoard = newBoard;
           }
 
         }); //foreach
+      } else {
+        newBoard = $rootScope.currentWOWBoard;
       }
     } catch (e) {
       console.log('Exception trying to figure out new WOW board: ', e);
@@ -746,6 +754,28 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       });
     }
   };
+})
+
+.controller('WOWOverrideCtrl', function($scope, $rootScope, $timeout) {
+  // Controller for WOW Overrides
+  $scope.wowConfigs = $rootScope.userProfile.wow_configs;
+  $scope.currentWOWBoard = $rootScope.currentWOWBoard;
+  $scope.WOWOverride = $rootScope.WOWOverride;
+
+  $scope.setWOWBoard = function(boardIndex){
+    $rootScope.WOWOverride = true;
+    $scope.currentWOWBoard = boardIndex;
+    $rootScope.currentWOWBoard = $scope.currentWOWBoard;
+    $scope.$broadcast('refreshWowContext');
+    window.location = '#/app/wordlists/'+$rootScope.currentBoard; //TODO: Make better.
+  }
+
+  $scope.clearWOWOverride = function(){
+    $rootScope.WOWOverride = false;
+    $scope.WOWOverride = $rootScope.WOWOverride;
+    $scope.$broadcast('refreshWowContext');
+    window.location = '#/app/wordlists/'+$rootScope.currentBoard; //TODO: Make better.
+  }
 })
 
 .controller('SearchCtrl',  ['$scope', '$rootScope', '$window',

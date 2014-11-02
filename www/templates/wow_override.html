@@ -1,0 +1,27 @@
+<ion-view title="WOW Override" hide-nav-bar="true">
+  <ion-content class="has-header">
+    <div class="container" ng-controller="WOWOverrideCtrl">
+      <h1>Override WOW Configurations</h1>
+      <p>You may override the current When-or-Where board for 15 minutes by selecting a different configuration below.</p>
+        <div class="row main-container">
+
+          <div class="list wow-configs">
+
+            <div ng-repeat="config in wowConfigs">
+
+                  <div class="list-item" ng-click="setWOWBoard(config.board.id)">
+                    <span class="tile">
+                      <span class="tile-image"><img src="img/symbols/{{config.board.slug}}.png" /></span>
+                    </span>
+                    <span class="tile-name">{{config.board.id}}:{{currentWOWBoard}} {{config.board.name}}</span>
+                    <span ng-if="config.board.id == currentWOWBoard">(Current WOW Board)</span>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p><button ng-click="clearWOWOverride()">Resume automatic WOW management.</button></p>
+  </ion-content>
+</ion-view>
+

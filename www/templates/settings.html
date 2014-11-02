@@ -8,16 +8,20 @@
     <ion-content class="has-header" has-bouncing="false" scroll="false" overflow-scroll="false">
       <ion-list>
         <ion-item nav-clear href="#/app/login" ng-click="closeSettings()">
-          Login
+          <span ng-if="!authToken">Login</span>
+          <span ng-if="authToken">Logout</span>
         </ion-item>
         <ion-item nav-clear href="#/app/search" ng-click="closeSettings()">
           Search
         </ion-item>
         <ion-item nav-clear href="#/app/wordlists" ng-click="closeSettings()">
-          Board
+          Boards
         </ion-item>
         <ion-item nav-clear href="#/app/location" ng-click="closeSettings()">
           Location
+        </ion-item>
+        <ion-item nav-clear href="#/app/wow-override" ng-click="closeSettings()">
+          WOW Override
         </ion-item>
       </ion-list>
     </ion-content>
