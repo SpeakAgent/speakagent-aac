@@ -8,7 +8,8 @@
       </div>
       <div id="assembly-bar" class="assembly-bar" data-tap-disabled="true">
         <ul class="speech-tiles">
-          <li ng-click="barTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in barContents() track by $index">
+          <li on-long-press="barTileClicked($index, {{word}});"
+              ng-click="barTileClicked($index, {{word}});" class="tile {{word.type}}" ng-repeat="word in barContents() track by $index">
             <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
             <span class="tile-name">{{word.name}}</span></li>
         </ul>
@@ -16,8 +17,10 @@
 
       <div class="speech-controls">
         <button class="button icon-left button-delete" ng-disabled="barContents().length == 0"
+                on-long-press="deleteButtonClicked();"
                 ng-click="deleteButtonClicked();"><i class="icon ion-close-round"></i></button>
         <button class="button circle button-speak" ng-disabled="(barContents().length == 0) || (TTSAvailable == false)"
+                on-long-press="speakButtonClicked();"
                 ng-click="speakButtonClicked();"><i class="icon ion-checkmark-round"></i></button>
       </div>
 
@@ -26,12 +29,14 @@
     <div class="sidebar menu-wow persistent">
       <div class="list">
         <div ng-repeat="word in wowResponseTiles">
-          <a ng-click="wowTileClicked($event, {{word.id}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
+          <a on-long-press="wowTileClicked($event, {{word.id}});"
+             ng-click="wowTileClicked($event, {{word.id}});" href="#/app/wordlists/{{word.target}}" class="folder tile item-content {{word.type}}" ng-if="word.target">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
           </a>
 
-          <div ng-click="wowTileClicked($event, {{word.id}});" class="tile {{word.type}}" ng-if="!word.target">
+          <div on-long-press="wowTileClicked($event, {{word.id}});"
+               ng-click="wowTileClicked($event, {{word.id}});" class="tile {{word.type}}" ng-if="!word.target">
             <div class="item-content">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
@@ -48,12 +53,14 @@
       <div class="list">
 
         <div ng-repeat="word in wordlists" class="wordlist">
-          <a ng-click="wordTileClicked($event, {{word.id}});" href="#/app/wordlists/{{word.target}}" class="tile item-content {{word.kind}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="word.target">
+          <a on-long-press="wordTileClicked($event, {{word.id}});"
+             ng-click="wordTileClicked($event, {{word.id}});" href="#/app/wordlists/{{word.target}}" class="tile item-content {{word.kind}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="word.target">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
           </a>
 
-          <div ng-click="wordTileClicked($event, {{word.id}});" class="tile {{word.kind}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="!word.target">
+          <div on-long-press="wordTileClicked($event, {{word.id}});"
+               ng-click="wordTileClicked($event, {{word.id}});" class="tile {{word.kind}}" ng-class="{'tile-hidden' : word.hidden}" ng-if="!word.target">
             <div class="item-content">
               <span class="tile-image"><img src="img/symbols/{{word.icon}}" /></span>
               <span class="tile-name">{{word.name}}</span>
@@ -66,7 +73,9 @@
     <div class="sidebar menu-comment persistent">
       <ul>
         <li ng-repeat="quickWord in quickResponseTiles">
-          <div ng-click="quickResponseTileClicked({{quickWord}});" class="tile {{quickWord.kind}}">
+          <div
+              on-long-press="quickResponseTileClicked({{quickWord}});"
+              ng-click="quickResponseTileClicked({{quickWord}});" class="tile {{quickWord.kind}}">
             <div class="item-content">
               <span class="tile-image"><img src="img/symbols/{{quickWord.icon}}" /></span>
               <span class="tile-name">{{quickWord.name}}</span>

@@ -104,7 +104,7 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
             //
             // $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
             $scope.$apply();
-            }
+          }
         }
 
       }, document.getElementById('assembly-bar'));
@@ -149,7 +149,6 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
         }
         return null;
     };
-
 
     $scope.barTileClicked = function(index, obj) {
       // console.log('bar tile clicked: ',  obj);
@@ -207,12 +206,14 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   };
 }])
 
+.factory('clearAssemblyBar', ['$window', 'setClearOnAdd',
+  function(win, setClearOnAdd) {
+  return function(force) {
 
-
-.factory('clearAssemblyBar', ['$window', function(win) {
-  return function() {
-    win.assemblyBarTiles = [];
-    setClearOnAdd(false);
+    if ((force) || (win.assemblyBarClearOnAdd)) {
+      win.assemblyBarTiles = [];
+      setClearOnAdd(false);
+    }
     return win.assemblyBarTiles;
   };
 }])
