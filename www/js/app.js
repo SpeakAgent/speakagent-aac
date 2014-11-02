@@ -132,6 +132,20 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       $rootScope.$broadcast('refreshWowContext');
     }, $rootScope.contextInterval);
 
+    try {
+      if (Media) {
+        $rootScope.ringBell = function(){
+          var bell = new Media('ding.mp3');
+          bell.seekTo(0);
+          bell.play();
+        }
+      }
+    } catch (e) {
+      console.log('Media is not available.');
+      $rootScope.ringBell = function(){
+        console.log('Family is all. - Hector "Tio" Salamanca');
+      }
+    }
 
     // Load the rest of the caches into memory asynchronously
     //
