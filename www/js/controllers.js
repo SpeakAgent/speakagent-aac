@@ -766,13 +766,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     var matchedTiles = [];
 
     angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
-      // console.log('board ', boardNumber);
-      angular.forEach(boardTiles.tile_set, function(tile) {
-        var m = tile.name.toLowerCase().indexOf(matchStr);
-        if (m >= 0) {
-          matchedTiles.push({'board' : boardNumber, 'tile': tile});
-        }
-      });
+      if (boardTiles) {
+        // console.log('board ', boardNumber);
+        angular.forEach(boardTiles.tile_set, function(tile) {
+          var m = tile.name.toLowerCase().indexOf(matchStr);
+          if (m >= 0) {
+            matchedTiles.push({'board' : boardNumber, 'tile': tile});
+          }
+        });
+      }
     });
 
     // de-duplicate
