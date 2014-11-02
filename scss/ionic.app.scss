@@ -804,6 +804,9 @@ form {
             background-color: rgba(255,255,255,0.6);
             top: 2px;
         }
+        &.current {
+            background-color: rgba(255,255,255,0.7);
+        }
         .tile {
             @include box-shadow(rgba(black,0.2) 0 2px 1px);
             height: 54px;
@@ -827,6 +830,64 @@ form {
             vertical-align: top;
             margin-left: 0;
             font-size: 20px;
+        }
+    }
+}
+.wow-override-container {
+    padding: 1em;
+    .wow-configs {
+        width: 100%;
+
+        .list {
+            display: flex;
+            display: -webkit-flex;
+            flex-wrap: wrap;
+            -webkit-flex-flow: row wrap;
+        }
+
+        .list-item {
+            margin-bottom: 5px;
+            padding: 10px;
+            display: block;
+            width: 45%;
+            float: left;
+            margin-right: 1em;
+            height: 74px;
+            background-color: rgba(255,255,255,0.3);
+            @include border-radius(10px);
+            position: relative;
+            cursor: pointer;
+            &.active, &.activated {
+                background-color: rgba(255,255,255,0.6);
+                top: 2px;
+            }
+            &.current {
+                background-color: rgba(255,255,255,0.8);
+            }
+            .tile {
+                @include box-shadow(rgba(black,0.2) 0 2px 1px);
+                height: 54px;
+                width: 54px;
+                display: inline-block;
+                margin-left: 0;
+                margin-bottom: 0;
+            }
+            .tile-image {
+                img {
+                    padding-top: 3px;
+                    width: 90%;
+                    margin: 0 auto;
+                    height: auto;
+                }
+            }
+            .tile-name {
+                display: inline-block;
+                height: 54px;
+                line-height: 54px;
+                vertical-align: top;
+                margin-left: 0;
+                font-size: 20px;
+            }
         }
     }
 }
