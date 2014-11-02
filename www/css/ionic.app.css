@@ -7504,6 +7504,8 @@ input, button, select, textarea {
   padding-top: 132px;
   bottom: 0;
   width: 120px; }
+  .sidebar.menu-wow.override {
+    border-right: 4px dashed #fff; }
   .sidebar.menu-comment {
     right: 0; }
   .sidebar .tile {
@@ -7717,6 +7719,8 @@ form .item-get-location input {
     .search-results .list-item.active, .search-results .list-item.activated {
       background-color: rgba(255, 255, 255, 0.6);
       top: 2px; }
+    .search-results .list-item.current {
+      background-color: rgba(255, 255, 255, 0.7); }
     .search-results .list-item .tile {
       -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
       -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
@@ -7738,3 +7742,53 @@ form .item-get-location input {
       vertical-align: top;
       margin-left: 0;
       font-size: 20px; }
+
+.wow-override-container {
+  padding: 1em; }
+  .wow-override-container .wow-configs {
+    width: 100%; }
+    .wow-override-container .wow-configs .list {
+      display: flex;
+      display: -webkit-flex;
+      flex-wrap: wrap;
+      -webkit-flex-flow: row wrap; }
+    .wow-override-container .wow-configs .list-item {
+      margin-bottom: 5px;
+      padding: 10px;
+      display: block;
+      width: 45%;
+      float: left;
+      margin-right: 1em;
+      height: 74px;
+      background-color: rgba(255, 255, 255, 0.3);
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer; }
+      .wow-override-container .wow-configs .list-item.active, .wow-override-container .wow-configs .list-item.activated {
+        background-color: rgba(255, 255, 255, 0.6);
+        top: 2px; }
+      .wow-override-container .wow-configs .list-item.current {
+        background-color: rgba(255, 255, 255, 0.8); }
+      .wow-override-container .wow-configs .list-item .tile {
+        -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+        -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 2px 1px;
+        height: 54px;
+        width: 54px;
+        display: inline-block;
+        margin-left: 0;
+        margin-bottom: 0; }
+      .wow-override-container .wow-configs .list-item .tile-image img {
+        padding-top: 3px;
+        width: 90%;
+        margin: 0 auto;
+        height: auto; }
+      .wow-override-container .wow-configs .list-item .tile-name {
+        display: inline-block;
+        height: 54px;
+        line-height: 54px;
+        vertical-align: top;
+        margin-left: 0;
+        font-size: 20px; }

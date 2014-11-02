@@ -16,6 +16,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
   $rootScope.defaultMainBoard = 5;
 
   $rootScope.currentWOWBoard = $rootScope.defaultWOWBoard;
+  $rootScope.WOWOverride = false; // Switch this to true to block WOW board updates
   $rootScope.currentQuickResponseBoard = $rootScope.defaultQuickResponseBoard;
 
   $rootScope.beaconInterval = 30; // seconds
@@ -28,6 +29,12 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
     } else {
       console.log('no auth token stored');
+      window.location = '#/app/login';
+    }
+    if(localStorage.getItem('username') !== null) {
+      $rootScope.username = localStorage.getItem('username');
+    } else {
+      console.log('no username stored');
       window.location = '#/app/login';
     }
     if ((localStorage.getItem('apiBaseHREF') !== null) &&
@@ -138,6 +145,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
           console.log('ringing bell');
           var bell = new Media('ding.mp3');
           bell.seekTo(0);
+          bell.setVolume(0.5);
           bell.play();
         }
       }
@@ -216,6 +224,16 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         'menuContent' :{
           templateUrl: "templates/search.html",
           controller: 'SearchCtrl'
+        }
+      }
+    })
+
+    .state('app.wowoverride', {
+      url: "/wow-override",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/wow_override.html",
+          controller: 'WOWOverrideCtrl'
         }
       }
     })

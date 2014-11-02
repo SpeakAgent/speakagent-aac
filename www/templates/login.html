@@ -24,10 +24,11 @@
       </form>
     </div>
     <div class="logout-container" ng-if="authToken">
-      <h1>Logout</h1>
+      <h1>Current User: {{username}}</h1>
+      <p>Logging out will clear the application cache and your user profile.</p>
       <form ng-submit="doLogout()">
         <label class="item">
-          <button class="button button-block button-assertive" type="submit">Log Out</button>
+          <button class="button button-block button-assertive" type="submit">Click here to log Out</button>
         </label>
       </form>
     </div>
