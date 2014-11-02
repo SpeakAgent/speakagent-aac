@@ -85,6 +85,7 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
             // // console.log('insertBeforeIndex ' + insertBeforeIndex);
             // // console.log('moved ', moved);
 
+
             // // Move the tile into position.
             // //
             // $scope.assemblyBarPhrase.splice(insertBeforeIndex, 0, moved[0]);
@@ -105,6 +106,7 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
             // $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
             $scope.$apply();
           }
+
         }
 
       }, document.getElementById('assembly-bar'));
@@ -145,6 +147,7 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
             if (!child.hasClass('dragging')) {
               return child;
             }
+
           }
         }
         return null;
@@ -152,6 +155,7 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
 
     $scope.barTileClicked = function(index, obj) {
       // console.log('bar tile clicked: ',  obj);
+
 
       newTiles = deleteAssemblyBarTileAtIndex(index);
 
