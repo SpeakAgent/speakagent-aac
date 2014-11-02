@@ -7504,6 +7504,8 @@ input, button, select, textarea {
   padding-top: 132px;
   bottom: 0;
   width: 120px; }
+  .sidebar.menu-wow.override {
+    border-right: 4px dashed #fff; }
   .sidebar.menu-comment {
     right: 0; }
   .sidebar .tile {

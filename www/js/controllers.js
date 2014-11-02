@@ -370,6 +370,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     getAssemblyBarTiles, removeUnspokenFoldersFromAssemblyBar, $ionicLoading) {
 
   $scope.maxAssemblyBarTiles = 8;
+  $scope.WOWOverride = $rootScope.WOWOverride;
 
   var board = $stateParams.board ? $stateParams.board : '5';
   board = parseInt(board, 10);

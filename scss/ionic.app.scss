@@ -553,6 +553,10 @@ input, button, select, textarea {
     width: 120px;
 
     &.menu-wow {
+
+        &.override {
+            border-right: 4px solid #fff;
+        }
     }
 
 

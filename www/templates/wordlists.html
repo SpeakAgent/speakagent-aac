@@ -26,7 +26,7 @@
 
     </div>
 
-    <div class="sidebar menu-wow persistent">
+    <div class="sidebar menu-wow persistent" ng-class="{'override': WOWOverride}">
       <div class="list">
         <div ng-repeat="word in wowResponseTiles">
           <a on-long-press="wowTileClicked($event, {{word.id}});"
