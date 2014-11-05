@@ -447,8 +447,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     try {
 
 
-      // FIXME!!!!! SHOULD BE 10 METERS vvvvv  but .2 is for dev
-      var distanceThreshold = .2; // meters
+      var distanceThreshold = 10; // meters
 
 
       angular.forEach(beacons.beaconList, function(b) {
