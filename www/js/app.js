@@ -19,7 +19,8 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
   $rootScope.WOWOverride = false; // Switch this to true to block WOW board updates
   $rootScope.currentQuickResponseBoard = $rootScope.defaultQuickResponseBoard;
 
-  $rootScope.beaconInterval = 30; // seconds
+  $rootScope.closestBeacons = [];
+  $rootScope.beaconInterval = 10; // seconds
   $rootScope.contextInterval = 30; // seconds
 
   // Make sure we're always logged in
@@ -137,7 +138,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
     $interval(function() {
       $rootScope.$broadcast('refreshWowContext');
-    }, $rootScope.contextInterval);
+    }, $rootScope.contextInterval * 1000);
 
     try {
       if (Media) {

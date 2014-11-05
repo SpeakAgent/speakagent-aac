@@ -172,7 +172,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     // add a few to play with.
     //
     if ($scope.locationData.debug && !localStorage.getItem("location.favorites")) {
-      localStorage.setItem("location.favorites", '[{"name":"Grandmas House","lat":33.9052104,"lng":-83.3989904,"accuracy":53,"address":"1140 Ivywood Drive, Athens, GA 30606, USA"},{"name":"House of Barack","lat":38.897677,"lng":-77.0365298,"accuracy":17,"address":"1600 Pennsylvania Avenue Northwest, Washington, DC, USA"},{"name":"Sears Tower","lat":41.878876,"lng":-87.635915,"accuracy":89,"address":"233 S Wacker Dr, Chicago, IL 60606, USA"},{"name":"Seattle Central Library","lat":47.606701,"lng":-122.33250,"accuracy":55,"address":"1000 4th Ave, Seattle, WA 98104, USA"}]');
+      localStorage.setItem("location.favorites", '[{"name":"Sears Tower","lat":41.878876,"lng":-87.635915,"accuracy":89,"address":"233 S Wacker Dr, Chicago, IL 60606, USA"},{"name":"Seattle Central Library","lat":47.606701,"lng":-122.33250,"accuracy":55,"address":"1000 4th Ave, Seattle, WA 98104, USA"}]');
     }
 
     var faves = angular.fromJson(localStorage.getItem("location.favorites")) || [];
@@ -254,9 +254,26 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   $scope.doLogout = function() {
     $rootScope.authToken = null;
     $scope.authToken = null;
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('username');
-    localStorage.removeItem('userProfile');
+
+    var clearKeys = [
+      'authToken',
+      'username',
+      'userProfile',
+      'location.favorites',
+    ];
+
+    var storageLength = localStorage.length;
+    for(var i=0; i<storageLength; i++) {
+      var key = localStorage.key(i);
+      if (key.indexOf('board-') === 0) {
+        clearKeys.push(key);
+      }
+    }
+
+    angular.forEach(clearKeys, function(key) {
+      localStorage.removeItem(key);
+    });
+
     $rootScope.userProfile = null;
 
   };
@@ -311,7 +328,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           for (var i=0; i<data.count; i++) {
             var board = data.results[i];
             localStorage.setItem('board-'+board.id, JSON.stringify(board));
-            $rootScope.boards[board.id] = board
+            $rootScope.boards[board.id] = board;
           }
           $ionicLoading.hide();
           window.location = '#/app/wordlists/5/'; //TODO: Make better.
@@ -419,52 +436,51 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $rootScope.currentBeacon = null;
 
+  $timeout(function() {
+    $scope.$broadcast('refreshWowContext');
+  });
+
   $scope.$on('beaconsDiscovered', function(e, beacons) {
 
-    var currentBeaconInRangeAtLeast = false;
+    var closestBeacons = [];
 
     try {
-        var closestBeacon = null;
-        var distanceThreshold = 8; // meters
 
-        var theBeacon = angular.forEach(beacons.beaconList, function(b) {
-          if ((b.distance >= 0.0) && (b.distance < distanceThreshold)) {
-            if ((!closestBeacon) || (b.distance < closestBeacon.distance)) {
-              closestBeacon = b;
-            }
-          }
 
-          if (($rootScope.currentBeacon) &&
-              (($rootScope.currentBeacon.major == b.major) ||
-              ($rootScope.currentBeacon.minor == b.minor))) {
-            currentBeaconInRangeAtLeast = true;
-          }
-        });
+      var distanceThreshold = 10; // meters
 
-        if (closestBeacon) {
-          if ((!$rootScope.currentBeacon) ||
-              ($rootScope.currentBeacon.major != closestBeacon.major) ||
-              ($rootScope.currentBeacon.minor != closestBeacon.minor)) {
-            $rootScope.currentBeacon = closestBeacon;
-            $scope.$broadcast('refreshWowContext');
-          }
-        } else {
-          // see if the beacon we are currently tracking is at least in the list
-          //
-          if (currentBeaconInRangeAtLeast) {
-            // beacon may not be closest, but it is still nearby
-          } else {
-            // If we can't see it at ALL, then dump it. IF this is
-            // the second time it's missing, then refresh the wow
-            // context and get rid of it.
-            //
-            if ($rootScope.currentBeacon == null) {
-              $scope.$broadcast('refreshWowContext');
-            }
-            $rootScope.currentBeacon = null;
+
+      angular.forEach(beacons.beaconList, function(b) {
+        if ((b.distance >= 0.0) && (b.distance < distanceThreshold)) {
+          closestBeacons.push(b);
+        }
+      });
+
+      closestBeacons = closestBeacons.sort(function(a, b) {
+        return a.distance - b.distance;
+      });
+
+      var beaconsChanged = false;
+      if (closestBeacons.length == $rootScope.closestBeacons.length) {
+
+        var len = closestBeacons.length;
+
+        for(var i=0; (i<len) && (!beaconsChanged); i++) {
+          var b1 = closestBeacons[i];
+          var b2 = $rootScope.closestBeacons[i];
+          if ((b1.major != b2.major) || (b1.minor != b2.minor)) {
+            beaconsChanged = true;
           }
         }
+      } else {
+        beaconsChanged = true;
+      }
 
+      if (beaconsChanged) {
+        console.log('Beacons changed. old: ', JSON.stringify($rootScope.closestBeacons), 'new: ', JSON.stringify(closestBeacons));
+        $rootScope.closestBeacons = closestBeacons;
+        $scope.$broadcast('refreshWowContext');
+      }
     } catch (e) {
       console.log('Exception finding closest beacon: ', e);
     }
@@ -472,7 +488,10 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
  $scope.$on('refreshWowContext', function(e) {
 
+    console.log('-- BEGIN WOW REFRESH --');
     var newBoard = $rootScope.defaultWOWBoard;
+    // console.log('Default wow board '+ newBoard);
+    // console.log('Current WOW board '+ $rootScope.currentWOWBoard);
 
     try {
       // Get day of week
@@ -481,10 +500,14 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       var daynum = date.getDay();
       var is_weekend =(daynum === 0) || (daynum === 6);
 
+
       var hour = date.getHours();
       var hourStr = (hour < 10) ? '0' : '';
-      hourStr = hourStr + hour.toString() + ':00:00';
-
+      hourStr = hourStr + hour.toString();
+      var min  = date.getMinutes();
+      var minStr  = (min  < 10) ? '0' : '';
+      minStr = minStr + min.toString();
+      var nowTime = hourStr + minStr;
 
       // This is tricky -- the logic is
       // if we have a location, that's a strong affinity.
@@ -514,15 +537,44 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
           var matchStrength = 0;
 
-          if (($rootScope.currentBeacon) && (wow.location))  {
-            if ( (wow.beacon_major == $rootScope.currentBeacon.major) &&
-                  (wow.beacon_minor == $rootScope.currentBeacon.minor) ) {
-             matchStrength = 15;
-             }
+          // Match strength is less (12) or stronger (15) based on the
+          // position of the beacon in the (already sorted) list of
+          // nearest beacons. This means 12-15, 17-20, 23-26, or 28-31
+          // which still fits all of the above stuff.
+          //
+          if ((wow.location) && ($rootScope.closestBeacons.length)) {
+            // console.log('Checking beacons for ', JSON.stringify(wow));
+            angular.forEach($rootScope.closestBeacons, function(beacon, index) {
+              // console.log('index ' + index + ', ', JSON.stringify(beacon));
+
+              if ( (wow.beacon_major == beacon.major) &&
+                  (wow.beacon_minor == beacon.minor) ) {
+                matchStrength = 15 - Math.floor(3*index/$rootScope.closestBeacons.length*100)/100;
+              }
+            });
           }
 
-          if ((wow.time) && (wow.time === hourStr)) {
-            matchStrength = matchStrength + 11;
+          if (wow.time) {
+
+            var times = wow.time.split(':');
+            var startTime = times[0]+times[1];
+            var duration = wow.duration ? wow.duration : 30;
+            var endDate = new Date();
+            endDate.setHours(times[0]);
+            endDate.setMinutes(times[1]);
+            endDate = new Date(endDate.getTime() + duration*60000);
+            var endHours = endDate.getHours();
+            endHours = (endHours < 10) ? '0' + endHours.toString() : endHours.toString();
+            var endMins = endDate.getMinutes();
+            endMins = (endMins < 10) ? '0' + endMins.toString() : endMins.toString();
+            var endTime = endHours + endMins;
+
+            if ((nowTime >= startTime) && (nowTime < endTime)) {
+              // console.log('Matched time: ',  startTime, nowTime, endTime, duration);
+              matchStrength = matchStrength + 11;
+            } else {
+              // console.log('Time comparison (notmatched): ', startTime, nowTime, endTime, duration);
+            }
           }
 
           if ((matchStrength == 1) && (wow.day === 'all')) {
@@ -539,10 +591,13 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
             matchStrength = matchStrength + 5;
           }
 
+          if (matchStrength > 0) {
+            console.log('MATCH STRENGTH: ', matchStrength, ' ID: ', wow.board.id);
+          }
+
           if ((matchStrength > 0) && (matchStrength >= maxStrength)) {
             maxStrength = matchStrength;
             newBoard = wow.board.id;
-            $rootScope.currentWOWBoard = newBoard;
           }
 
         }); //foreach
@@ -555,6 +610,9 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
     if ((newBoard) && (newBoard !== $rootScope.currentWOWBoard)) {
       $timeout(function() {
+
+        console.log('SWITCHING WOW: from: ' + $rootScope.currentWOWBoard +
+          ' to: ' + newBoard);
         $rootScope.currentWOWBoard = newBoard;
         var board = fetchBoardFromLocalStorage($rootScope.currentWOWBoard);
         if (board) {
@@ -564,6 +622,8 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         }
       });
     }
+
+    console.log('-- END WOW REFRESH --');
   });
 
   $scope.wordTileClicked = function(evt, number) {
@@ -699,7 +759,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $scope.attentionRequested = function() {
     $rootScope.ringBell();
-    console.log('User hit the bell button');
   };
 
   $rootScope.toggleEdit = function() {
@@ -785,40 +844,57 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   function($scope, $rootScope, $window, addTileToAssemblyBar) {
 
   $scope.searchForTile = "";
+  $scope.previousSearchForTile = "";
+
   $scope.matchedTiles = [];
 
   $scope.findMatchingTiles = function() {
-    $scope.matchedTiles = [];
+
     if (!$scope.searchForTile) {
       return;
     }
 
-    var matchStr = $scope.searchForTile.toLowerCase();
-    var matchedTiles = [];
-
-    angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
-      if (boardTiles) {
-        // console.log('board ', boardNumber);
-        angular.forEach(boardTiles.tile_set, function(tile) {
-          var m = tile.name.toLowerCase().indexOf(matchStr);
-          if (m >= 0) {
-            matchedTiles.push({'board' : boardNumber, 'tile': tile});
-          }
-        });
-      }
-    });
-
-    // de-duplicate
-
     var seen = {};
 
-    var dedupedTiles = matchedTiles.filter(function(item) {
-        return seen.hasOwnProperty(item.tile.name) ? false : (seen[item.tile.name] = true);
+    // If we don't have the list of all tiles, build it the first
+    // time here.
+    //
+    if (!$scope.allSearchableTiles) {
+      $scope.allSearchableTiles = [];
+      angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
+        if (boardTiles) {
+          var filteredTiles = boardTiles.tile_set.filter(function(tile) {
+            return seen.hasOwnProperty(tile.name) ? false : (seen[tile.name] = true);
+          });
+          angular.forEach(filteredTiles, function(tile) {
+            $scope.allSearchableTiles.push({ 'board' : boardNumber, 'tile' : tile });
+          });
+        }
+      });
+    }
+
+    // Default search to all tiles that we built when the controller
+    // loaded
+    //
+    var searchTiles = $scope.allSearchableTiles;
+    var matchStr = $scope.searchForTile.toLowerCase();
+    if ((matchStr.length > 1) && ($scope.previousSearchForTile.length<$scope.searchForTile.length)) {
+      searchTiles = $scope.matchedTiles;
+    }
+    $scope.previousSearchForTile = $scope.searchForTile;
+
+    var matchedTiles = [];
+
+    angular.forEach(searchTiles, function(potential) {
+      var m = potential.tile.name.toLowerCase().indexOf(matchStr);
+      if (m >= 0) {
+        matchedTiles.push(potential);
+      }
     });
 
     // Sort remaining into view
 
-    $scope.matchedTiles = dedupedTiles.sort(function(a, b) {
+    $scope.matchedTiles = matchedTiles.sort(function(a, b) {
       if (a.tile.name < b.tile.name) {
         return -1;
       }
