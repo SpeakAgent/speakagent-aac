@@ -328,7 +328,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           for (var i=0; i<data.count; i++) {
             var board = data.results[i];
             localStorage.setItem('board-'+board.id, JSON.stringify(board));
-            $rootScope.boards[board.id] = board
+            $rootScope.boards[board.id] = board;
           }
           $ionicLoading.hide();
           window.location = '#/app/wordlists/5/'; //TODO: Make better.
@@ -442,50 +442,46 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $scope.$on('beaconsDiscovered', function(e, beacons) {
 
-    var currentBeaconInRangeAtLeast = false;
+    var closestBeacons = [];
 
     try {
-        var closestBeacon = null;
-        var distanceThreshold = 8; // meters
 
-        var theBeacon = angular.forEach(beacons.beaconList, function(b) {
-          if ((b.distance >= 0.0) && (b.distance < distanceThreshold)) {
-            if ((!closestBeacon) || (b.distance < closestBeacon.distance)) {
-              closestBeacon = b;
-            }
-          }
 
-          if (($rootScope.currentBeacon) &&
-              (($rootScope.currentBeacon.major == b.major) ||
-              ($rootScope.currentBeacon.minor == b.minor))) {
-            currentBeaconInRangeAtLeast = true;
-          }
-        });
+      // FIXME!!!!! SHOULD BE 10 METERS vvvvv  but .2 is for dev
+      var distanceThreshold = .2; // meters
 
-        if (closestBeacon) {
-          if ((!$rootScope.currentBeacon) ||
-              ($rootScope.currentBeacon.major != closestBeacon.major) ||
-              ($rootScope.currentBeacon.minor != closestBeacon.minor)) {
-            $rootScope.currentBeacon = closestBeacon;
-            $scope.$broadcast('refreshWowContext');
-          }
-        } else {
-          // see if the beacon we are currently tracking is at least in the list
-          //
-          if (currentBeaconInRangeAtLeast) {
-            // beacon may not be closest, but it is still nearby
-          } else {
-            // If we can't see it at ALL, then dump it. IF this is
-            // the second time it's missing, then refresh the wow
-            // context and get rid of it.
-            //
-            if ($rootScope.currentBeacon == null) {
-              $scope.$broadcast('refreshWowContext');
-            }
-            $rootScope.currentBeacon = null;
+
+      angular.forEach(beacons.beaconList, function(b) {
+        if ((b.distance >= 0.0) && (b.distance < distanceThreshold)) {
+          closestBeacons.push(b);
+        }
+      });
+
+      closestBeacons = closestBeacons.sort(function(a, b) {
+        return a.distance - b.distance;
+      });
+
+      var beaconsChanged = false;
+      if (closestBeacons.length == $rootScope.closestBeacons.length) {
+
+        var len = closestBeacons.length;
+
+        for(var i=0; (i<len) && (!beaconsChanged); i++) {
+          var b1 = closestBeacons[i];
+          var b2 = $rootScope.closestBeacons[i];
+          if ((b1.major != b2.major) || (b1.minor != b2.minor)) {
+            beaconsChanged = true;
           }
         }
+      } else {
+        beaconsChanged = true;
+      }
 
+      if (beaconsChanged) {
+        // console.log('Beacons changed. old: ', JSON.stringify($rootScope.closestBeacons), 'new: ', JSON.stringify(closestBeacons));
+        $rootScope.closestBeacons = closestBeacons;
+        $scope.$broadcast('refreshWowContext');
+      }
     } catch (e) {
       console.log('Exception finding closest beacon: ', e);
     }
@@ -494,6 +490,8 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
  $scope.$on('refreshWowContext', function(e) {
 
     var newBoard = $rootScope.defaultWOWBoard;
+    // console.log('Default wow board '+ newBoard);
+    // console.log('Current WOW board '+ $rootScope.currentWOWBoard);
 
     try {
       // Get day of week
@@ -539,11 +537,23 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
           var matchStrength = 0;
 
-          if (($rootScope.currentBeacon) && (wow.location))  {
-            if ( (wow.beacon_major == $rootScope.currentBeacon.major) &&
-                  (wow.beacon_minor == $rootScope.currentBeacon.minor) ) {
-             matchStrength = 15;
-             }
+          // Match strength is less (12) or stronger (15) based on the
+          // position of the beacon in the (already sorted) list of
+          // nearest beacons. This means 12-15, 17-20, 23-26, or 28-31
+          // which still fits all of the above stuff.
+          //
+          if ((wow.location) && ($rootScope.closestBeacons.length)) {
+            // console.log('Checking beacons for ', JSON.stringify(wow));
+            angular.forEach($rootScope.closestBeacons, function(beacon, index) {
+              // console.log('index ' + index + ', ', JSON.stringify(beacon));
+
+              if ( (wow.beacon_major == beacon.major) &&
+                  (wow.beacon_minor == beacon.minor) ) {
+                matchStrength = 15 - Math.floor(3*index/$rootScope.closestBeacons.length*100)/100;
+              console.log('Matched beacon maj: ' + beacon.major + ' min: ' + beacon.minor +
+                 ' with strength of ' + matchStrength);
+              }
+            });
           }
 
           if (wow.time) {
@@ -585,6 +595,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
           if ((matchStrength > 0) && (matchStrength >= maxStrength)) {
             maxStrength = matchStrength;
+            // console.log('New board might now be: ', wow.board.id, ' because strength is ', matchStrength);;
             newBoard = wow.board.id;
             $rootScope.currentWOWBoard = newBoard;
           }
@@ -599,9 +610,13 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
     if ((newBoard) && (newBoard !== $rootScope.currentWOWBoard)) {
       $timeout(function() {
+
+        console.log('SWITCHING WOW: from: ' + $rootScope.currentWOWBoard +
+          ' to: ' + newBoard);
         $rootScope.currentWOWBoard = newBoard;
         var board = fetchBoardFromLocalStorage($rootScope.currentWOWBoard);
         if (board) {
+          console.log('board loaded and we are go!');
           $scope.wowResponseTiles = board.tile_set.sort(function(a, b) {
             return a.ordinal - b.ordinal;
           });
