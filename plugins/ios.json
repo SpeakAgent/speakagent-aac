@@ -10,10 +10,16 @@
                     "SystemConfiguration.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "CoreData.framework": [
+                        {
+                            "xml": "false",
+                            "count": 2
+                        }
+                    ],
+                    "libsqlite3.dylib": [
                         {
                             "xml": "false",
                             "count": 1
@@ -22,7 +28,7 @@
                     "libz.dylib": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "libsqlite3.0.dylib": [
@@ -72,6 +78,10 @@
             "config.xml": {
                 "parents": {
                     "/*": [
+                        {
+                            "xml": "<feature name=\"GoogleAnalytics\"><param name=\"ios-package\" value=\"GoogleAnalyticsPlugin\" /></feature>",
+                            "count": 1
+                        },
                         {
                             "xml": "<feature name=\"UniversalAnalytics\"><param name=\"ios-package\" value=\"UniversalAnalyticsPlugin\" /></feature>",
                             "count": 1
@@ -160,44 +170,47 @@
         }
     },
     "installed_plugins": {
+        "com.cmackay.plugins.googleanalytics": {
+            "PACKAGE_NAME": "com.speakagent.aac"
+        },
         "com.danielcwilson.plugins.googleanalytics": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "com.ionic.keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "com.lefortsoftware.ttsplugin": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "com.simonmacdonald.prefs": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "com.venturecranial.cordova.estimote": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.console": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.device": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.device-motion": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.device-orientation": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.file": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.geolocation": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.media": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+            "PACKAGE_NAME": "com.speakagent.aac"
         }
     },
     "dependent_plugins": {}

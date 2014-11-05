@@ -4,6 +4,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   if($rootScope.AnalyticsAvailable) {
     analytics.trackView('Location');
   }
+  var timestamp = Date.now()/1000;
+  var eventData = {
+    'category': 'System',
+    'action': 'ScreenView',
+    'label': 'Location',
+    'timestamp': timestamp,
+    'username': $rootScope.username
+  };
+  localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
   $scope.locationData = { saveButtonDisabled: true,
                           proximityThreshold: 16.0/1000,
                           debug: true };
@@ -236,6 +245,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     if($rootScope.AnalyticsAvailable) {
       analytics.trackView('Settings');
     }
+    var timestamp = Date.now()/1000;
+    var eventData = {
+      'category': 'System',
+      'action': 'ScreenView',
+      'label': 'Settings',
+      'timestamp': timestamp,
+      'username': $rootScope.username
+    };
+    localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
   };
 
   $scope.switchToLogin = function() {
@@ -305,6 +323,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
           analytics.setUserId($scope.loginData.username);
           analytics.addCustomDimension('dimension1', $scope.loginData.username);
         }
+        var timestamp = Date.now()/1000;
+        var eventData = {
+          'category': 'System',
+          'action': 'LoginSuccess',
+          'label': $scope.loginData.username,
+          'timestamp': timestamp,
+          'username': $rootScope.username
+        };
+        localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
         $rootScope.authToken = data.token;
         $rootScope.username = $scope.loginData.username;
         localStorage.setItem('authToken', $rootScope.authToken);
@@ -398,6 +425,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   if($rootScope.AnalyticsAvailable) {
     analytics.trackView('Board ID: '+board);
   }
+  var timestamp = Date.now()/1000;
+  var eventData = {
+    'category': 'Boards',
+    'action': 'Board View',
+    'label': 'Board ID: '+board,
+    'timestamp': timestamp,
+    'username': $rootScope.username
+  };
+  localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
 
   $scope.TTSAvailable = $rootScope.TTSAvailable;
 
@@ -680,6 +716,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
     }
+    var timestamp = Date.now()/1000;
+    var eventData = {
+      'category': 'Boards',
+      'action': 'TileAdd',
+      'label': obj.phrase,
+      'timestamp': timestamp,
+      'username': $rootScope.username
+    };
+    localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
   };
 
   $scope.wowTileClicked = function(evt, number) {
@@ -712,6 +757,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'WOWTileAdd', obj.phrase);
     }
+    var timestamp = Date.now()/1000;
+    var eventData = {
+      'category': 'Boards',
+      'action': 'WOWTileAdded',
+      'label': obj.phrase,
+      'timestamp': timestamp,
+      'username': $rootScope.username
+    };
+    localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
   };
 
   $scope.deleteButtonClicked = function() {
@@ -730,6 +784,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'DeleteClick', removed);
     }
+    var timestamp = Date.now()/1000;
+    var eventData = {
+      'category': 'Boards',
+      'action': 'DeleteButtonClicked',
+      'label': removed,
+      'timestamp': timestamp,
+      'username': $rootScope.username
+    };
+    localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
   };
 
   $scope.speakButtonClicked = function() {
@@ -743,6 +806,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'SpeakPhrase', wordsToSpeak);
     }
+    var timestamp = Date.now()/1000;
+    var eventData = {
+      'category': 'Boards',
+      'action': 'SpeakPhrase',
+      'label': wordsToSpeak,
+      'timestamp': timestamp,
+      'username': $rootScope.username
+    };
+    localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
   };
 
   $scope.quickResponseTileClicked = function(obj) {
@@ -755,6 +827,15 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     if($rootScope.AnalyticsAvailable) {
       analytics.trackEvent('Boards', 'SpeakPhraseQuick', wordsToSpeak);
     }
+    var timestamp = Date.now()/1000;
+    var eventData = {
+      'category': 'Boards',
+      'action': 'SpeakPhraseQuick',
+      'label': wordsToSpeak,
+      'timestamp': timestamp,
+      'username': $rootScope.username
+    };
+    localStorage.setItem('analytics-'+timestamp, JSON.stringify(eventData));
   };
 
   $scope.attentionRequested = function() {
