@@ -172,7 +172,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     // add a few to play with.
     //
     if ($scope.locationData.debug && !localStorage.getItem("location.favorites")) {
-      localStorage.setItem("location.favorites", '[{"name":"Grandmas House","lat":33.9052104,"lng":-83.3989904,"accuracy":53,"address":"1140 Ivywood Drive, Athens, GA 30606, USA"},{"name":"House of Barack","lat":38.897677,"lng":-77.0365298,"accuracy":17,"address":"1600 Pennsylvania Avenue Northwest, Washington, DC, USA"},{"name":"Sears Tower","lat":41.878876,"lng":-87.635915,"accuracy":89,"address":"233 S Wacker Dr, Chicago, IL 60606, USA"},{"name":"Seattle Central Library","lat":47.606701,"lng":-122.33250,"accuracy":55,"address":"1000 4th Ave, Seattle, WA 98104, USA"}]');
+      localStorage.setItem("location.favorites", '[{"name":"Sears Tower","lat":41.878876,"lng":-87.635915,"accuracy":89,"address":"233 S Wacker Dr, Chicago, IL 60606, USA"},{"name":"Seattle Central Library","lat":47.606701,"lng":-122.33250,"accuracy":55,"address":"1000 4th Ave, Seattle, WA 98104, USA"}]');
     }
 
     var faves = angular.fromJson(localStorage.getItem("location.favorites")) || [];
@@ -254,9 +254,26 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   $scope.doLogout = function() {
     $rootScope.authToken = null;
     $scope.authToken = null;
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('username');
-    localStorage.removeItem('userProfile');
+
+    var clearKeys = [
+      'authToken',
+      'username',
+      'userProfile',
+      'location.favorites',
+    ];
+
+    var storageLength = localStorage.length;
+    for(var i=0; i<storageLength; i++) {
+      var key = localStorage.key(i);
+      if (key.indexOf('board-') === 0) {
+        clearKeys.push(key);
+      }
+    }
+
+    angular.forEach(clearKeys, function(key) {
+      localStorage.removeItem(key);
+    });
+
     $rootScope.userProfile = null;
 
   };
@@ -419,6 +436,10 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $rootScope.currentBeacon = null;
 
+  $timeout(function() {
+    $scope.$broadcast('refreshWowContext');
+  });
+
   $scope.$on('beaconsDiscovered', function(e, beacons) {
 
     var currentBeaconInRangeAtLeast = false;
@@ -481,10 +502,14 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       var daynum = date.getDay();
       var is_weekend =(daynum === 0) || (daynum === 6);
 
+
       var hour = date.getHours();
       var hourStr = (hour < 10) ? '0' : '';
-      hourStr = hourStr + hour.toString() + ':00:00';
-
+      hourStr = hourStr + hour.toString();
+      var min  = date.getMinutes();
+      var minStr  = (min  < 10) ? '0' : '';
+      minStr = minStr + min.toString();
+      var nowTime = hourStr + minStr;
 
       // This is tricky -- the logic is
       // if we have a location, that's a strong affinity.
@@ -521,8 +546,27 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
              }
           }
 
-          if ((wow.time) && (wow.time === hourStr)) {
-            matchStrength = matchStrength + 11;
+          if (wow.time) {
+
+            var times = wow.time.split(':');
+            var startTime = times[0]+times[1];
+            var duration = wow.duration ? wow.duration : 30;
+            var endDate = new Date();
+            endDate.setHours(times[0]);
+            endDate.setMinutes(times[1]);
+            endDate = new Date(endDate.getTime() + duration*60000);
+            var endHours = endDate.getHours();
+            endHours = (endHours < 10) ? '0' + endHours.toString() : endHours.toString();
+            var endMins = endDate.getMinutes();
+            endMins = (endMins < 10) ? '0' + endMins.toString() : endMins.toString();
+            var endTime = endHours + endMins;
+
+            if ((nowTime >= startTime) && (nowTime < endTime)) {
+              // console.log('Matched time: ',  startTime, nowTime, endTime, duration);
+              matchStrength = matchStrength + 11;
+            } else {
+              // console.log('Time comparison (notmatched): ', startTime, nowTime, endTime, duration);
+            }
           }
 
           if ((matchStrength == 1) && (wow.day === 'all')) {
@@ -699,7 +743,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $scope.attentionRequested = function() {
     $rootScope.ringBell();
-    console.log('User hit the bell button');
   };
 
   $rootScope.toggleEdit = function() {
@@ -785,40 +828,57 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   function($scope, $rootScope, $window, addTileToAssemblyBar) {
 
   $scope.searchForTile = "";
+  $scope.previousSearchForTile = "";
+
   $scope.matchedTiles = [];
 
   $scope.findMatchingTiles = function() {
-    $scope.matchedTiles = [];
+
     if (!$scope.searchForTile) {
       return;
     }
 
-    var matchStr = $scope.searchForTile.toLowerCase();
-    var matchedTiles = [];
-
-    angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
-      if (boardTiles) {
-        // console.log('board ', boardNumber);
-        angular.forEach(boardTiles.tile_set, function(tile) {
-          var m = tile.name.toLowerCase().indexOf(matchStr);
-          if (m >= 0) {
-            matchedTiles.push({'board' : boardNumber, 'tile': tile});
-          }
-        });
-      }
-    });
-
-    // de-duplicate
-
     var seen = {};
 
-    var dedupedTiles = matchedTiles.filter(function(item) {
-        return seen.hasOwnProperty(item.tile.name) ? false : (seen[item.tile.name] = true);
+    // If we don't have the list of all tiles, build it the first
+    // time here.
+    //
+    if (!$scope.allSearchableTiles) {
+      $scope.allSearchableTiles = [];
+      angular.forEach($rootScope.boards, function(boardTiles, boardNumber) {
+        if (boardTiles) {
+          var filteredTiles = boardTiles.tile_set.filter(function(tile) {
+            return seen.hasOwnProperty(tile.name) ? false : (seen[tile.name] = true);
+          });
+          angular.forEach(filteredTiles, function(tile) {
+            $scope.allSearchableTiles.push({ 'board' : boardNumber, 'tile' : tile });
+          });
+        }
+      });
+    }
+
+    // Default search to all tiles that we built when the controller
+    // loaded
+    //
+    var searchTiles = $scope.allSearchableTiles;
+    var matchStr = $scope.searchForTile.toLowerCase();
+    if ((matchStr.length > 1) && ($scope.previousSearchForTile.length<$scope.searchForTile.length)) {
+      searchTiles = $scope.matchedTiles;
+    }
+    $scope.previousSearchForTile = $scope.searchForTile;
+
+    var matchedTiles = [];
+
+    angular.forEach(searchTiles, function(potential) {
+      var m = potential.tile.name.toLowerCase().indexOf(matchStr);
+      if (m >= 0) {
+        matchedTiles.push(potential);
+      }
     });
 
     // Sort remaining into view
 
-    $scope.matchedTiles = dedupedTiles.sort(function(a, b) {
+    $scope.matchedTiles = matchedTiles.sort(function(a, b) {
       if (a.tile.name < b.tile.name) {
         return -1;
       }

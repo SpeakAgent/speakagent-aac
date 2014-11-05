@@ -137,7 +137,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
 
     $interval(function() {
       $rootScope.$broadcast('refreshWowContext');
-    }, $rootScope.contextInterval);
+    }, $rootScope.contextInterval * 1000);
 
     try {
       if (Media) {
