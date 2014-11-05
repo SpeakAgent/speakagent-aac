@@ -477,7 +477,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       }
 
       if (beaconsChanged) {
-        // console.log('Beacons changed. old: ', JSON.stringify($rootScope.closestBeacons), 'new: ', JSON.stringify(closestBeacons));
+        console.log('Beacons changed. old: ', JSON.stringify($rootScope.closestBeacons), 'new: ', JSON.stringify(closestBeacons));
         $rootScope.closestBeacons = closestBeacons;
         $scope.$broadcast('refreshWowContext');
       }
@@ -488,6 +488,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
  $scope.$on('refreshWowContext', function(e) {
 
+    console.log('-- BEGIN WOW REFRESH --');
     var newBoard = $rootScope.defaultWOWBoard;
     // console.log('Default wow board '+ newBoard);
     // console.log('Current WOW board '+ $rootScope.currentWOWBoard);
@@ -590,9 +591,12 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
             matchStrength = matchStrength + 5;
           }
 
+          if (matchStrength > 0) {
+            console.log('MATCH STRENGTH: ', matchStrength, ' ID: ', wow.board.id);
+          }
+
           if ((matchStrength > 0) && (matchStrength >= maxStrength)) {
             maxStrength = matchStrength;
-            // console.log('New board might now be: ', wow.board.id, ' because strength is ', matchStrength);;
             newBoard = wow.board.id;
           }
 
@@ -618,6 +622,8 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         }
       });
     }
+
+    console.log('-- END WOW REFRESH --');
   });
 
   $scope.wordTileClicked = function(evt, number) {
