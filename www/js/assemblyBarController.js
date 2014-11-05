@@ -156,12 +156,13 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
     $scope.barTileClicked = function(index, obj) {
       // console.log('bar tile clicked: ',  obj);
 
+      // Eliminated tap to delete tile in Assembly Bar
+      // for prototype testing.
+      // newTiles = deleteAssemblyBarTileAtIndex(index);
 
-      newTiles = deleteAssemblyBarTileAtIndex(index);
-
-      if($rootScope.AnalyticsAvailable) {
-        analytics.trackEvent('Boards', 'TileRemove', obj.phrase);
-      }
+      // if($rootScope.AnalyticsAvailable) {
+      //   analytics.trackEvent('Boards', 'TileRemove', obj.phrase);
+      // }
     };
 
     $scope.barContents = function() {
