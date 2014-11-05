@@ -550,8 +550,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
               if ( (wow.beacon_major == beacon.major) &&
                   (wow.beacon_minor == beacon.minor) ) {
                 matchStrength = 15 - Math.floor(3*index/$rootScope.closestBeacons.length*100)/100;
-              console.log('Matched beacon maj: ' + beacon.major + ' min: ' + beacon.minor +
-                 ' with strength of ' + matchStrength);
               }
             });
           }
@@ -597,7 +595,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
             maxStrength = matchStrength;
             // console.log('New board might now be: ', wow.board.id, ' because strength is ', matchStrength);;
             newBoard = wow.board.id;
-            $rootScope.currentWOWBoard = newBoard;
           }
 
         }); //foreach
@@ -616,7 +613,6 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
         $rootScope.currentWOWBoard = newBoard;
         var board = fetchBoardFromLocalStorage($rootScope.currentWOWBoard);
         if (board) {
-          console.log('board loaded and we are go!');
           $scope.wowResponseTiles = board.tile_set.sort(function(a, b) {
             return a.ordinal - b.ordinal;
           });
