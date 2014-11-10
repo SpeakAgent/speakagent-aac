@@ -10,27 +10,28 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
   function($ionicPlatform, $rootScope, $location, $http, $timeout,
     $interval, fetchBoardFromLocalStorage) {
 
-  $rootScope.boards = [];
-  $rootScope.defaultWOWBoard = 24; // Default WOW board ID
-  $rootScope.defaultQuickResponseBoard = 25; // Quick response board ID
-  $rootScope.defaultMainBoard = 5;
+    $rootScope.boards = [];
+    $rootScope.defaultWOWBoard = 24; // Default WOW board ID
+    $rootScope.defaultQuickResponseBoard = 25; // Quick response board ID
+    $rootScope.defaultMainBoard = 5;
 
-  $rootScope.currentWOWBoard = $rootScope.defaultWOWBoard;
-  $rootScope.WOWOverride = false; // Switch this to true to block WOW board updates
-  $rootScope.currentQuickResponseBoard = $rootScope.defaultQuickResponseBoard;
+    $rootScope.currentWOWBoard = $rootScope.defaultWOWBoard;
+    $rootScope.WOWOverride = false; // Switch this to true to block WOW board updates
+    $rootScope.currentQuickResponseBoard = $rootScope.defaultQuickResponseBoard;
 
-  $rootScope.closestBeacons = [];
-  $rootScope.beaconInterval = 10; // seconds
-  $rootScope.contextInterval = 30; // seconds
+    $rootScope.closestBeacons = [];
+    $rootScope.beaconInterval = 10; // seconds
+    $rootScope.contextInterval = 30; // seconds
 
   // Make sure we're always logged in
-  if (!$rootScope.authToken) {
-    if(localStorage.getItem('authToken') !== null) {
-      $rootScope.authToken = localStorage.getItem('authToken');
-      $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
-    } else {
-      console.log('no auth token stored');
-      window.location = '#/app/login';
+    if (!$rootScope.authToken) {
+      if(localStorage.getItem('authToken') !== null) {
+        $rootScope.authToken = localStorage.getItem('authToken');
+        $http.defaults.headers.common.Authorization = 'Token ' + $rootScope.authToken;
+      } else {
+        console.log('no auth token stored');
+        window.location = '#/app/login';
+      }
     }
     if(localStorage.getItem('username') !== null) {
       $rootScope.username = localStorage.getItem('username');
@@ -97,90 +98,88 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     } catch (e) {
       console.log('Exception while restoring user profile from cache: ', e);
     }
-  }
 
-  console.log('leaving RUN');
+    console.log('leaving RUN');
 
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      ionic.Platform.fullScreen();
-      StatusBar.hide();
-    }
-
-    try {
-      if (Estimote) {
-        $rootScope.estimoteIsAvailable = true;
-        console.log('Estimote API is available. Waiting for beacons.');
-        var beaconPing = 0;
-
-        Estimote.startRangingBeacons(function(res) {
-          beaconPing = beaconPing + 1;
-          // console.log('Beacon ping #'+beaconPing);
-          $rootScope.$broadcast('beaconsDiscovered', res);
-        },
-        function(res) {
-          console.log('Estimote API failed to range.');
-        },
-        { interval : $rootScope.beaconInterval });
-
-        // console.log('Waiting for replies.');
+    $ionicPlatform.ready(function() {
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+      if(window.cordova && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       }
-    } catch (e) {
-      $rootScope.estimoteIsAvailable = false;
-      console.log('Estimote API is not available.');
-    }
-
-    $interval(function() {
-      $rootScope.$broadcast('refreshWowContext');
-    }, $rootScope.contextInterval * 1000);
-
-    try {
-      if (Media) {
-        $rootScope.ringBell = function(){
-          console.log('ringing bell');
-          var bell = new Media('ding.mp3');
-          bell.seekTo(0);
-          bell.setVolume(0.5);
-          bell.play();
-        }
+      if(window.StatusBar) {
+        // org.apache.cordova.statusbar required
+        ionic.Platform.fullScreen();
+        StatusBar.hide();
       }
-    } catch (e) {
-      console.log('Media is not available.');
-      $rootScope.ringBell = function(){
-        console.log('Family is all. - Hector "Tio" Salamanca');
-      }
-    }
 
-    // Load the rest of the caches into memory asynchronously
-    //
-    $timeout(function() {
-      var boardsLoaded = 0;
       try {
-        var storageLength = localStorage.length;
-        for(var i=0; i<storageLength; i++) {
-          var key = localStorage.key(i);
-          if (key.indexOf('board-') === 0) {
-            var str = key.split('-')[1];
-            var boardNumber = parseInt(str, 10);
-            fetchBoardFromLocalStorage(boardNumber);
-            boardsLoaded++;
+        if (Estimote) {
+          $rootScope.estimoteIsAvailable = true;
+          console.log('Estimote API is available. Waiting for beacons.');
+          var beaconPing = 0;
+
+          Estimote.startRangingBeacons(function(res) {
+            beaconPing = beaconPing + 1;
+            // console.log('Beacon ping #'+beaconPing);
+            $rootScope.$broadcast('beaconsDiscovered', res);
+          },
+          function(res) {
+            console.log('Estimote API failed to range.');
+          },
+          { interval : $rootScope.beaconInterval });
+
+          // console.log('Waiting for replies.');
+        }
+      } catch (e) {
+        $rootScope.estimoteIsAvailable = false;
+        console.log('Estimote API is not available.');
+      }
+
+      $interval(function() {
+        $rootScope.$broadcast('refreshWowContext');
+      }, $rootScope.contextInterval * 1000);
+
+      try {
+        if (Media) {
+          $rootScope.ringBell = function(){
+            console.log('ringing bell');
+            var bell = new Media('ding.mp3');
+            bell.seekTo(0);
+            bell.setVolume(0.5);
+            bell.play();
           }
         }
-        console.log(boardsLoaded + ' boards loaded from localStorage.');
       } catch (e) {
-        console.log('Exception while restoring boards from cache: ', e);
+        console.log('Media is not available.');
+        $rootScope.ringBell = function(){
+          console.log('Family is all. - Hector "Tio" Salamanca');
+        }
       }
+
+      // Load the rest of the caches into memory asynchronously
+      //
+      $timeout(function() {
+        var boardsLoaded = 0;
+        try {
+          var storageLength = localStorage.length;
+          for(var i=0; i<storageLength; i++) {
+            var key = localStorage.key(i);
+            if (key.indexOf('board-') === 0) {
+              var str = key.split('-')[1];
+              var boardNumber = parseInt(str, 10);
+              fetchBoardFromLocalStorage(boardNumber);
+              boardsLoaded++;
+            }
+          }
+          console.log(boardsLoaded + ' boards loaded from localStorage.');
+        } catch (e) {
+          console.log('Exception while restoring boards from cache: ', e);
+        }
+      });
     });
 
-  });
-
-}])
+  }])
 
 .factory('fetchBoardFromLocalStorage', ['$rootScope', function($rootScope) {
   return function(boardNumber) {

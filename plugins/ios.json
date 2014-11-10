@@ -10,16 +10,10 @@
                     "SystemConfiguration.framework": [
                         {
                             "xml": "false",
-                            "count": 2
+                            "count": 1
                         }
                     ],
                     "CoreData.framework": [
-                        {
-                            "xml": "false",
-                            "count": 2
-                        }
-                    ],
-                    "libsqlite3.dylib": [
                         {
                             "xml": "false",
                             "count": 1
@@ -28,7 +22,7 @@
                     "libz.dylib": [
                         {
                             "xml": "false",
-                            "count": 2
+                            "count": 1
                         }
                     ],
                     "libsqlite3.0.dylib": [
@@ -78,10 +72,6 @@
             "config.xml": {
                 "parents": {
                     "/*": [
-                        {
-                            "xml": "<feature name=\"GoogleAnalytics\"><param name=\"ios-package\" value=\"GoogleAnalyticsPlugin\" /></feature>",
-                            "count": 1
-                        },
                         {
                             "xml": "<feature name=\"UniversalAnalytics\"><param name=\"ios-package\" value=\"UniversalAnalyticsPlugin\" /></feature>",
                             "count": 1
@@ -170,9 +160,6 @@
         }
     },
     "installed_plugins": {
-        "com.cmackay.plugins.googleanalytics": {
-            "PACKAGE_NAME": "com.speakagent.aac"
-        },
         "com.danielcwilson.plugins.googleanalytics": {
             "PACKAGE_NAME": "com.speakagent.aac"
         },

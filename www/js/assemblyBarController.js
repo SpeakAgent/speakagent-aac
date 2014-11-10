@@ -244,14 +244,14 @@ angular.module('speakagentAAC.controllers.AssemblyBar', ['ionic'])
   return function(index) {
     if (win.assemblyBarTiles) {
       if (index == -1) {
-        win.assemblyBarTiles.pop();
+        removed = win.assemblyBarTiles.pop();
       } else {
         win.assemblyBarTiles.splice(index, 1);
       }
     } else {
       win.assemblyBarTiles = [];
     }
-    return win.assemblyBarTiles;
+    return removed;
   };
 }])
 

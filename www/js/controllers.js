@@ -770,7 +770,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
   $scope.deleteButtonClicked = function() {
 
-    deleteAssemblyBarTileAtIndex(-1);
+    removed = deleteAssemblyBarTileAtIndex(-1);
 
     // var removed = $scope.assemblyBarPhrase.pop();
     $scope.TTSAvailable = $rootScope.TTSAvailable;
@@ -782,13 +782,13 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
     // $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
     if($rootScope.AnalyticsAvailable) {
-      analytics.trackEvent('Boards', 'DeleteClick', removed);
+      analytics.trackEvent('Boards', 'DeleteClick', removed.name);
     }
     var timestamp = Date.now()/1000;
     var eventData = {
       'category': 'Boards',
       'action': 'DeleteButtonClicked',
-      'label': removed,
+      'label': removed.name,
       'timestamp': timestamp,
       'username': $rootScope.username
     };
