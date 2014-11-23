@@ -44,6 +44,10 @@
         <param name="ios-package" value="CDVSound" />
     </feature>
 
+    <feature name="NetworkStatus">
+        <param name="ios-package" value="CDVConnection" />
+    </feature>
+
     <platform name="ios">
         <preference name="MediaPlaybackRequiresUserAction" value="false"/>
         <preference name="AllowInlineMediaPlayback" value="true"/>

@@ -1,7 +1,7 @@
 angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers.AssemblyBar' ])
 
 .controller('LocationCtrl', function($scope, $ionicPopup, $timeout) {
-  if($rootScope.AnalyticsAvailable) {
+  if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
     analytics.trackView('Location');
   }
   var timestamp = Date.now()/1000;
@@ -242,7 +242,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   // Open the Settings modal
   $scope.showSettings = function() {
     $scope.settingsModal.show();
-    if($rootScope.AnalyticsAvailable) {
+    if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
       analytics.trackView('Settings');
     }
     var timestamp = Date.now()/1000;
@@ -318,7 +318,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
               template: 'Caching data & profile from server...'
             });
 
-        if($rootScope.AnalyticsAvailable) {
+        if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
           analytics.trackEvent('System', 'LoginSuccess', $scope.loginData.username);
           analytics.setUserId($scope.loginData.username);
           analytics.addCustomDimension('dimension1', $scope.loginData.username);
@@ -422,7 +422,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
   $rootScope.currentBoard = board;
   $scope.wordlists = [];
 
-  if($rootScope.AnalyticsAvailable) {
+  if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
     analytics.trackView('Board ID: '+board);
   }
   var timestamp = Date.now()/1000;
@@ -713,7 +713,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       }
     }
 
-    if($rootScope.AnalyticsAvailable) {
+    if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
       analytics.trackEvent('Boards', 'TileAdd', obj.phrase);
     }
     var timestamp = Date.now()/1000;
@@ -754,7 +754,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
       }
     }
 
-    if($rootScope.AnalyticsAvailable) {
+    if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
       analytics.trackEvent('Boards', 'WOWTileAdd', obj.phrase);
     }
     var timestamp = Date.now()/1000;
@@ -781,7 +781,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     setClearOnAdd(false);
 
     // $rootScope.assemblyBarPhrase = $scope.assemblyBarPhrase;
-    if($rootScope.AnalyticsAvailable) {
+    if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
       analytics.trackEvent('Boards', 'DeleteClick', removed.name);
     }
     var timestamp = Date.now()/1000;
@@ -802,8 +802,19 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
     if ($rootScope.TTSAvailable) {
       ttsPlugin.speak(wordsToSpeak);
+    } else {
+      try {
+        if(ttsPlugin) {
+          var ret = ttsPlugin.initTTS(function ttsInitialized() {
+            $rootScope.TTSAvailable = true;
+            console.log('TTS is now Available');
+          });
+        }
+      } catch (e) {
+        console.log('TTS is not available.');
+      }
     }
-    if($rootScope.AnalyticsAvailable) {
+    if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
       analytics.trackEvent('Boards', 'SpeakPhrase', wordsToSpeak);
     }
     var timestamp = Date.now()/1000;
@@ -823,8 +834,19 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
 
     if ($rootScope.TTSAvailable) {
       ttsPlugin.speak(wordsToSpeak);
+    } else {
+      try {
+        if(ttsPlugin) {
+          var ret = ttsPlugin.initTTS(function ttsInitialized() {
+            $rootScope.TTSAvailable = true;
+            console.log('TTS is now Available');
+          });
+        }
+      } catch (e) {
+        console.log('TTS is not available.');
+      }
     }
-    if($rootScope.AnalyticsAvailable) {
+    if($rootScope.AnalyticsAvailable && $rootScope.networkAvailable) {
       analytics.trackEvent('Boards', 'SpeakPhraseQuick', wordsToSpeak);
     }
     var timestamp = Date.now()/1000;
@@ -917,6 +939,59 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     $scope.$broadcast('refreshWowContext');
     window.location = '#/app/wordlists/'+$rootScope.currentBoard; //TODO: Make better.
   }
+})
+
+.controller('LogViewCtrl', function($scope, $rootScope, $ionicLoading, $http) {
+  // Controller for dumping log data to a view
+  $scope.username = $rootScope.username;
+  $scope.logData = [];
+
+  var analyticsKeys = [];
+  var storageLength = localStorage.length;
+  for(var i=0; i<storageLength; i++) {
+    var key = localStorage.key(i);
+    if (key.indexOf('analytics-') === 0) {
+      analyticsKeys.push(key);
+    }
+  }
+  for(var i=0; i<analyticsKeys.length; i++){
+    var key = analyticsKeys[i];
+    var parsed_data = JSON.parse(localStorage.getItem(key));
+    if(parsed_data){
+      parsed_data.date = new Date(parsed_data.timestamp*1000);
+      $scope.logData.push(parsed_data);
+    }
+  }
+
+  $scope.uploadLogData = function() {
+    // Upload data to AL endpoint
+    var logDataURL = $rootScope.apiBaseHREF + "logdata/";
+    var jsonLogDataString = JSON.stringify($scope.logData);
+    console.log('Uploading log data: ' + jsonLogDataString);
+    var responsePromise = $http.post(logDataURL,
+      {
+        'user': 1, // hardcoded for now TODO: improve
+        'json_data_blob': jsonLogDataString
+      });
+    $ionicLoading.show({
+          template: 'Uploading data...'
+        });
+
+    responsePromise.success(function(data, status, headers, config) {
+      // Successfully uploaded data
+      $ionicLoading.hide();
+      console.log('Successfully uploaded data.');
+
+    });
+
+    responsePromise.error(function(data, status, headers, config) {
+        $ionicLoading.hide();
+        console.log("Unable to upload log data: " + status);
+        $scope.uploadError = "Unable to upload log data: " + status;
+    });
+
+  }
+
 })
 
 .controller('SearchCtrl',  ['$scope', '$rootScope', '$window',

@@ -11,6 +11,10 @@
                         {
                             "xml": "false",
                             "count": 1
+                        },
+                        {
+                            "xml": "true",
+                            "count": 1
                         }
                     ],
                     "CoreData.framework": [
@@ -117,6 +121,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"ios-package\" value=\"CDVConnection\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"StatusBar\"><param name=\"ios-package\" onload=\"true\" value=\"CDVStatusBar\" /></feature>",
                             "count": 1
                         },
@@ -194,6 +202,9 @@
             "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.media": {
+            "PACKAGE_NAME": "com.speakagent.aac"
+        },
+        "org.apache.cordova.network-information": {
             "PACKAGE_NAME": "com.speakagent.aac"
         },
         "org.apache.cordova.statusbar": {

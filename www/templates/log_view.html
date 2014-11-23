@@ -1,0 +1,30 @@
+<ion-view title="Logs Viewer" hide-nav-bar="true">
+  <ion-content class="has-header">
+    <div class="logs-container" ng-controller="LogViewCtrl">
+      <h1>User Logs for {{username}}</h1>
+      <p>The following data has been collected since the last time LocalStorage was cleared.</p>
+      <p><button class="button button-balanced" ng-click="uploadLogData()">Upload Log Data</button></p>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <th>Timestamp</th>
+            <th>Category</th>
+            <th>Action</th>
+            <th>Label</th>
+            <th>User</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in logData">
+                  <td>{{item.date}}</td>
+                  <td>{{item.category}}</td>
+                  <td>{{item.action}}</td>
+                  <td>{{item.label}}</td>
+                  <td>{{item.username}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+

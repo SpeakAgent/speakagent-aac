@@ -3,10 +3,10 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
+angular.module('speakagentAAC', ['ionic', 'ngCordova', 'speakagentAAC.controllers'])
 
 .run(['$ionicPlatform', '$rootScope', '$location', '$http', '$timeout',
-  '$interval', 'fetchBoardFromLocalStorage',
+  '$interval', 'fetchBoardFromLocalStorage', '$cordovaNetwork',
   function($ionicPlatform, $rootScope, $location, $http, $timeout,
     $interval, fetchBoardFromLocalStorage) {
 
@@ -59,12 +59,29 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
     // the board controller would run before the ready() function
     // which of course means that speech, estimotes, and board cache
     // aren't loaded yet.
+    $rootScope.networkAvailable = false;
+    document.addEventListener("offline", onOffline, false);
+
+    function onOffline() {
+        // Handle the offline event
+        $rootScope.networkAvailable = false;
+        console.log('Device has gone OFFLINE: ' + $rootScope.networkAvailable);
+    }
+    document.addEventListener("online", onOnline, false);
+
+    function onOnline() {
+        // Handle the online event
+        $rootScope.networkAvailable = true;
+        console.log('Device has come ONLINE: ' + $rootScope.networkAvailable);
+    }
 
     try {
-      if(analytics) {
+      if(analytics && $rootScope.networkAvailable) {
         analytics.startTrackerWithId('UA-54749327-1');
         $rootScope.AnalyticsAvailable = true;
         console.log('Analytics instantiated.');
+      } else {
+        console.log('Analytics not instantiated due to unavailable network.')
       }
     } catch (e) {
       $rootScope.AnalyticsAvailable = false;
@@ -114,7 +131,7 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
       }
 
       try {
-        if (Estimote) {
+        if (Estimote && $rootScope.networkAvailable) {
           $rootScope.estimoteIsAvailable = true;
           console.log('Estimote API is available. Waiting for beacons.');
           var beaconPing = 0;
@@ -130,6 +147,9 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
           { interval : $rootScope.beaconInterval });
 
           // console.log('Waiting for replies.');
+        } else {
+          $rootScope.estimoteIsAvailable = false;
+          console.log('Estimotes unavailable due to network outage.');
         }
       } catch (e) {
         $rootScope.estimoteIsAvailable = false;
@@ -234,6 +254,16 @@ angular.module('speakagentAAC', ['ionic', 'speakagentAAC.controllers'])
         'menuContent' :{
           templateUrl: "templates/wow_override.html",
           controller: 'WOWOverrideCtrl'
+        }
+      }
+    })
+
+    .state('app.logdump', {
+      url: "/logs",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/log_view.html",
+          controller: 'LogViewCtrl'
         }
       }
     })
