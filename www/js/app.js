@@ -23,6 +23,8 @@ angular.module('speakagentAAC', ['ionic', 'ngCordova', 'speakagentAAC.controller
     $rootScope.beaconInterval = 10; // seconds
     $rootScope.contextInterval = 30; // seconds
 
+    screen.lockOrientation('landscape');
+
   // Make sure we're always logged in
     if (!$rootScope.authToken) {
       if(localStorage.getItem('authToken') !== null) {
