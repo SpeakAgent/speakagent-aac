@@ -939,6 +939,7 @@ angular.module('speakagentAAC.controllers', ['ionic', 'speakagentAAC.controllers
     $scope.$broadcast('refreshWowContext');
     window.location = '#/app/wordlists/'+$rootScope.currentBoard; //TODO: Make better.
   }
+
 })
 
 .controller('LogViewCtrl', function($scope, $rootScope, $ionicLoading, $http) {
