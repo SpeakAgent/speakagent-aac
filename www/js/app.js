@@ -23,8 +23,6 @@ angular.module('speakagentAAC', ['ionic', 'ngCordova', 'speakagentAAC.controller
     $rootScope.beaconInterval = 10; // seconds
     $rootScope.contextInterval = 30; // seconds
 
-    screen.lockOrientation('landscape');
-
   // Make sure we're always logged in
     if (!$rootScope.authToken) {
       if(localStorage.getItem('authToken') !== null) {
@@ -48,9 +46,14 @@ angular.module('speakagentAAC', ['ionic', 'ngCordova', 'speakagentAAC.controller
       $rootScope.apiBaseAuthHREF = localStorage.getItem('apiBaseAuthHREF');
       $rootScope.staticBaseHREF = localStorage.getItem('staticBaseHREF');
     } else {
-      $rootScope.apiBaseHREF = 'http://active-listener.herokuapp.com/v1/';
-      $rootScope.apiBaseAuthHREF = 'http://active-listener.herokuapp.com/';
-      $rootScope.staticBaseHREF = 'http://active-listener.herokuapp.com/static/';
+//      $rootScope.apiBaseHREF = 'http://active-listener.herokuapp.com/v1/';
+//      $rootScope.apiBaseAuthHREF = 'http://active-listener.herokuapp.com/';
+//     $rootScope.staticBaseHREF = 'http://active-listener.herokuapp.com/static/';
+      $rootScope.apiBaseAuthHREF = 'http://dev-speakagent.internal.thebaron.org:8000/';
+
+      $rootScope.apiBaseHREF = $rootScope.apiBaseAuthHREF + 'v1/';
+      $rootScope.staticBaseHREF = $rootScope.apiBaseAuthHREF + 'static/';
+
       localStorage.setItem('apiBaseHREF', $rootScope.apiBaseHREF);
       localStorage.setItem('apiBaseAuthHREF', $rootScope.apiBaseAuthHREF);
       localStorage.setItem('staticBaseHREF', $rootScope.staticBaseHREF);
@@ -69,12 +72,20 @@ angular.module('speakagentAAC', ['ionic', 'ngCordova', 'speakagentAAC.controller
         $rootScope.networkAvailable = false;
         console.log('Device has gone OFFLINE: ' + $rootScope.networkAvailable);
     }
+
     document.addEventListener("online", onOnline, false);
+
 
     function onOnline() {
         // Handle the online event
         $rootScope.networkAvailable = true;
         console.log('Device has come ONLINE: ' + $rootScope.networkAvailable);
+    }
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        console.log('locking orientation');
+        screen.lockOrientation('landscape');
     }
 
     try {
@@ -131,7 +142,6 @@ angular.module('speakagentAAC', ['ionic', 'ngCordova', 'speakagentAAC.controller
         ionic.Platform.fullScreen();
         StatusBar.hide();
       }
-
       try {
         if (Estimote && $rootScope.networkAvailable) {
           $rootScope.estimoteIsAvailable = true;
