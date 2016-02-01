@@ -2,5 +2,6 @@
   "name": "speakagentAAC",
   "email": "shawn@shawnrider.com",
   "app_id": "84054bcd",
-  "package_name": "com.speakagent.aac"
+  "package_name": "com.speakagent.aac",
+  "gulpStartupTasks" : ["sass", "watch"]
 }

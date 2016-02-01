@@ -1,0 +1,65 @@
+@import 'reset';
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  text-align: center;
+  color: #333;
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 40px;
+}
+
+.content {
+  margin: 40px auto;
+  max-width: 300px;
+}
+
+.example {
+  margin: 20px 0;
+}
+
+$border-style: 1px solid #ddd;
+$base-padding: 8px;
+
+li {
+  padding: $base-padding;
+  border-bottom: $border-style;
+  line-height: 1.2;
+
+  &:first-child {
+    border-top: $border-style;
+  }
+}
+
+.octocat {
+  display: block;
+  width: 32px;
+  margin: 0 auto;
+}
+
+/*
+ *  dragging stuff
+ */
+
+.dragging {
+  opacity: 0.3;
+}
+
+.dropping {
+  background-color: rgba(231, 237, 242, 0.63);
+}
+
+.dropping-above {
+  padding-top: $base-padding * 2;
+}
+
+.dropping-below {
+  padding-bottom: $base-padding * 2;
+}

@@ -2,10 +2,10 @@
   "name": "speakagentAAC",
   "private": "true",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.0.0-beta.8",
+    "ionic": "driftyco/ionic-bower#1.2.4",
     "mb-dragToReorder": "brandly/angular-drag-to-reorder"
   },
   "dependencies": {
-    "ngCordova": "~0.1.7-alpha"
+    "ngCordova": "~0.1.24-alpha"
   }
 }

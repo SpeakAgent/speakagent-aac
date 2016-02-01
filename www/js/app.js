@@ -47,9 +47,9 @@ angular.module('speakagentAAC', ['ionic', 'ngCordova', 'speakagentAAC.controller
       $rootScope.staticBaseHREF = localStorage.getItem('staticBaseHREF');
     } else {
 //      $rootScope.apiBaseHREF = 'http://active-listener.herokuapp.com/v1/';
-//      $rootScope.apiBaseAuthHREF = 'http://active-listener.herokuapp.com/';
+     $rootScope.apiBaseAuthHREF = 'http://active-listener.herokuapp.com/';
 //     $rootScope.staticBaseHREF = 'http://active-listener.herokuapp.com/static/';
-      $rootScope.apiBaseAuthHREF = 'http://dev-speakagent.internal.thebaron.org:8000/';
+      // $rootScope.apiBaseAuthHREF = 'http://dev-speakagent.internal.thebaron.org:8000/';
 
       $rootScope.apiBaseHREF = $rootScope.apiBaseAuthHREF + 'v1/';
       $rootScope.staticBaseHREF = $rootScope.apiBaseAuthHREF + 'static/';
